@@ -38,7 +38,7 @@ function start()
 function stop()
 {
     echo "Stop $AppName"
-	
+
 	PID=""
 	query(){
 		PID=`ps -ef |grep java|grep $AppName|grep -v grep|awk '{print $2}'`

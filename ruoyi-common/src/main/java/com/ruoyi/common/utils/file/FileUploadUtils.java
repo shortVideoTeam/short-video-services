@@ -1,17 +1,20 @@
 package com.ruoyi.common.utils.file;
 
-import java.io.File;
-import java.io.IOException;
-import org.apache.commons.io.FilenameUtils;
-import org.springframework.web.multipart.MultipartFile;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.exception.file.FileNameLengthLimitExceededException;
 import com.ruoyi.common.exception.file.FileSizeLimitExceededException;
 import com.ruoyi.common.exception.file.InvalidExtensionException;
 import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.uuid.IdUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * 文件上传工具类
@@ -111,7 +114,8 @@ public class FileUploadUtils
         String fileName = extractFilename(file);
 
         File desc = getAbsoluteFile(baseDir, fileName);
-        file.transferTo(desc);
+		desc = FileUtil.touch(desc);
+		FileUtil.writeFromStream(file.getInputStream(), desc);
         String pathFileName = getPathFileName(baseDir, fileName);
         return pathFileName;
     }
@@ -123,7 +127,7 @@ public class FileUploadUtils
     {
         String fileName = file.getOriginalFilename();
         String extension = getExtension(file);
-        fileName = DateUtils.datePath() + "/" + IdUtils.fastUUID() + "." + extension;
+        fileName = DateUtils.datePath() + "/" + IdUtil.fastUUID() + "." + extension;
         return fileName;
     }
 
@@ -144,7 +148,7 @@ public class FileUploadUtils
     private static final String getPathFileName(String uploadDir, String fileName) throws IOException
     {
         int dirLastIndex = RuoYiConfig.getProfile().length() + 1;
-        String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
+        String currentDir = StrUtil.subSuf(uploadDir, dirLastIndex);
         String pathFileName = Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
         return pathFileName;
     }
@@ -226,7 +230,7 @@ public class FileUploadUtils
     public static final String getExtension(MultipartFile file)
     {
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-        if (StringUtils.isEmpty(extension))
+        if (Validator.isEmpty(extension))
         {
             extension = MimeTypeUtils.getExtension(file.getContentType());
         }

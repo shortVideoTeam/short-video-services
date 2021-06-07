@@ -1,86 +1,121 @@
 package com.ruoyi.web.controller.common;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-import javax.annotation.Resource;
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.FastByteArrayOutputStream;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.google.code.kaptcha.Producer;
+import cn.hutool.captcha.AbstractCaptcha;
+import cn.hutool.captcha.CircleCaptcha;
+import cn.hutool.captcha.LineCaptcha;
+import cn.hutool.captcha.ShearCaptcha;
+import cn.hutool.captcha.generator.CodeGenerator;
+import cn.hutool.captcha.generator.RandomGenerator;
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.redis.RedisCache;
-import com.ruoyi.common.utils.sign.Base64;
-import com.ruoyi.common.utils.uuid.IdUtils;
+import com.ruoyi.framework.captcha.UnsignedMathGenerator;
+import com.ruoyi.framework.config.properties.CaptchaProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 验证码操作处理
- * 
- * @author ruoyi
+ *
+ * @author Lion Li
  */
 @RestController
-public class CaptchaController
-{
-    @Resource(name = "captchaProducer")
-    private Producer captchaProducer;
+public class CaptchaController {
 
-    @Resource(name = "captchaProducerMath")
-    private Producer captchaProducerMath;
+	// 圆圈干扰验证码
+	@Resource(name = "CircleCaptcha")
+	private CircleCaptcha circleCaptcha;
+	// 线段干扰的验证码
+	@Resource(name = "LineCaptcha")
+	private LineCaptcha lineCaptcha;
+	// 扭曲干扰验证码
+	@Resource(name = "ShearCaptcha")
+	private ShearCaptcha shearCaptcha;
 
-    @Autowired
-    private RedisCache redisCache;
-    
-    // 验证码类型
-    @Value("${ruoyi.captchaType}")
-    private String captchaType;
+	@Autowired
+	private RedisCache redisCache;
 
-    /**
-     * 生成验证码
-     */
-    @GetMapping("/captchaImage")
-    public AjaxResult getCode(HttpServletResponse response) throws IOException
-    {
-        // 保存验证码信息
-        String uuid = IdUtils.simpleUUID();
-        String verifyKey = Constants.CAPTCHA_CODE_KEY + uuid;
+	@Autowired
+	private CaptchaProperties captchaProperties;
 
-        String capStr = null, code = null;
-        BufferedImage image = null;
+	/**
+	 * 生成验证码
+	 */
+	@GetMapping("/captchaImage")
+	public AjaxResult getCode() {
+		Map<String, Object> ajax = new HashMap<>();
+		Boolean enabled = captchaProperties.getEnabled();
+		ajax.put("enabled", enabled);
+		if (!enabled) {
+			return AjaxResult.success(ajax);
+		}
+		// 保存验证码信息
+		String uuid = IdUtil.simpleUUID();
+		String verifyKey = Constants.CAPTCHA_CODE_KEY + uuid;
+		String code = null;
+		// 生成验证码
+		CodeGenerator codeGenerator;
+		AbstractCaptcha captcha;
+		switch (captchaProperties.getType()) {
+			case "math":
+				codeGenerator = new UnsignedMathGenerator(captchaProperties.getNumberLength());
+				break;
+			case "char":
+				codeGenerator = new RandomGenerator(captchaProperties.getCharLength());
+				break;
+			default:
+				throw new IllegalArgumentException("验证码类型异常");
+		}
+		switch (captchaProperties.getCategory()) {
+			case "line":
+				captcha = lineCaptcha;
+				break;
+			case "circle":
+				captcha = circleCaptcha;
+				break;
+			case "shear":
+				captcha = shearCaptcha;
+				break;
+			default:
+				throw new IllegalArgumentException("验证码类别异常");
+		}
+		captcha.setGenerator(codeGenerator);
+		captcha.createCode();
+		if ("math".equals(captchaProperties.getType())) {
+			code = getCodeResult(captcha.getCode());
+		} else if ("char".equals(captchaProperties.getType())) {
+			code = captcha.getCode();
+		}
+		redisCache.setCacheObject(verifyKey, code, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
+		ajax.put("uuid", uuid);
+		ajax.put("img", captcha.getImageBase64());
+		return AjaxResult.success(ajax);
+	}
 
-        // 生成验证码
-        if ("math".equals(captchaType))
-        {
-            String capText = captchaProducerMath.createText();
-            capStr = capText.substring(0, capText.lastIndexOf("@"));
-            code = capText.substring(capText.lastIndexOf("@") + 1);
-            image = captchaProducerMath.createImage(capStr);
-        }
-        else if ("char".equals(captchaType))
-        {
-            capStr = code = captchaProducer.createText();
-            image = captchaProducer.createImage(capStr);
-        }
+	private String getCodeResult(String capStr) {
+		int numberLength = captchaProperties.getNumberLength();
+		int a = Convert.toInt(StrUtil.sub(capStr, 0, numberLength).trim());
+		char operator = capStr.charAt(numberLength);
+		int b = Convert.toInt(StrUtil.sub(capStr, numberLength + 1, numberLength + 1 + numberLength).trim());
+		switch (operator) {
+			case '*':
+				return a * b + "";
+			case '+':
+				return a + b + "";
+			case '-':
+				return a - b + "";
+			default:
+				return "";
+		}
+	}
 
-        redisCache.setCacheObject(verifyKey, code, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
-        // 转换流信息写出
-        FastByteArrayOutputStream os = new FastByteArrayOutputStream();
-        try
-        {
-            ImageIO.write(image, "jpg", os);
-        }
-        catch (IOException e)
-        {
-            return AjaxResult.error(e.getMessage());
-        }
-
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("uuid", uuid);
-        ajax.put("img", Base64.encode(os.toByteArray()));
-        return ajax;
-    }
 }

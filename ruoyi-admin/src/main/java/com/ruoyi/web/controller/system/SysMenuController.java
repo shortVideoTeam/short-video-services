@@ -1,17 +1,6 @@
 package com.ruoyi.web.controller.system;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import cn.hutool.core.util.StrUtil;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.UserConstants;
@@ -22,13 +11,20 @@ import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ServletUtils;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.service.ISysMenuService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 菜单信息
- * 
+ *
  * @author ruoyi
  */
 @RestController
@@ -84,10 +80,10 @@ public class SysMenuController extends BaseController
     {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         List<SysMenu> menus = menuService.selectMenuList(loginUser.getUser().getUserId());
-        AjaxResult ajax = AjaxResult.success();
+		Map<String,Object> ajax = new HashMap<>();
         ajax.put("checkedKeys", menuService.selectMenuListByRoleId(roleId));
         ajax.put("menus", menuService.buildMenuTreeSelect(menus));
-        return ajax;
+        return AjaxResult.success(ajax);
     }
 
     /**
@@ -103,7 +99,7 @@ public class SysMenuController extends BaseController
             return AjaxResult.error("新增菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
         }
         else if (UserConstants.YES_FRAME.equals(menu.getIsFrame())
-                && !StringUtils.startsWithAny(menu.getPath(), Constants.HTTP, Constants.HTTPS))
+                && !StrUtil.startWithAny(menu.getPath(), Constants.HTTP, Constants.HTTPS))
         {
             return AjaxResult.error("新增菜单'" + menu.getMenuName() + "'失败，地址必须以http(s)://开头");
         }
@@ -124,7 +120,7 @@ public class SysMenuController extends BaseController
             return AjaxResult.error("修改菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
         }
         else if (UserConstants.YES_FRAME.equals(menu.getIsFrame())
-                && !StringUtils.startsWithAny(menu.getPath(), Constants.HTTP, Constants.HTTPS))
+                && !StrUtil.startWithAny(menu.getPath(), Constants.HTTP, Constants.HTTPS))
         {
             return AjaxResult.error("修改菜单'" + menu.getMenuName() + "'失败，地址必须以http(s)://开头");
         }

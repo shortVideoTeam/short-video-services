@@ -565,8 +565,8 @@ export default {
       this.reset();
       this.getTreeselect();
       getUser().then(response => {
-        this.postOptions = response.posts;
-        this.roleOptions = response.roles;
+        this.postOptions = response.data.posts;
+        this.roleOptions = response.data.roles;
         this.open = true;
         this.title = "添加用户";
         this.form.password = this.initPassword;
@@ -578,11 +578,11 @@ export default {
       this.getTreeselect();
       const userId = row.userId || this.ids;
       getUser(userId).then(response => {
-        this.form = response.data;
-        this.postOptions = response.posts;
-        this.roleOptions = response.roles;
-        this.form.postIds = response.postIds;
-        this.form.roleIds = response.roleIds;
+        this.form = response.data.user;
+        this.postOptions = response.data.posts;
+        this.roleOptions = response.data.roles;
+        this.form.postIds = response.data.postIds;
+        this.form.roleIds = response.data.roleIds;
         this.open = true;
         this.title = "修改用户";
         this.form.password = "";
@@ -631,7 +631,7 @@ export default {
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");
-        }).catch(() => {});
+        })
     },
     /** 导出按钮操作 */
     handleExport() {
@@ -646,7 +646,7 @@ export default {
         }).then(response => {
           this.download(response.msg);
           this.exportLoading = false;
-        }).catch(() => {});
+        })
     },
     /** 导入按钮操作 */
     handleImport() {

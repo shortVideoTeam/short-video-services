@@ -1,61 +1,62 @@
 package ${packageName}.service;
 
-import java.util.List;
 import ${packageName}.domain.${ClassName};
+import ${packageName}.vo.${ClassName}Vo;
+import ${packageName}.bo.${ClassName}QueryBo;
+import ${packageName}.bo.${ClassName}AddBo;
+import ${packageName}.bo.${ClassName}EditBo;
+import com.ruoyi.common.core.page.IServicePlus;
+#if($table.crud || $table.sub)
+import com.ruoyi.common.core.page.TableDataInfo;
+#end
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * ${functionName}Service接口
- * 
+ *
  * @author ${author}
  * @date ${datetime}
  */
-public interface I${ClassName}Service 
-{
-    /**
-     * 查询${functionName}
-     * 
-     * @param ${pkColumn.javaField} ${functionName}ID
-     * @return ${functionName}
-     */
-    public ${ClassName} select${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField});
+public interface I${ClassName}Service extends IServicePlus<${ClassName}> {
+	/**
+	 * 查询单个
+	 * @return
+	 */
+	${ClassName}Vo queryById(${pkColumn.javaType} ${pkColumn.javaField});
 
-    /**
-     * 查询${functionName}列表
-     * 
-     * @param ${className} ${functionName}
-     * @return ${functionName}集合
-     */
-    public List<${ClassName}> select${ClassName}List(${ClassName} ${className});
+#if($table.crud || $table.sub)
+	/**
+	 * 查询列表
+	 */
+    TableDataInfo<${ClassName}Vo> queryPageList(${ClassName}QueryBo bo);
+#end
 
-    /**
-     * 新增${functionName}
-     * 
-     * @param ${className} ${functionName}
-     * @return 结果
-     */
-    public int insert${ClassName}(${ClassName} ${className});
+	/**
+	 * 查询列表
+	 */
+	List<${ClassName}Vo> queryList(${ClassName}QueryBo bo);
 
-    /**
-     * 修改${functionName}
-     * 
-     * @param ${className} ${functionName}
-     * @return 结果
-     */
-    public int update${ClassName}(${ClassName} ${className});
+	/**
+	 * 根据新增业务对象插入${functionName}
+	 * @param bo ${functionName}新增业务对象
+	 * @return
+	 */
+	Boolean insertByAddBo(${ClassName}AddBo bo);
 
-    /**
-     * 批量删除${functionName}
-     * 
-     * @param ${pkColumn.javaField}s 需要删除的${functionName}ID
-     * @return 结果
-     */
-    public int delete${ClassName}ByIds(${pkColumn.javaType}[] ${pkColumn.javaField}s);
+	/**
+	 * 根据编辑业务对象修改${functionName}
+	 * @param bo ${functionName}编辑业务对象
+	 * @return
+	 */
+	Boolean updateByEditBo(${ClassName}EditBo bo);
 
-    /**
-     * 删除${functionName}信息
-     * 
-     * @param ${pkColumn.javaField} ${functionName}ID
-     * @return 结果
-     */
-    public int delete${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField});
+	/**
+	 * 校验并删除数据
+	 * @param ids 主键集合
+	 * @param isValid 是否校验,true-删除前校验,false-不校验
+	 * @return
+	 */
+	Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 }

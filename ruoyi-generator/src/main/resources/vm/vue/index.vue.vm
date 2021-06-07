@@ -127,7 +127,7 @@
 #set($comment=$column.columnComment)
 #end
 #if($column.pk)
-      <el-table-column label="${comment}" align="center" prop="${javaField}" />
+      <el-table-column label="${comment}" align="center" prop="${javaField}" v-if="${column.list}"/>
 #elseif($column.list && $column.htmlType == "datetime")
       <el-table-column label="${comment}" align="center" prop="${javaField}" width="180">
         <template slot-scope="scope">
@@ -159,7 +159,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -254,8 +254,8 @@
         <el-form-item label="${comment}" prop="${field}">
           <el-date-picker clearable size="small"
             v-model="form.${field}"
-            type="date"
-            value-format="yyyy-MM-dd"
+            type="datetime"
+            value-format="yyyy-MM-dd HH:mm:ss"
             placeholder="选择${comment}">
           </el-date-picker>
         </el-form-item>
@@ -301,7 +301,7 @@
 #end
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button :loading="buttonLoading" type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -353,6 +353,8 @@ export default {
   },
   data() {
     return {
+	  //按钮loading
+	  buttonLoading: false,
       // 遮罩层
       loading: true,
       // 导出遮罩层
@@ -403,7 +405,7 @@ export default {
         pageSize: 10,
 #foreach ($column in $columns)
 #if($column.query)
-        $column.javaField: null#if($velocityCount != $columns.size()),#end
+        $column.javaField: undefined#if($velocityCount != $columns.size()),#end
 
 #end
 #end
@@ -494,7 +496,7 @@ export default {
         $column.javaField: []#if($velocityCount != $columns.size()),#end
 
 #else
-        $column.javaField: null#if($velocityCount != $columns.size()),#end
+        $column.javaField: undefined#if($velocityCount != $columns.size()),#end
 
 #end
 #end
@@ -534,9 +536,11 @@ export default {
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
+      this.loading = true;
       this.reset();
       const ${pkColumn.javaField} = row.${pkColumn.javaField} || this.ids
       get${BusinessName}(${pkColumn.javaField}).then(response => {
+        this.loading = false;
         this.form = response.data;
 #foreach ($column in $columns)
 #if($column.htmlType == "checkbox")
@@ -554,6 +558,7 @@ export default {
     submitForm() {
       this.#[[$]]#refs["form"].validate(valid => {
         if (valid) {
+          this.buttonLoading = true;
 #foreach ($column in $columns)
 #if($column.htmlType == "checkbox")
           this.form.$column.javaField = this.form.${column.javaField}.join(",");
@@ -564,12 +569,14 @@ export default {
 #end
           if (this.form.${pkColumn.javaField} != null) {
             update${BusinessName}(this.form).then(response => {
+              this.buttonLoading = false;
               this.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
             add${BusinessName}(this.form).then(response => {
+              this.buttonLoading = false;
               this.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -585,12 +592,14 @@ export default {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
-        }).then(function() {
+        }).then(() => {
+          this.loading = true;
           return del${BusinessName}(${pkColumn.javaField}s);
         }).then(() => {
+          this.loading = false;
           this.getList();
           this.msgSuccess("删除成功");
-        }).catch(() => {});
+        })
     },
 #if($table.sub)
 	/** ${subTable.functionName}序号 */
@@ -639,7 +648,7 @@ export default {
         }).then(response => {
           this.download(response.msg);
           this.exportLoading = false;
-        }).catch(() => {});
+        })
     }
   }
 };

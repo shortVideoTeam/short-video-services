@@ -1,11 +1,15 @@
 package com.ruoyi.common.utils;
 
-import java.util.Collection;
-import java.util.List;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.StrUtil;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.entity.SysDictData;
 import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.common.utils.spring.SpringUtils;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 字典工具类
@@ -39,9 +43,9 @@ public class DictUtils
     public static List<SysDictData> getDictCache(String key)
     {
         Object cacheObj = SpringUtils.getBean(RedisCache.class).getCacheObject(getCacheKey(key));
-        if (StringUtils.isNotNull(cacheObj))
+        if (Validator.isNotNull(cacheObj))
         {
-            List<SysDictData> dictDatas = StringUtils.cast(cacheObj);
+            List<SysDictData> dictDatas = (List<SysDictData>)cacheObj;
             return dictDatas;
         }
         return null;
@@ -84,7 +88,7 @@ public class DictUtils
         StringBuilder propertyString = new StringBuilder();
         List<SysDictData> datas = getDictCache(dictType);
 
-        if (StringUtils.containsAny(separator, dictValue) && StringUtils.isNotEmpty(datas))
+        if (StrUtil.containsAny(separator, dictValue) && CollUtil.isNotEmpty(datas))
         {
             for (SysDictData dict : datas)
             {
@@ -108,7 +112,7 @@ public class DictUtils
                 }
             }
         }
-        return StringUtils.stripEnd(propertyString.toString(), separator);
+        return StrUtil.strip(propertyString.toString(), null, separator);
     }
 
     /**
@@ -124,7 +128,7 @@ public class DictUtils
         StringBuilder propertyString = new StringBuilder();
         List<SysDictData> datas = getDictCache(dictType);
 
-        if (StringUtils.containsAny(separator, dictLabel) && StringUtils.isNotEmpty(datas))
+        if (StrUtil.containsAny(separator, dictLabel) && CollUtil.isNotEmpty(datas))
         {
             for (SysDictData dict : datas)
             {
@@ -148,7 +152,7 @@ public class DictUtils
                 }
             }
         }
-        return StringUtils.stripEnd(propertyString.toString(), separator);
+        return StrUtil.strip(propertyString.toString(), null, separator);
     }
 
     /**

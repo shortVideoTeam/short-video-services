@@ -1,11 +1,19 @@
 package com.ruoyi.framework.aspectj;
 
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
+import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.enums.BusinessStatus;
+import com.ruoyi.common.enums.HttpMethod;
+import com.ruoyi.common.utils.ServletUtils;
+import com.ruoyi.common.utils.ip.IpUtils;
+import com.ruoyi.common.utils.spring.SpringUtils;
+import com.ruoyi.framework.manager.AsyncManager;
+import com.ruoyi.framework.manager.factory.AsyncFactory;
+import com.ruoyi.framework.web.service.TokenService;
+import com.ruoyi.system.domain.SysOperLog;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -19,23 +27,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.HandlerMapping;
-import com.alibaba.fastjson.JSON;
-import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.common.enums.BusinessStatus;
-import com.ruoyi.common.enums.HttpMethod;
-import com.ruoyi.common.utils.ServletUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.ip.IpUtils;
-import com.ruoyi.common.utils.spring.SpringUtils;
-import com.ruoyi.framework.manager.AsyncManager;
-import com.ruoyi.framework.manager.factory.AsyncFactory;
-import com.ruoyi.framework.web.service.TokenService;
-import com.ruoyi.system.domain.SysOperLog;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * 操作日志记录处理
- * 
+ *
  * @author ruoyi
  */
 @Aspect
@@ -63,7 +65,7 @@ public class LogAspect
 
     /**
      * 拦截异常操作
-     * 
+     *
      * @param joinPoint 切点
      * @param e 异常
      */
@@ -105,7 +107,7 @@ public class LogAspect
             if (e != null)
             {
                 operLog.setStatus(BusinessStatus.FAIL.ordinal());
-                operLog.setErrorMsg(StringUtils.substring(e.getMessage(), 0, 2000));
+                operLog.setErrorMsg(StrUtil.sub(e.getMessage(), 0, 2000));
             }
             // 设置方法名称
             String className = joinPoint.getTarget().getClass().getName();
@@ -129,7 +131,7 @@ public class LogAspect
 
     /**
      * 获取注解中对方法的描述信息 用于Controller层注解
-     * 
+     *
      * @param log 日志
      * @param operLog 操作日志
      * @throws Exception
@@ -152,7 +154,7 @@ public class LogAspect
 
     /**
      * 获取请求的参数，放到log中
-     * 
+     *
      * @param operLog 操作日志
      * @throws Exception 异常
      */
@@ -162,12 +164,12 @@ public class LogAspect
         if (HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod))
         {
             String params = argsArrayToString(joinPoint.getArgs());
-            operLog.setOperParam(StringUtils.substring(params, 0, 2000));
+            operLog.setOperParam(StrUtil.sub(params, 0, 2000));
         }
         else
         {
             Map<?, ?> paramsMap = (Map<?, ?>) ServletUtils.getRequest().getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-            operLog.setOperParam(StringUtils.substring(paramsMap.toString(), 0, 2000));
+            operLog.setOperParam(StrUtil.sub(paramsMap.toString(), 0, 2000));
         }
     }
 
@@ -197,7 +199,7 @@ public class LogAspect
         {
             for (int i = 0; i < paramsArray.length; i++)
             {
-                if (StringUtils.isNotNull(paramsArray[i]) && !isFilterObject(paramsArray[i]))
+                if (Validator.isNotNull(paramsArray[i]) && !isFilterObject(paramsArray[i]))
                 {
                     Object jsonObj = JSON.toJSON(paramsArray[i]);
                     params += jsonObj.toString() + " ";
@@ -209,7 +211,7 @@ public class LogAspect
 
     /**
      * 判断是否需要过滤的对象。
-     * 
+     *
      * @param o 对象信息。
      * @return 如果是需要过滤的对象，则返回true；否则返回false。
      */

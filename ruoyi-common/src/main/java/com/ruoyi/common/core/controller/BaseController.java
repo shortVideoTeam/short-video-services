@@ -1,26 +1,19 @@
 package com.ruoyi.common.core.controller;
 
-import java.beans.PropertyEditorSupport;
-import java.util.Date;
-import java.util.List;
+import cn.hutool.core.util.StrUtil;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.ruoyi.common.constant.HttpStatus;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.page.PageDomain;
-import com.ruoyi.common.core.page.TableDataInfo;
-import com.ruoyi.common.core.page.TableSupport;
-import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.sql.SqlUtil;
+
+import java.beans.PropertyEditorSupport;
+import java.util.Date;
 
 /**
  * web层通用数据处理
- * 
+ *
  * @author ruoyi
  */
 public class BaseController
@@ -45,65 +38,23 @@ public class BaseController
     }
 
     /**
-     * 设置请求分页数据
-     */
-    protected void startPage()
-    {
-        PageDomain pageDomain = TableSupport.buildPageRequest();
-        Integer pageNum = pageDomain.getPageNum();
-        Integer pageSize = pageDomain.getPageSize();
-        if (StringUtils.isNotNull(pageNum) && StringUtils.isNotNull(pageSize))
-        {
-            String orderBy = SqlUtil.escapeOrderBySql(pageDomain.getOrderBy());
-            PageHelper.startPage(pageNum, pageSize, orderBy);
-        }
-    }
-
-    /**
-     * 设置请求排序数据
-     */
-    protected void startOrderBy()
-    {
-        PageDomain pageDomain = TableSupport.buildPageRequest();
-        if (StringUtils.isNotEmpty(pageDomain.getOrderBy()))
-        {
-            String orderBy = SqlUtil.escapeOrderBySql(pageDomain.getOrderBy());
-            PageHelper.orderBy(orderBy);
-        }
-    }
-
-    /**
-     * 响应请求分页数据
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    protected TableDataInfo getDataTable(List<?> list)
-    {
-        TableDataInfo rspData = new TableDataInfo();
-        rspData.setCode(HttpStatus.SUCCESS);
-        rspData.setMsg("查询成功");
-        rspData.setRows(list);
-        rspData.setTotal(new PageInfo(list).getTotal());
-        return rspData;
-    }
-
-    /**
      * 响应返回结果
-     * 
+     *
      * @param rows 影响行数
      * @return 操作结果
      */
-    protected AjaxResult toAjax(int rows)
+    protected AjaxResult<Void> toAjax(int rows)
     {
         return rows > 0 ? AjaxResult.success() : AjaxResult.error();
     }
 
     /**
      * 响应返回结果
-     * 
+     *
      * @param result 结果
      * @return 操作结果
      */
-    protected AjaxResult toAjax(boolean result)
+    protected AjaxResult<Void> toAjax(boolean result)
     {
         return result ? success() : error();
     }
@@ -111,7 +62,7 @@ public class BaseController
     /**
      * 返回成功
      */
-    public AjaxResult success()
+    public AjaxResult<Void> success()
     {
         return AjaxResult.success();
     }
@@ -119,7 +70,7 @@ public class BaseController
     /**
      * 返回失败消息
      */
-    public AjaxResult error()
+    public AjaxResult<Void> error()
     {
         return AjaxResult.error();
     }
@@ -127,7 +78,7 @@ public class BaseController
     /**
      * 返回成功消息
      */
-    public AjaxResult success(String message)
+    public AjaxResult<Void> success(String message)
     {
         return AjaxResult.success(message);
     }
@@ -135,7 +86,7 @@ public class BaseController
     /**
      * 返回失败消息
      */
-    public AjaxResult error(String message)
+    public AjaxResult<Void> error(String message)
     {
         return AjaxResult.error(message);
     }
@@ -145,6 +96,6 @@ public class BaseController
      */
     public String redirect(String url)
     {
-        return StringUtils.format("redirect:{}", url);
+        return StrUtil.format("redirect:{}", url);
     }
 }

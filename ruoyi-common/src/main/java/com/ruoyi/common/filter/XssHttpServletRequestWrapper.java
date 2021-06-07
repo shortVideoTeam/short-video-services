@@ -1,20 +1,22 @@
 package com.ruoyi.common.filter;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HtmlUtil;
+import org.apache.commons.io.IOUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-import org.apache.commons.io.IOUtils;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.html.EscapeUtil;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 /**
  * XSS过滤处理
- * 
+ *
  * @author ruoyi
  */
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper
@@ -38,7 +40,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper
             for (int i = 0; i < length; i++)
             {
                 // 防xss攻击和过滤前后空格
-                escapseValues[i] = EscapeUtil.clean(values[i]).trim();
+                escapseValues[i] = HtmlUtil.cleanHtmlTag(values[i]).trim();
             }
             return escapseValues;
         }
@@ -56,13 +58,13 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper
 
         // 为空，直接返回
         String json = IOUtils.toString(super.getInputStream(), "utf-8");
-        if (StringUtils.isEmpty(json))
+        if (Validator.isEmpty(json))
         {
             return super.getInputStream();
         }
 
         // xss过滤
-        json = EscapeUtil.clean(json).trim();
+        json = HtmlUtil.cleanHtmlTag(json).trim();
         final ByteArrayInputStream bis = new ByteArrayInputStream(json.getBytes("utf-8"));
         return new ServletInputStream()
         {
@@ -93,12 +95,12 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper
 
     /**
      * 是否是Json请求
-     * 
+     *
      * @param request
      */
     public boolean isJsonRequest()
     {
         String header = super.getHeader(HttpHeaders.CONTENT_TYPE);
-        return StringUtils.startsWithIgnoreCase(header, MediaType.APPLICATION_JSON_VALUE);
+        return StrUtil.startWithIgnoreCase(header, MediaType.APPLICATION_JSON_VALUE);
     }
 }

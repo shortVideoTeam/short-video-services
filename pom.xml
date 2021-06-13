@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ruoyi</groupId>
-    <artifactId>ruoyi-vue-plus</artifactId>
-    <version>${ruoyi-vue-plus.version}</version>
+    <groupId>com.huomai</groupId>
+    <artifactId>huomai</artifactId>
+    <version>${huomai.version}</version>
 
-    <name>RuoYi-Vue-Plus</name>
-    <url>https://gitee.com/JavaLionLi/RuoYi-Vue-Plus</url>
-    <description>RuoYi-Vue-Plus后台管理系统</description>
+    <name>huomai</name>
+    <description>huomai后台管理系统</description>
 
     <properties>
-        <ruoyi-vue-plus.version>2.3.1</ruoyi-vue-plus.version>
+        <huomai.version>2.3.1</huomai.version>
         <spring-boot.version>2.3.11.RELEASE</spring-boot.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -141,44 +140,44 @@
 
             <!-- 定时任务-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-quartz</artifactId>
-                <version>${ruoyi-vue-plus.version}</version>
+                <groupId>com.huomai</groupId>
+                <artifactId>huomai-quartz</artifactId>
+                <version>${huomai.version}</version>
             </dependency>
 
             <!-- 代码生成-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-generator</artifactId>
-                <version>${ruoyi-vue-plus.version}</version>
+                <groupId>com.huomai</groupId>
+                <artifactId>huomai-generator</artifactId>
+                <version>${huomai.version}</version>
             </dependency>
 
             <!-- 核心模块-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-framework</artifactId>
-                <version>${ruoyi-vue-plus.version}</version>
+                <groupId>com.huomai</groupId>
+                <artifactId>huomai-framework</artifactId>
+                <version>${huomai.version}</version>
             </dependency>
 
             <!-- 系统模块-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-system</artifactId>
-                <version>${ruoyi-vue-plus.version}</version>
+                <groupId>com.huomai</groupId>
+                <artifactId>huomai-system</artifactId>
+                <version>${huomai.version}</version>
             </dependency>
 
             <!-- 通用工具-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-common</artifactId>
-                <version>${ruoyi-vue-plus.version}</version>
+                <groupId>com.huomai</groupId>
+                <artifactId>huomai-common</artifactId>
+                <version>${huomai.version}</version>
             </dependency>
 
             <!-- demo模块 -->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-demo</artifactId>
-                <version>${ruoyi-vue-plus.version}</version>
+                <groupId>com.huomai</groupId>
+                <artifactId>huomai-demo</artifactId>
+                <version>${huomai.version}</version>
             </dependency>
 
             <!--redisson-->
@@ -192,13 +191,13 @@
     </dependencyManagement>
 
     <modules>
-        <module>ruoyi-admin</module>
-        <module>ruoyi-framework</module>
-        <module>ruoyi-system</module>
-        <module>ruoyi-quartz</module>
-        <module>ruoyi-generator</module>
-        <module>ruoyi-common</module>
-        <module>ruoyi-demo</module>
+        <module>huomai-admin</module>
+        <module>huomai-framework</module>
+        <module>huomai-system</module>
+        <module>huomai-quartz</module>
+        <module>huomai-generator</module>
+        <module>huomai-common</module>
+        <module>huomai-demo</module>
     </modules>
     <packaging>pom</packaging>
 

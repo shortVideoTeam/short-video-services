@@ -192,9 +192,9 @@ swagger:
   # 请求前缀
   pathMapping: /dev-api
   # 标题
-  title: '标题：huomai后台管理系统_接口文档'
+  title: '标题：huomai-api接口文档'
   # 描述
-  description: '描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...'
+  description: '描述：api接口文档'
   # 版本
   version: '版本号: ${huomai.version}'
   # 作者信息

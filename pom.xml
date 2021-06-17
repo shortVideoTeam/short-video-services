@@ -9,7 +9,7 @@
     <version>${huomai.version}</version>
 
     <name>huomai</name>
-    <description>huomai后台管理系统</description>
+    <description>huomai-api</description>
 
     <properties>
         <huomai.version>1.0.0</huomai.version>
@@ -191,7 +191,7 @@
     </dependencyManagement>
 
     <modules>
-        <module>huomai-admin</module>
+        <module>huomai-app</module>
         <module>huomai-framework</module>
         <module>huomai-system</module>
         <module>huomai-quartz</module>

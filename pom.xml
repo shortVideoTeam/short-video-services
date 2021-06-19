@@ -176,7 +176,7 @@
             <!-- demo模块 -->
             <dependency>
                 <groupId>com.huomai</groupId>
-                <artifactId>huomai-demo</artifactId>
+                <artifactId>huomai-business</artifactId>
                 <version>${huomai.version}</version>
             </dependency>
 
@@ -197,7 +197,7 @@
         <module>huomai-quartz</module>
         <module>huomai-generator</module>
         <module>huomai-common</module>
-        <module>huomai-demo</module>
+        <module>huomai-business</module>
     </modules>
     <packaging>pom</packaging>
 

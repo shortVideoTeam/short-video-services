@@ -51,7 +51,7 @@
         <!--  demo模块  -->
         <dependency>
             <groupId>com.huomai</groupId>
-            <artifactId>huomai-demo</artifactId>
+            <artifactId>huomai-business</artifactId>
         </dependency>
 
     </dependencies>

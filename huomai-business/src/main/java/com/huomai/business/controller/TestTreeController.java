@@ -1,20 +1,19 @@
 package com.huomai.business.controller;
 
-import com.huomai.common.annotation.Log;
-import com.huomai.common.core.controller.BaseController;
-import com.huomai.common.core.domain.AjaxResult;
-import com.huomai.common.enums.BusinessType;
-import com.huomai.common.utils.poi.ExcelUtil;
 import com.huomai.business.bo.TestTreeAddBo;
 import com.huomai.business.bo.TestTreeEditBo;
 import com.huomai.business.bo.TestTreeQueryBo;
 import com.huomai.business.service.ITestTreeService;
 import com.huomai.business.vo.TestTreeVo;
+import com.huomai.common.annotation.Log;
+import com.huomai.common.core.controller.BaseController;
+import com.huomai.common.core.domain.AjaxResult;
+import com.huomai.common.enums.BusinessType;
+import com.huomai.common.utils.poi.ExcelUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +25,7 @@ import java.util.List;
 /**
  * 测试树表Controller
  *
- * @author Lion Li
+ * @author huomai
  * @date 2021-05-30
  */
 @Api(value = "测试树表控制器", tags = {"测试树表管理"})
@@ -41,7 +40,7 @@ public class TestTreeController extends BaseController {
 	 * 查询测试树表列表
 	 */
 	@ApiOperation("查询测试树表列表")
-	@PreAuthorize("@ss.hasPermi('demo:tree:list')")
+	//@PreAuthorize("@ss.hasPermi('demo:tree:list')")
 	@GetMapping("/list")
 	public AjaxResult<List<TestTreeVo>> list(@Validated TestTreeQueryBo bo) {
 		return AjaxResult.success(iTestTreeService.queryList(bo));
@@ -51,7 +50,7 @@ public class TestTreeController extends BaseController {
 	 * 导出测试树表列表
 	 */
 	@ApiOperation("导出测试树表列表")
-	@PreAuthorize("@ss.hasPermi('demo:tree:export')")
+	//@PreAuthorize("@ss.hasPermi('demo:tree:export')")
 	@Log(title = "测试树表", businessType = BusinessType.EXPORT)
 	@GetMapping("/export")
 	public AjaxResult<TestTreeVo> export(@Validated TestTreeQueryBo bo) {
@@ -64,7 +63,7 @@ public class TestTreeController extends BaseController {
 	 * 获取测试树表详细信息
 	 */
 	@ApiOperation("获取测试树表详细信息")
-	@PreAuthorize("@ss.hasPermi('demo:tree:query')")
+	//@PreAuthorize("@ss.hasPermi('demo:tree:query')")
 	@GetMapping("/{id}")
 	public AjaxResult<TestTreeVo> getInfo(@NotNull(message = "主键不能为空")
 										  @PathVariable("id") Long id) {
@@ -75,7 +74,7 @@ public class TestTreeController extends BaseController {
 	 * 新增测试树表
 	 */
 	@ApiOperation("新增测试树表")
-	@PreAuthorize("@ss.hasPermi('demo:tree:add')")
+	//@PreAuthorize("@ss.hasPermi('demo:tree:add')")
 	@Log(title = "测试树表", businessType = BusinessType.INSERT)
 	@PostMapping()
 	public AjaxResult<Void> add(@Validated @RequestBody TestTreeAddBo bo) {
@@ -86,7 +85,7 @@ public class TestTreeController extends BaseController {
 	 * 修改测试树表
 	 */
 	@ApiOperation("修改测试树表")
-	@PreAuthorize("@ss.hasPermi('demo:tree:edit')")
+	//@PreAuthorize("@ss.hasPermi('demo:tree:edit')")
 	@Log(title = "测试树表", businessType = BusinessType.UPDATE)
 	@PutMapping()
 	public AjaxResult<Void> edit(@Validated @RequestBody TestTreeEditBo bo) {
@@ -97,7 +96,7 @@ public class TestTreeController extends BaseController {
 	 * 删除测试树表
 	 */
 	@ApiOperation("删除测试树表")
-	@PreAuthorize("@ss.hasPermi('demo:tree:remove')")
+	//@PreAuthorize("@ss.hasPermi('demo:tree:remove')")
 	@Log(title = "测试树表", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
 	public AjaxResult<Void> remove(@NotEmpty(message = "主键不能为空")

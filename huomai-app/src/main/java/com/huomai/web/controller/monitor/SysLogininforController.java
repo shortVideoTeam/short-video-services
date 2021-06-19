@@ -9,7 +9,6 @@ import com.huomai.common.utils.poi.ExcelUtil;
 import com.huomai.system.domain.SysLogininfor;
 import com.huomai.system.service.ISysLogininforService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,14 +24,14 @@ public class SysLogininforController extends BaseController {
 	@Autowired
 	private ISysLogininforService logininforService;
 
-	@PreAuthorize("@ss.hasPermi('monitor:logininfor:list')")
+	//@PreAuthorize("@ss.hasPermi('monitor:logininfor:list')")
 	@GetMapping("/list")
 	public TableDataInfo list(SysLogininfor logininfor) {
 		return logininforService.selectPageLogininforList(logininfor);
 	}
 
 	@Log(title = "登录日志", businessType = BusinessType.EXPORT)
-	@PreAuthorize("@ss.hasPermi('monitor:logininfor:export')")
+	//@PreAuthorize("@ss.hasPermi('monitor:logininfor:export')")
 	@GetMapping("/export")
 	public AjaxResult export(SysLogininfor logininfor) {
 		List<SysLogininfor> list = logininforService.selectLogininforList(logininfor);
@@ -40,14 +39,14 @@ public class SysLogininforController extends BaseController {
 		return util.exportExcel(list, "登录日志");
 	}
 
-	@PreAuthorize("@ss.hasPermi('monitor:logininfor:remove')")
+	//@PreAuthorize("@ss.hasPermi('monitor:logininfor:remove')")
 	@Log(title = "登录日志", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{infoIds}")
 	public AjaxResult remove(@PathVariable Long[] infoIds) {
 		return toAjax(logininforService.deleteLogininforByIds(infoIds));
 	}
 
-	@PreAuthorize("@ss.hasPermi('monitor:logininfor:remove')")
+	//@PreAuthorize("@ss.hasPermi('monitor:logininfor:remove')")
 	@Log(title = "登录日志", businessType = BusinessType.CLEAN)
 	@DeleteMapping("/clean")
 	public AjaxResult clean() {

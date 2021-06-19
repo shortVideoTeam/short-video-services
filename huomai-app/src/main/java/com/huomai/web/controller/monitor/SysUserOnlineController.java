@@ -14,7 +14,6 @@ import com.huomai.common.utils.PageUtils;
 import com.huomai.system.domain.SysUserOnline;
 import com.huomai.system.service.ISysUserOnlineService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class SysUserOnlineController extends BaseController {
 	@Autowired
 	private RedisCache redisCache;
 
-	@PreAuthorize("@ss.hasPermi('monitor:online:list')")
+	//@PreAuthorize("@ss.hasPermi('monitor:online:list')")
 	@GetMapping("/list")
 	public TableDataInfo list(String ipaddr, String userName) {
 		Collection<String> keys = redisCache.keys(Constants.LOGIN_TOKEN_KEY + "*");
@@ -67,7 +66,7 @@ public class SysUserOnlineController extends BaseController {
 	/**
 	 * 强退用户
 	 */
-	@PreAuthorize("@ss.hasPermi('monitor:online:forceLogout')")
+	//@PreAuthorize("@ss.hasPermi('monitor:online:forceLogout')")
 	@Log(title = "在线用户", businessType = BusinessType.FORCE)
 	@DeleteMapping("/{tokenId}")
 	public AjaxResult forceLogout(@PathVariable String tokenId) {

@@ -1,11 +1,11 @@
 package com.huomai.business.service;
 
-import com.huomai.common.core.page.IServicePlus;
 import com.huomai.business.bo.TestTreeAddBo;
 import com.huomai.business.bo.TestTreeEditBo;
 import com.huomai.business.bo.TestTreeQueryBo;
 import com.huomai.business.domain.TestTree;
 import com.huomai.business.vo.TestTreeVo;
+import com.huomai.common.core.page.IServicePlus;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * 测试树表Service接口
  *
- * @author Lion Li
+ * @author huomai
  * @date 2021-05-30
  */
 public interface ITestTreeService extends IServicePlus<TestTree> {

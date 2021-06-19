@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 /**
  * 测试单表分页查询对象 test_demo
  *
- * @author Lion Li
+ * @author huomai
  * @date 2021-05-30
  */
 

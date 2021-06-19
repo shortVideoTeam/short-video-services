@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * MP注入处理器
  *
- * @author Lion Li
+ * @author huomai
  * @date 2021/4/25
  */
 public class CreateAndUpdateMetaObjectHandler implements MetaObjectHandler {

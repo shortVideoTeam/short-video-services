@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * feign测试fallback
  *
- * @author Lion Li
+ * @author huomai
  */
 @Slf4j
 @Component

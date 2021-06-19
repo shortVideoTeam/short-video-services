@@ -1,12 +1,12 @@
 package com.huomai.business.service;
 
-import com.huomai.common.core.page.IServicePlus;
-import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.business.bo.ChkjTestAddBo;
 import com.huomai.business.bo.ChkjTestEditBo;
 import com.huomai.business.bo.ChkjTestQueryBo;
 import com.huomai.business.domain.ChkjTest;
 import com.huomai.business.vo.ChkjTestVo;
+import com.huomai.common.core.page.IServicePlus;
+import com.huomai.common.core.page.TableDataInfo;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 测试Service接口
  *
- * @author Lion Li
+ * @author huomai
  * @date 2021-05-14
  */
 public interface IChkjTestService extends IServicePlus<ChkjTest> {

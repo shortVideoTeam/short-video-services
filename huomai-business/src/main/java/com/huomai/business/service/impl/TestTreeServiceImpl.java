@@ -5,7 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.huomai.common.annotation.DataScope;
 import com.huomai.business.bo.TestTreeAddBo;
 import com.huomai.business.bo.TestTreeEditBo;
 import com.huomai.business.bo.TestTreeQueryBo;
@@ -13,6 +12,7 @@ import com.huomai.business.domain.TestTree;
 import com.huomai.business.mapper.TestTreeMapper;
 import com.huomai.business.service.ITestTreeService;
 import com.huomai.business.vo.TestTreeVo;
+import com.huomai.common.annotation.DataScope;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * 测试树表Service业务层处理
  *
- * @author Lion Li
+ * @author huomai
  * @date 2021-05-30
  */
 @Service

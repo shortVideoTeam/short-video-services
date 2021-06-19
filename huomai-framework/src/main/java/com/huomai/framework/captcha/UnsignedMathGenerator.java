@@ -9,7 +9,7 @@ import cn.hutool.core.util.StrUtil;
 /**
  * 无符号计算生成器
  *
- * @author Lion Li
+ * @author huomai
  */
 public class UnsignedMathGenerator implements CodeGenerator {
 

@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * 测试视图对象 mall_package
  *
- * @author Lion Li
+ * @author huomai
  * @date 2021-05-14
  */
 @Data

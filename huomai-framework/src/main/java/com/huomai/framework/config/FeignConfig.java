@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * openfeign配置类
  *
- * @author Lion Li
+ * @author huomai
  */
 @EnableFeignClients("${feign.package}")
 @Configuration

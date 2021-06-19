@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * redis配置
  *
- * @author Lion Li
+ * @author huomai
  */
 @Configuration
 @EnableCaching

@@ -9,7 +9,6 @@ import com.huomai.common.utils.poi.ExcelUtil;
 import com.huomai.quartz.domain.SysJobLog;
 import com.huomai.quartz.service.ISysJobLogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public class SysJobLogController extends BaseController {
 	/**
 	 * 查询定时任务调度日志列表
 	 */
-	@PreAuthorize("@ss.hasPermi('monitor:job:list')")
+	//@PreAuthorize("@ss.hasPermi('monitor:job:list')")
 	@GetMapping("/list")
 	public TableDataInfo list(SysJobLog sysJobLog) {
 		return jobLogService.selectPageJobLogList(sysJobLog);
@@ -37,7 +36,7 @@ public class SysJobLogController extends BaseController {
 	/**
 	 * 导出定时任务调度日志列表
 	 */
-	@PreAuthorize("@ss.hasPermi('monitor:job:export')")
+	//@PreAuthorize("@ss.hasPermi('monitor:job:export')")
 	@Log(title = "任务调度日志", businessType = BusinessType.EXPORT)
 	@GetMapping("/export")
 	public AjaxResult export(SysJobLog sysJobLog) {
@@ -49,7 +48,7 @@ public class SysJobLogController extends BaseController {
 	/**
 	 * 根据调度编号获取详细信息
 	 */
-	@PreAuthorize("@ss.hasPermi('monitor:job:query')")
+	//@PreAuthorize("@ss.hasPermi('monitor:job:query')")
 	@GetMapping(value = "/{configId}")
 	public AjaxResult getInfo(@PathVariable Long jobLogId) {
 		return AjaxResult.success(jobLogService.selectJobLogById(jobLogId));
@@ -59,7 +58,7 @@ public class SysJobLogController extends BaseController {
 	/**
 	 * 删除定时任务调度日志
 	 */
-	@PreAuthorize("@ss.hasPermi('monitor:job:remove')")
+	//@PreAuthorize("@ss.hasPermi('monitor:job:remove')")
 	@Log(title = "定时任务调度日志", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{jobLogIds}")
 	public AjaxResult remove(@PathVariable Long[] jobLogIds) {
@@ -69,7 +68,7 @@ public class SysJobLogController extends BaseController {
 	/**
 	 * 清空定时任务调度日志
 	 */
-	@PreAuthorize("@ss.hasPermi('monitor:job:remove')")
+	//@PreAuthorize("@ss.hasPermi('monitor:job:remove')")
 	@Log(title = "调度日志", businessType = BusinessType.CLEAN)
 	@DeleteMapping("/clean")
 	public AjaxResult clean() {

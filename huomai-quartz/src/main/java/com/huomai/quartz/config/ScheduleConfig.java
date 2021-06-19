@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * 定时任务配置
  *
- * @author Lion Li
+ * @author huomai
  */
 @Configuration
 public class ScheduleConfig {

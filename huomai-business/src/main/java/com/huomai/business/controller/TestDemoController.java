@@ -1,21 +1,20 @@
 package com.huomai.business.controller;
 
+import com.huomai.business.bo.TestDemoAddBo;
+import com.huomai.business.bo.TestDemoEditBo;
+import com.huomai.business.bo.TestDemoQueryBo;
+import com.huomai.business.service.ITestDemoService;
+import com.huomai.business.vo.TestDemoVo;
 import com.huomai.common.annotation.Log;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
 import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.enums.BusinessType;
 import com.huomai.common.utils.poi.ExcelUtil;
-import com.huomai.business.bo.TestDemoAddBo;
-import com.huomai.business.bo.TestDemoEditBo;
-import com.huomai.business.bo.TestDemoQueryBo;
-import com.huomai.business.service.ITestDemoService;
-import com.huomai.business.vo.TestDemoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +26,7 @@ import java.util.List;
 /**
  * 测试单表Controller
  *
- * @author Lion Li
+ * @author huomai
  * @date 2021-05-30
  */
 @Api(value = "测试单表控制器", tags = {"测试单表管理"})
@@ -42,7 +41,7 @@ public class TestDemoController extends BaseController {
 	 * 查询测试单表列表
 	 */
 	@ApiOperation("查询测试单表列表")
-	@PreAuthorize("@ss.hasPermi('demo:demo:list')")
+	//@PreAuthorize("@ss.hasPermi('demo:demo:list')")
 	@GetMapping("/list")
 	public TableDataInfo<TestDemoVo> list(@Validated TestDemoQueryBo bo) {
 		return iTestDemoService.queryPageList(bo);
@@ -52,7 +51,7 @@ public class TestDemoController extends BaseController {
 	 * 导出测试单表列表
 	 */
 	@ApiOperation("导出测试单表列表")
-	@PreAuthorize("@ss.hasPermi('demo:demo:export')")
+	//@PreAuthorize("@ss.hasPermi('demo:demo:export')")
 	@Log(title = "测试单表", businessType = BusinessType.EXPORT)
 	@GetMapping("/export")
 	public AjaxResult<TestDemoVo> export(@Validated TestDemoQueryBo bo) {
@@ -65,7 +64,7 @@ public class TestDemoController extends BaseController {
 	 * 获取测试单表详细信息
 	 */
 	@ApiOperation("获取测试单表详细信息")
-	@PreAuthorize("@ss.hasPermi('demo:demo:query')")
+	//@PreAuthorize("@ss.hasPermi('demo:demo:query')")
 	@GetMapping("/{id}")
 	public AjaxResult<TestDemoVo> getInfo(@NotNull(message = "主键不能为空")
 										  @PathVariable("id") Long id) {
@@ -76,7 +75,7 @@ public class TestDemoController extends BaseController {
 	 * 新增测试单表
 	 */
 	@ApiOperation("新增测试单表")
-	@PreAuthorize("@ss.hasPermi('demo:demo:add')")
+	//@PreAuthorize("@ss.hasPermi('demo:demo:add')")
 	@Log(title = "测试单表", businessType = BusinessType.INSERT)
 	@PostMapping()
 	public AjaxResult<Void> add(@Validated @RequestBody TestDemoAddBo bo) {
@@ -87,7 +86,7 @@ public class TestDemoController extends BaseController {
 	 * 修改测试单表
 	 */
 	@ApiOperation("修改测试单表")
-	@PreAuthorize("@ss.hasPermi('demo:demo:edit')")
+	//@PreAuthorize("@ss.hasPermi('demo:demo:edit')")
 	@Log(title = "测试单表", businessType = BusinessType.UPDATE)
 	@PutMapping()
 	public AjaxResult<Void> edit(@Validated @RequestBody TestDemoEditBo bo) {
@@ -98,7 +97,7 @@ public class TestDemoController extends BaseController {
 	 * 删除测试单表
 	 */
 	@ApiOperation("删除测试单表")
-	@PreAuthorize("@ss.hasPermi('demo:demo:remove')")
+	//@PreAuthorize("@ss.hasPermi('demo:demo:remove')")
 	@Log(title = "测试单表", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
 	public AjaxResult<Void> remove(@NotEmpty(message = "主键不能为空")

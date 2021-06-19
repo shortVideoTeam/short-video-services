@@ -1,12 +1,12 @@
 package com.huomai.business.service;
 
-import com.huomai.common.core.page.IServicePlus;
-import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.business.bo.TestDemoAddBo;
 import com.huomai.business.bo.TestDemoEditBo;
 import com.huomai.business.bo.TestDemoQueryBo;
 import com.huomai.business.domain.TestDemo;
 import com.huomai.business.vo.TestDemoVo;
+import com.huomai.common.core.page.IServicePlus;
+import com.huomai.common.core.page.TableDataInfo;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 测试单表Service接口
  *
- * @author Lion Li
+ * @author huomai
  * @date 2021-05-30
  */
 public interface ITestDemoService extends IServicePlus<TestDemo> {

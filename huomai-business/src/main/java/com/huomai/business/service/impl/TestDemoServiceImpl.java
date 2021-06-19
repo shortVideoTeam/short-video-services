@@ -5,10 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.huomai.common.annotation.DataScope;
-import com.huomai.common.core.page.PagePlus;
-import com.huomai.common.core.page.TableDataInfo;
-import com.huomai.common.utils.PageUtils;
 import com.huomai.business.bo.TestDemoAddBo;
 import com.huomai.business.bo.TestDemoEditBo;
 import com.huomai.business.bo.TestDemoQueryBo;
@@ -16,6 +12,10 @@ import com.huomai.business.domain.TestDemo;
 import com.huomai.business.mapper.TestDemoMapper;
 import com.huomai.business.service.ITestDemoService;
 import com.huomai.business.vo.TestDemoVo;
+import com.huomai.common.annotation.DataScope;
+import com.huomai.common.core.page.PagePlus;
+import com.huomai.common.core.page.TableDataInfo;
+import com.huomai.common.utils.PageUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * 测试单表Service业务层处理
  *
- * @author Lion Li
+ * @author huomai
  * @date 2021-05-30
  */
 @Service

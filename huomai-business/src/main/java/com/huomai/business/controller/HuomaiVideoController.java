@@ -10,7 +10,6 @@ import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
 import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.enums.BusinessType;
-import com.huomai.common.utils.poi.ExcelUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * 视频信息Controller
@@ -47,18 +45,6 @@ public class HuomaiVideoController extends BaseController {
 		return iHuomaiVideoService.queryPageList(bo);
 	}
 
-	/**
-	 * 导出视频信息列表
-	 */
-	@ApiOperation("导出视频信息列表")
-	//@PreAuthorize("@ss.hasPermi('business:video:export')")
-	@Log(title = "视频信息", businessType = BusinessType.EXPORT)
-	@GetMapping("/export")
-	public AjaxResult<HuomaiVideoVo> export(@Validated HuomaiVideoQueryBo bo) {
-		List<HuomaiVideoVo> list = iHuomaiVideoService.queryList(bo);
-		ExcelUtil<HuomaiVideoVo> util = new ExcelUtil<HuomaiVideoVo>(HuomaiVideoVo.class);
-		return util.exportExcel(list, "视频信息");
-	}
 
 	/**
 	 * 获取视频信息详细信息
@@ -77,8 +63,9 @@ public class HuomaiVideoController extends BaseController {
 	@ApiOperation("新增视频信息")
 	//@PreAuthorize("@ss.hasPermi('business:video:add')")
 	@Log(title = "视频信息", businessType = BusinessType.INSERT)
-	@PostMapping()
+	@PostMapping("/add")
 	public AjaxResult<Void> add(@Validated @RequestBody HuomaiVideoAddBo bo) {
+
 		return toAjax(iHuomaiVideoService.insertByAddBo(bo) ? 1 : 0);
 	}
 

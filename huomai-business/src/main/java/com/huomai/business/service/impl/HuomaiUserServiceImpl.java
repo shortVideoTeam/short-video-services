@@ -98,10 +98,4 @@ public class HuomaiUserServiceImpl extends ServiceImpl<HuomaiUserMapper, HuomaiU
 		}
 		return removeByIds(ids);
 	}
-
-
-	@Override
-	public HashMap<Object, Object> updateUserPhone(WxMaPhoneNumberInfo phoneNoInfo, String openId) {
-		return null;
-	}
 }

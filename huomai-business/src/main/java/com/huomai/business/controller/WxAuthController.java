@@ -64,7 +64,7 @@ public class WxAuthController {
 
 	/**
 	 * <pre>
-	 * 获取手机号
+	 * 绑定手机号，返回token
 	 * </pre>
 	 */
 	@PassToken

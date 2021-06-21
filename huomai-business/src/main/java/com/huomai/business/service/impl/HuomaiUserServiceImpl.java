@@ -1,6 +1,5 @@
 package com.huomai.business.service.impl;
 
-import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -19,7 +18,6 @@ import com.huomai.common.utils.PageUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +62,7 @@ public class HuomaiUserServiceImpl extends ServiceImpl<HuomaiUserMapper, HuomaiU
 		lqw.eq(bo.getCity() != null, HuomaiUser::getCity, bo.getCity());
 		lqw.eq(bo.getArea() != null, HuomaiUser::getArea, bo.getArea());
 		lqw.eq(StrUtil.isNotBlank(bo.getAddress()), HuomaiUser::getAddress, bo.getAddress());
-		lqw.eq(StrUtil.isNotBlank(bo.getDesc()), HuomaiUser::getDesc, bo.getDesc());
+		lqw.eq(StrUtil.isNotBlank(bo.getDesc()), HuomaiUser::getUserDesc, bo.getDesc());
 		return lqw;
 	}
 

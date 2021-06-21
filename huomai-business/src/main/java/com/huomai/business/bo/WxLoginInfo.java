@@ -21,10 +21,12 @@ public class WxLoginInfo {
 	private String code;
 	@NotNull(message = "userInfo不能为空")
 	private UserInfo userInfo;
-
-	private String sessionKey;
+	@NotNull(message = "encryptedData不能为空")
 	private String encryptedData;
+	@NotNull(message = "iv不能为空")
 	private String iv;
+	@NotNull(message = "rawData不能为空")
 	private String rawData;
+	@NotNull(message = "signature不能为空")
 	private String signature;
 }

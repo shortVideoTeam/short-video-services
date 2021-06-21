@@ -3,6 +3,8 @@ package com.huomai.business.bo;
 import lombok.Data;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 小程序用户加密信息
  *
@@ -13,11 +15,12 @@ import lombok.ToString;
 @Data
 @ToString
 public class WxUserData {
-
+	@NotNull(message = "appid不能为空")
 	private String appid;
-	private String sessionKey;
+	@NotNull(message = "encryptedData不能为空")
 	private String encryptedData;
+	@NotNull(message = "iv不能为空")
 	private String iv;
-	private String rawData;
-	private String signature;
+	@NotNull(message = "userKey不能为空")
+	private String userKey;
 }

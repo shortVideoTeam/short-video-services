@@ -1,5 +1,6 @@
 package com.huomai.business.service.impl;
 
+import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -18,6 +19,7 @@ import com.huomai.common.utils.PageUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,5 +97,11 @@ public class HuomaiUserServiceImpl extends ServiceImpl<HuomaiUserMapper, HuomaiU
 			//TODO 做一些业务上的校验,判断是否需要校验
 		}
 		return removeByIds(ids);
+	}
+
+
+	@Override
+	public HashMap<Object, Object> updateUserPhone(WxMaPhoneNumberInfo phoneNoInfo, String openId) {
+		return null;
 	}
 }

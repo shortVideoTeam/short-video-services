@@ -30,22 +30,18 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
+
+
         <!-- 核心模块-->
         <dependency>
             <groupId>com.huomai</groupId>
             <artifactId>huomai-framework</artifactId>
         </dependency>
 
-        <!-- 定时任务-->
+        <!--  demo模块  -->
         <dependency>
             <groupId>com.huomai</groupId>
-            <artifactId>huomai-quartz</artifactId>
-        </dependency>
-
-        <!-- 代码生成-->
-        <dependency>
-            <groupId>com.huomai</groupId>
-            <artifactId>huomai-generator</artifactId>
+            <artifactId>huomai-system</artifactId>
         </dependency>
 
         <!--  demo模块  -->

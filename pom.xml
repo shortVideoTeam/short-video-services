@@ -138,20 +138,6 @@
                 <version>${spring-boot-admin.version}</version>
             </dependency>
 
-            <!-- 定时任务-->
-            <dependency>
-                <groupId>com.huomai</groupId>
-                <artifactId>huomai-quartz</artifactId>
-                <version>${huomai.version}</version>
-            </dependency>
-
-            <!-- 代码生成-->
-            <dependency>
-                <groupId>com.huomai</groupId>
-                <artifactId>huomai-generator</artifactId>
-                <version>${huomai.version}</version>
-            </dependency>
-
             <!-- 核心模块-->
             <dependency>
                 <groupId>com.huomai</groupId>
@@ -187,6 +173,13 @@
                 <version>${redisson.version}</version>
             </dependency>
 
+            <!-- wx sdk -->
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-miniapp</artifactId>
+                <version>4.1.0</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -194,8 +187,6 @@
         <module>huomai-app</module>
         <module>huomai-framework</module>
         <module>huomai-system</module>
-        <module>huomai-quartz</module>
-        <module>huomai-generator</module>
         <module>huomai-common</module>
         <module>huomai-business</module>
     </modules>

@@ -102,3 +102,12 @@ redisson:
     subscriptionsPerConnection: 5
     # DNS监测时间间隔，单位：毫秒
     dnsMonitoringInterval: 5000
+
+wx:
+  miniapp:
+    configs:
+      - appid: wx9732fa565cbd06fd
+        secret: 6413fd45b738d7282f0552475c623c16
+        token: #微信小程序消息服务器配置的token
+        aesKey: #微信小程序消息服务器配置的EncodingAESKey
+        msgDataFormat: JSON

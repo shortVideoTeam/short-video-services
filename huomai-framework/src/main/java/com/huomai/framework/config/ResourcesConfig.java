@@ -3,6 +3,7 @@ package com.huomai.framework.config;
 import com.huomai.common.config.RuoYiConfig;
 import com.huomai.common.constant.Constants;
 import com.huomai.framework.interceptor.RepeatSubmitInterceptor;
+import com.huomai.framework.web.AuthenticationInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,6 +40,7 @@ public class ResourcesConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(repeatSubmitInterceptor).addPathPatterns("/**");
+		registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/**");
 	}
 
 	/**

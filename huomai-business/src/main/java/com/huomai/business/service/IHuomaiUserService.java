@@ -1,5 +1,6 @@
 package com.huomai.business.service;
 
+import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
 import com.huomai.business.bo.HuomaiUserAddBo;
 import com.huomai.business.bo.HuomaiUserEditBo;
 import com.huomai.business.bo.HuomaiUserQueryBo;
@@ -9,6 +10,7 @@ import com.huomai.common.core.page.IServicePlus;
 import com.huomai.common.core.page.TableDataInfo;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 /**

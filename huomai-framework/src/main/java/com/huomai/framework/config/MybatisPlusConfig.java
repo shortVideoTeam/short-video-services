@@ -1,11 +1,9 @@
 package com.huomai.framework.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import com.huomai.framework.mybatisplus.CreateAndUpdateMetaObjectHandler;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -80,15 +78,6 @@ public class MybatisPlusConfig {
 //	public IdentifierGenerator idGenerator() {
 //		return new CustomIdGenerator();
 //	}
-
-	/**
-	 * 元对象字段填充控制器
-	 * https://baomidou.com/guide/auto-fill-metainfo.html
-	 */
-	@Bean
-	public MetaObjectHandler metaObjectHandler() {
-		return new CreateAndUpdateMetaObjectHandler();
-	}
 
 	/**
 	 * sql注入器配置

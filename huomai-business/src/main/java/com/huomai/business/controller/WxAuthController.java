@@ -13,6 +13,7 @@ import com.huomai.business.bo.WxUserData;
 import com.huomai.business.config.WxMaConfiguration;
 import com.huomai.business.domain.HuomaiUser;
 import com.huomai.business.service.IHuomaiUserService;
+import com.huomai.common.annotation.PassToken;
 import com.huomai.common.core.domain.AjaxResult;
 import com.huomai.common.core.redis.RedisCache;
 import com.huomai.common.utils.JwtUtil;
@@ -41,6 +42,7 @@ public class WxAuthController {
 	/**
 	 * 授权
 	 */
+	@PassToken
 	@PostMapping("/auth")
 	public AjaxResult auth(@RequestBody WxLoginInfo loginInfo) {
 		final WxMaService wxService = WxMaConfiguration.getMaService(loginInfo.getAppid());
@@ -65,6 +67,7 @@ public class WxAuthController {
 	 * 获取手机号
 	 * </pre>
 	 */
+	@PassToken
 	@PostMapping("/phone")
 	public AjaxResult phone(@RequestBody WxUserData userData) {
 		final WxMaService wxService = WxMaConfiguration.getMaService(userData.getAppid());

@@ -3,6 +3,7 @@ package com.huomai.framework.web;
 
 import com.huomai.business.domain.HuomaiUser;
 import com.huomai.business.service.IHuomaiUserService;
+import com.huomai.common.annotation.PassToken;
 import com.huomai.common.exception.user.UserPasswordNotMatchException;
 import com.huomai.common.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;

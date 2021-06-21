@@ -87,8 +87,10 @@ public class WxAuthController {
 		uptUser.setUserId(huomaiUser.getUserId());
 		uptUser.setPhone(phoneNoInfo.getPhoneNumber());
 		userService.updateById(uptUser);
+		redisCache.deleteObject(userData.getSessionKey());
 		HashMap<Object, Object> map = Maps.newHashMap();
 		map.put("token", JwtUtil.sign(String.valueOf(huomaiUser.getUserId()), SecureUtil.md5(huomaiUser.getOpenid())));
+
 		return AjaxResult.success(map);
 	}
 

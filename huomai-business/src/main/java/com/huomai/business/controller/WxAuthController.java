@@ -88,7 +88,7 @@ public class WxAuthController {
 		uptUser.setPhone(phoneNoInfo.getPhoneNumber());
 		userService.updateById(uptUser);
 		HashMap<Object, Object> map = Maps.newHashMap();
-		map.put("token", JwtUtil.sign(huomaiUser.getNickName(), SecureUtil.md5(huomaiUser.getOpenid())));
+		map.put("token", JwtUtil.sign(String.valueOf(huomaiUser.getUserId()), SecureUtil.md5(huomaiUser.getOpenid())));
 		return AjaxResult.success(map);
 	}
 

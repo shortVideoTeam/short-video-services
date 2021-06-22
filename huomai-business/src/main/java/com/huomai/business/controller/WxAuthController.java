@@ -99,6 +99,7 @@ public class WxAuthController {
 			redisCache.deleteObject(userData.getUserKey());
 			HashMap<Object, Object> map = Maps.newHashMap();
 			map.put("token", JwtUtil.sign(String.valueOf(huomaiUser.getUserId()), SecureUtil.md5(huomaiUser.getOpenid())));
+			map.put("userId",huomaiUser.getUserId());
 			return AjaxResult.success(map);
 		} catch (Exception e) {
 			log.error("授权手机号失败：", e);

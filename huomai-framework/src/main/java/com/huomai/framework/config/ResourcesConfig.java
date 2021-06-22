@@ -1,9 +1,9 @@
 package com.huomai.framework.config;
 
+import com.huomai.business.filter.AuthenticationInterceptor;
 import com.huomai.common.config.RuoYiConfig;
 import com.huomai.common.constant.Constants;
 import com.huomai.framework.interceptor.RepeatSubmitInterceptor;
-import com.huomai.framework.web.AuthenticationInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

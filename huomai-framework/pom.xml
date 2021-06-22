@@ -72,6 +72,11 @@
             <artifactId>huomai-business</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.huomai</groupId>
+            <artifactId>huomai-common</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -32,7 +32,7 @@ public class HuomaiUser implements Serializable {
 	/**
 	 * 用户火脉号Id
 	 */
-	private String uuid;
+	private Long uuid;
 
 	/**
 	 * 微信同一用户同一应用唯一标识

@@ -5,6 +5,7 @@ import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.http.HttpStatus;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.Maps;
 import com.huomai.business.bo.HuomaiUserAddBo;
@@ -28,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -54,9 +54,12 @@ public class WxAuthController {
 			HuomaiUser huomaiUser = userService.getVoOne(Wrappers.<HuomaiUser>lambdaQuery().eq(HuomaiUser::getOpenid, session.getOpenid()), HuomaiUser.class);
 
 			if (huomaiUser == null) {
+				Long maxUuid = userService.getOne(new QueryWrapper<HuomaiUser>().select("max(uuid) as uuid")).getUuid();
+				Long uuid = maxUuid==null || maxUuid<12700000?12700001:maxUuid+1;
+
 				HuomaiUserAddBo addBo = new HuomaiUserAddBo();
 				addBo.setOpenid(session.getOpenid());
-				addBo.setUuid(UUID.randomUUID().toString().replaceAll("-","").substring(0,16));
+				addBo.setUuid(uuid);
 				addBo.setAvatar(loginInfo.getUserInfo().getAvatarUrl());
 				addBo.setNickName(loginInfo.getUserInfo().getNickName());
 				addBo.setCreateTime(DateUtils.getNowDate());

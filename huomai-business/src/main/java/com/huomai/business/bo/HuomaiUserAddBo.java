@@ -24,7 +24,7 @@ public class HuomaiUserAddBo {
 	 */
 	@ApiModelProperty("用户火脉号Id")
 	@NotBlank(message = "用户火脉号Id不能为空")
-	private String uuid;
+	private Long uuid;
 
 	/**
 	 * 微信同一用户同一应用唯一标识

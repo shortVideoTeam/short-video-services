@@ -128,4 +128,9 @@ public class HuomaiUser implements Serializable {
 	 */
 	private String remark;
 
+	/**
+	 * 用户状态
+	 */
+	private String status;
+
 }

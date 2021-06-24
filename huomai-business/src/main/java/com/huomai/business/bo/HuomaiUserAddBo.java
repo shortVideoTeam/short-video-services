@@ -139,6 +139,11 @@ public class HuomaiUserAddBo {
 	@ApiModelProperty("备注")
 	private String remark;
 
+	/**
+	 * 用户状态
+	 */
+	private String status;
+
 	private String password;
 
 }

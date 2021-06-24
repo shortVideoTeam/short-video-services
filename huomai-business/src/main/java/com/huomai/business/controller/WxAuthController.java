@@ -63,6 +63,7 @@ public class WxAuthController {
 				addBo.setAvatar(loginInfo.getUserInfo().getAvatarUrl());
 				addBo.setNickName(loginInfo.getUserInfo().getNickName());
 				addBo.setCreateTime(DateUtils.getNowDate());
+				addBo.setStatus("1");
 				userService.insertByAddBo(addBo);
 			}
 

@@ -110,7 +110,7 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 	@Override
 	public TableDataInfo<HuomaiVideoHotVo> hotList(HuomaiVideoHotBo bo) {
 		bo.setCurUserId(SecurityUtils.getUserId());
-		List<HuomaiVideoHotVo> videoVos = videoMapper.hotList(PageUtils.buildPage(),bo);
+		List<HuomaiVideoHotVo> videoVos = videoMapper.hotList(PageUtils.buildPage(), bo);
 		return PageUtils.buildDataInfo(videoVos);
 	}
 }

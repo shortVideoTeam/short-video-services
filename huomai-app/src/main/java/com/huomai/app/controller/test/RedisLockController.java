@@ -1,4 +1,4 @@
-package com.huomai.business.controller;
+package com.huomai.app.controller.test;
 
 import com.huomai.common.annotation.RedisLock;
 import com.huomai.common.core.domain.AjaxResult;

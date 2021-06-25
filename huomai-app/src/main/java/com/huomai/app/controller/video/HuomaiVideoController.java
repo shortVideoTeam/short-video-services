@@ -1,4 +1,4 @@
-package com.huomai.business.controller;
+package com.huomai.app.controller.video;
 
 import com.huomai.business.bo.HuomaiVideoAddBo;
 import com.huomai.business.bo.HuomaiVideoEditBo;
@@ -36,12 +36,20 @@ public class HuomaiVideoController extends BaseController {
 	private final IHuomaiVideoService iHuomaiVideoService;
 
 	/**
-	 * 查询视频信息列表
+	 * 热门视频列表
 	 */
-	@ApiOperation("查询视频信息列表")
-	//@PreAuthorize("@ss.hasPermi('business:video:list')")
-	@GetMapping("/list")
-	public TableDataInfo<HuomaiVideoVo> list(@Validated HuomaiVideoQueryBo bo) {
+	@ApiOperation("热门视频列表")
+	@GetMapping("/hotList")
+	public TableDataInfo<HuomaiVideoVo> hotList(@Validated HuomaiVideoQueryBo bo) {
+		return iHuomaiVideoService.queryPageList(bo);
+	}
+
+	/**
+	 * 关注视频列表
+	 */
+	@ApiOperation("关注视频列表")
+	@GetMapping("/attendList")
+	public TableDataInfo<HuomaiVideoVo> attendList(@Validated HuomaiVideoQueryBo bo) {
 		return iHuomaiVideoService.queryPageList(bo);
 	}
 
@@ -50,22 +58,18 @@ public class HuomaiVideoController extends BaseController {
 	 * 获取视频信息详细信息
 	 */
 	@ApiOperation("获取视频信息详细信息")
-	//@PreAuthorize("@ss.hasPermi('business:video:query')")
 	@GetMapping("/{videoId}")
-	public AjaxResult<HuomaiVideoVo> getInfo(@NotNull(message = "主键不能为空")
+	public AjaxResult<HuomaiVideoVo> getInfo(@NotNull(message = "videoId不能为空")
 											 @PathVariable("videoId") Long videoId) {
 		return AjaxResult.success(iHuomaiVideoService.queryById(videoId));
 	}
 
 	/**
-	 * 新增视频信息
+	 * 发布视频
 	 */
-	@ApiOperation("新增视频信息")
-	//@PreAuthorize("@ss.hasPermi('business:video:add')")
-	@Log(title = "视频信息", businessType = BusinessType.INSERT)
-	@PostMapping("/add")
+	@ApiOperation("发布视频")
+	@PostMapping()
 	public AjaxResult<Void> add(@Validated @RequestBody HuomaiVideoAddBo bo) {
-
 		return toAjax(iHuomaiVideoService.insertByAddBo(bo) ? 1 : 0);
 	}
 
@@ -73,7 +77,6 @@ public class HuomaiVideoController extends BaseController {
 	 * 修改视频信息
 	 */
 	@ApiOperation("修改视频信息")
-	//@PreAuthorize("@ss.hasPermi('business:video:edit')")
 	@Log(title = "视频信息", businessType = BusinessType.UPDATE)
 	@PutMapping()
 	public AjaxResult<Void> edit(@Validated @RequestBody HuomaiVideoEditBo bo) {
@@ -84,10 +87,8 @@ public class HuomaiVideoController extends BaseController {
 	 * 删除视频信息
 	 */
 	@ApiOperation("删除视频信息")
-	//@PreAuthorize("@ss.hasPermi('business:video:remove')")
-	@Log(title = "视频信息", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{videoIds}")
-	public AjaxResult<Void> remove(@NotEmpty(message = "主键不能为空")
+	public AjaxResult<Void> remove(@NotEmpty(message = "videoIds不能为空")
 								   @PathVariable Long[] videoIds) {
 		return toAjax(iHuomaiVideoService.deleteWithValidByIds(Arrays.asList(videoIds), true) ? 1 : 0);
 	}

@@ -111,3 +111,18 @@ wx:
         token: #微信小程序消息服务器配置的token
         aesKey: #微信小程序消息服务器配置的EncodingAESKey
         msgDataFormat: JSON
+
+#oss文件储存信息
+file:
+  #储存地址
+  endpoint: oss-cn-shanghai.aliyuncs.com
+  #keyId
+  accessKeyId: LTAI5tPoYf3qicto1nAVctYh
+  #secret
+  accessKeySecret: NU6wFuqE5zfMesuaHSZeCOLhbkvhT3
+  #储存名
+  bucketName: huomai-oss
+  #储存文件夹 以环境为名（dev）
+  fileFolder: dev
+  #外网地址
+  internetAddress: oss-cn-shanghai.aliyuncs.com

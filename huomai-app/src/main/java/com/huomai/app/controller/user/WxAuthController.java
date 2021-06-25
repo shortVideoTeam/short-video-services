@@ -1,4 +1,4 @@
-package com.huomai.business.controller;
+package com.huomai.app.controller.user;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
@@ -55,7 +55,7 @@ public class WxAuthController {
 
 			if (huomaiUser == null) {
 				Long maxUuid = userService.getOne(new QueryWrapper<HuomaiUser>().select("max(uuid) as uuid")).getUuid();
-				Long uuid = maxUuid==null || maxUuid<12700000?12700001:maxUuid+1;
+				Long uuid = maxUuid == null || maxUuid < 12700000 ? 12700001 : maxUuid + 1;
 
 				HuomaiUserAddBo addBo = new HuomaiUserAddBo();
 				addBo.setOpenid(session.getOpenid());
@@ -69,7 +69,7 @@ public class WxAuthController {
 
 			HashMap<Object, Object> map = Maps.newHashMap();
 			map.put("userKey", session.getOpenid());
-			redisCache.setCacheObject(session.getOpenid(),session.getSessionKey());
+			redisCache.setCacheObject(session.getOpenid(), session.getSessionKey());
 			return AjaxResult.success(map);
 		} catch (WxErrorException e) {
 			log.error("授权失败：", e);
@@ -103,7 +103,7 @@ public class WxAuthController {
 			redisCache.deleteObject(userData.getUserKey());
 			HashMap<Object, Object> map = Maps.newHashMap();
 			map.put("token", JwtUtil.sign(String.valueOf(huomaiUser.getUserId()), SecureUtil.md5(huomaiUser.getOpenid())));
-			map.put("userId",huomaiUser.getUserId());
+			map.put("userId", huomaiUser.getUserId());
 			return AjaxResult.success(map);
 		} catch (Exception e) {
 			log.error("授权手机号失败：", e);

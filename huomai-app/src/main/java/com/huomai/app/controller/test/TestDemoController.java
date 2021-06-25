@@ -1,4 +1,4 @@
-package com.huomai.business.controller;
+package com.huomai.app.controller.test;
 
 import com.huomai.business.bo.TestDemoAddBo;
 import com.huomai.business.bo.TestDemoEditBo;

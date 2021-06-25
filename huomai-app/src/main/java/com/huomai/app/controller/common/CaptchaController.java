@@ -1,4 +1,4 @@
-package com.huomai.web.controller.common;
+package com.huomai.app.controller.common;
 
 import cn.hutool.captcha.AbstractCaptcha;
 import cn.hutool.captcha.CircleCaptcha;

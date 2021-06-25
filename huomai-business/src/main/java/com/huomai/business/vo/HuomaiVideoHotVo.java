@@ -57,7 +57,7 @@ public class HuomaiVideoHotVo {
 	 * 视频时长
 	 */
 	@ApiModelProperty("视频时长")
-	private Long duration;
+	private long duration;
 
 	/**
 	 * 关联话题 (按","逗号拼接)

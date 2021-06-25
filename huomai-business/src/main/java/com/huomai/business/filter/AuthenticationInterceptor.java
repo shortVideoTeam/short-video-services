@@ -22,7 +22,7 @@ import java.util.Set;
 
 /***
  * @description:
- * @author chenshufeng
+ * @author huomai
  * @date: 2021/6/21 3:17 下午
  */
 public class AuthenticationInterceptor implements HandlerInterceptor {
@@ -70,7 +70,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 		}
 		// 设置userId到request里，后续根据userId，获取用户信息
 		request.setAttribute(USER_KEY, appUser.getUserId());
-		ServletUtils.getRequest().setAttribute(USER_KEY,appUser.getUserId());
+		ServletUtils.getRequest().setAttribute(USER_KEY, appUser.getUserId());
 		return true;
 	}
 

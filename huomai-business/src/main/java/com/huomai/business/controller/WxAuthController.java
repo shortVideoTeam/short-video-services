@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -64,6 +65,7 @@ public class WxAuthController {
 				addBo.setNickName(loginInfo.getUserInfo().getNickName());
 				addBo.setCreateTime(DateUtils.getNowDate());
 				addBo.setStatus("1");
+				addBo.setInviteCode(UUID.randomUUID().toString().replaceAll("-",""));
 				userService.insertByAddBo(addBo);
 			}
 

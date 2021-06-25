@@ -19,19 +19,19 @@ import com.huomai.common.core.domain.AjaxResult;
 import com.huomai.common.core.redis.RedisCache;
 import com.huomai.common.utils.DateUtils;
 import com.huomai.common.utils.JwtUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
 @Slf4j
 @RestController
+@Api(value = "登录授权", tags = {"登录授权"})
 @RequestMapping("/wx/user")
 public class WxAuthController {
 
@@ -44,6 +44,7 @@ public class WxAuthController {
 	/**
 	 * 授权
 	 */
+
 	@PassToken
 	@PostMapping("/auth")
 	public AjaxResult auth(@RequestBody WxLoginInfo loginInfo) {
@@ -112,4 +113,20 @@ public class WxAuthController {
 
 	}
 
+
+	/**
+	 * <pre>
+	 * 绑定手机号，返回token
+	 * </pre>
+	 */
+	@ApiOperation("获取token")
+	@PassToken
+	@GetMapping("/getToken/{userId}")
+	public AjaxResult getToken(@PathVariable Long userId) {
+		HuomaiUser user = userService.getById(userId);
+		HashMap<Object, Object> map = Maps.newHashMap();
+		map.put("token", JwtUtil.sign(String.valueOf(user.getUserId()), SecureUtil.md5(user.getOpenid())));
+		map.put("user", user);
+		return AjaxResult.success(map);
+	}
 }

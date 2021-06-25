@@ -5,4 +5,30 @@
 <mapper namespace="com.huomai.business.mapper.HuomaiVideoMapper">
 
 
+    <select id="hotList" resultType="com.huomai.business.vo.HuomaiVideoHotVo">
+        SELECT
+            v.video_id,
+            v.user_id,
+            v.title,
+            v.video_url,
+            v.miusic_url,
+            v.duration,
+            v.topic,
+            v.buddy,
+            v.star_num,
+            v.comment_num,
+            v.view_num,
+            v.share_num,
+            v.create_time,
+            u.uuid,
+            u.nick_name,
+            u.openid,
+            u.phone
+        FROM
+            huomai_video v
+            INNER JOIN huomai_user u ON v.user_id = u.user_id
+        WHERE
+            v.`status` = '1'
+            AND v.visible = '1'
+    </select>
 </mapper>

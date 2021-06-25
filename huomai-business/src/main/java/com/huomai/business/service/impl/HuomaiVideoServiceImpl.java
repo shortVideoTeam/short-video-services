@@ -7,14 +7,18 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huomai.business.bo.HuomaiVideoAddBo;
 import com.huomai.business.bo.HuomaiVideoEditBo;
+import com.huomai.business.bo.HuomaiVideoHotBo;
 import com.huomai.business.bo.HuomaiVideoQueryBo;
 import com.huomai.business.domain.HuomaiVideo;
 import com.huomai.business.mapper.HuomaiVideoMapper;
 import com.huomai.business.service.IHuomaiVideoService;
+import com.huomai.business.vo.HuomaiVideoHotVo;
 import com.huomai.business.vo.HuomaiVideoVo;
 import com.huomai.common.core.page.PagePlus;
 import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.utils.PageUtils;
+import com.huomai.common.utils.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -29,6 +33,9 @@ import java.util.Map;
  */
 @Service
 public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, HuomaiVideo> implements IHuomaiVideoService {
+
+	@Autowired
+	private HuomaiVideoMapper videoMapper;
 
 	@Override
 	public HuomaiVideoVo queryById(Long videoId) {
@@ -93,5 +100,17 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 			//TODO 做一些业务上的校验,判断是否需要校验
 		}
 		return removeByIds(ids);
+	}
+
+	/***
+	 * @description: 热门
+	 * @author chenshufeng
+	 * @date: 2021/6/25 3:38 下午
+	 */
+	@Override
+	public TableDataInfo<HuomaiVideoHotVo> hotList(HuomaiVideoHotBo bo) {
+		bo.setCurUserId(SecurityUtils.getUserId());
+		List<HuomaiVideoHotVo> videoVos = videoMapper.hotList(PageUtils.buildPage(),bo);
+		return PageUtils.buildDataInfo(videoVos);
 	}
 }

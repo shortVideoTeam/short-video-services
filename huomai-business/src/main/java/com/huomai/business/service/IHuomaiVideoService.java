@@ -2,8 +2,10 @@ package com.huomai.business.service;
 
 import com.huomai.business.bo.HuomaiVideoAddBo;
 import com.huomai.business.bo.HuomaiVideoEditBo;
+import com.huomai.business.bo.HuomaiVideoHotBo;
 import com.huomai.business.bo.HuomaiVideoQueryBo;
 import com.huomai.business.domain.HuomaiVideo;
+import com.huomai.business.vo.HuomaiVideoHotVo;
 import com.huomai.business.vo.HuomaiVideoVo;
 import com.huomai.common.core.page.IServicePlus;
 import com.huomai.common.core.page.TableDataInfo;
@@ -59,4 +61,11 @@ public interface IHuomaiVideoService extends IServicePlus<HuomaiVideo> {
 	 * @return
 	 */
 	Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+	/***
+	* @description: 热门
+	* @author chenshufeng
+	* @date: 2021/6/25 3:38 下午
+	*/
+	TableDataInfo<HuomaiVideoHotVo> hotList(HuomaiVideoHotBo bo);
 }

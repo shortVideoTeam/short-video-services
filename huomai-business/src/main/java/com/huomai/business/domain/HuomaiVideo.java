@@ -87,6 +87,9 @@ public class HuomaiVideo implements Serializable {
 	 */
 	private Long viewNum;
 
+	//分享量
+	private Long shareNum;
+
 	/**
 	 * 关键词ID (按","逗号拼接)
 	 */

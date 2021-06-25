@@ -2,8 +2,10 @@ package com.huomai.app.controller.video;
 
 import com.huomai.business.bo.HuomaiVideoAddBo;
 import com.huomai.business.bo.HuomaiVideoEditBo;
+import com.huomai.business.bo.HuomaiVideoHotBo;
 import com.huomai.business.bo.HuomaiVideoQueryBo;
 import com.huomai.business.service.IHuomaiVideoService;
+import com.huomai.business.vo.HuomaiVideoHotVo;
 import com.huomai.business.vo.HuomaiVideoVo;
 import com.huomai.common.annotation.Log;
 import com.huomai.common.core.controller.BaseController;
@@ -40,8 +42,8 @@ public class HuomaiVideoController extends BaseController {
 	 */
 	@ApiOperation("热门视频列表")
 	@GetMapping("/hotList")
-	public TableDataInfo<HuomaiVideoVo> hotList(@Validated HuomaiVideoQueryBo bo) {
-		return iHuomaiVideoService.queryPageList(bo);
+	public TableDataInfo<HuomaiVideoHotVo> hotList(@Validated HuomaiVideoHotBo bo) {
+		return iHuomaiVideoService.hotList(bo);
 	}
 
 	/**

@@ -144,6 +144,10 @@ public class HuomaiUserAddBo {
 	 */
 	private String status;
 
+	/**
+	 * 邀请码
+	 */
+	private String inviteCode;
 	private String password;
 
 }

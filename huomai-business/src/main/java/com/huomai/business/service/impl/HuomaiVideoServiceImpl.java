@@ -57,6 +57,16 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 		LambdaQueryWrapper<HuomaiVideo> queryWrapper = Wrappers.lambdaQuery();
 		queryWrapper.eq(HuomaiVideo::getStatus, 1);
 		queryWrapper.eq(bo.getUserId() != null, HuomaiVideo::getUserId, bo.getUserId());
+		Integer type = bo.getType();
+		if (type == 1) {
+
+		} else if (type == 2) {
+			//私密
+			queryWrapper.eq(HuomaiVideo::getVisible, 0);
+		} else if (type == 3) {
+			//赞过
+			queryWrapper.lt(HuomaiVideo::getStarNum, 0);
+		}
 		queryWrapper.orderByDesc(HuomaiVideo::getCreateTime);
 		PagePlus<HuomaiVideo, HuomaiVideoVo> result = pageVo(PageUtils.buildPagePlus(), queryWrapper, HuomaiVideoVo.class);
 		return PageUtils.buildDataInfo(result);
@@ -149,6 +159,7 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 
 	@Override
 	public TableDataInfo<HuomaiVideoVo> videoList(HuomaiVideoQueryBo bo) {
+		bo.setUserId(SecurityUtils.getUserId());
 		return queryPageList(bo);
 	}
 }

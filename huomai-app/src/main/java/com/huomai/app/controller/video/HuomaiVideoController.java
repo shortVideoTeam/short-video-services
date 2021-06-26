@@ -10,6 +10,7 @@ import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
 import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.enums.BusinessType;
+import com.huomai.common.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -59,14 +60,15 @@ public class HuomaiVideoController extends BaseController {
 	@ApiOperation("视频列表")
 	@GetMapping("/videoList")
 	public TableDataInfo<HuomaiVideoVo> videoList(@Validated HuomaiVideoQueryBo bo) {
+
 		return iHuomaiVideoService.videoList(bo);
 	}
 
 
 	/**
-	 * 获取视频信息详细信息
+	 * 获取视频信息详请
 	 */
-	@ApiOperation("获取视频信息详细信息")
+	@ApiOperation("获取视频信息详请")
 	@GetMapping("/{videoId}")
 	public AjaxResult<HuomaiVideoHotVo> getInfo(@NotNull(message = "videoId不能为空")
 												@PathVariable("videoId") Long videoId) {
@@ -85,7 +87,7 @@ public class HuomaiVideoController extends BaseController {
 	/**
 	 * 修改视频信息
 	 */
-	@ApiOperation("修改视频信息")
+	@ApiOperation("修改视频")
 	@Log(title = "视频信息", businessType = BusinessType.UPDATE)
 	@PutMapping()
 	public AjaxResult<Void> edit(@Validated @RequestBody HuomaiVideoEditBo bo) {
@@ -95,7 +97,7 @@ public class HuomaiVideoController extends BaseController {
 	/**
 	 * 删除视频信息
 	 */
-	@ApiOperation("删除视频信息")
+	@ApiOperation("删除视频")
 	@DeleteMapping("/{videoIds}")
 	public AjaxResult<Void> remove(@NotEmpty(message = "videoIds不能为空")
 								   @PathVariable Long[] videoIds) {

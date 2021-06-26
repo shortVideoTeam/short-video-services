@@ -82,9 +82,9 @@ public class HuomaiUserFollowController extends BaseController {
 	 * 删除用户关注
 	 */
 	@ApiOperation("取消关注")
-	@DeleteMapping("/{userIds}")
+	@DeleteMapping("/{ids}")
 	public AjaxResult<Void> remove(@NotEmpty(message = "主键不能为空")
-								   @PathVariable Long[] userIds) {
-		return toAjax(iHuomaiUserFollowService.deleteWithValidByIds(Arrays.asList(userIds), true) ? 1 : 0);
+								   @PathVariable Long[] ids) {
+		return toAjax(iHuomaiUserFollowService.deleteWithValidByIds(Arrays.asList(ids), true) ? 1 : 0);
 	}
 }

@@ -110,5 +110,11 @@ public class HuomaiUserDetailVo {
 	private int followNum;
 
 	@ApiModelProperty("作品数")
-	private int videoNum;
+	private int videoAllNum;
+
+	@ApiModelProperty("私密作品数")
+	private int videoHiddenNum;
+
+	@ApiModelProperty("赞过作品数")
+	private int videoStarNum;
 }

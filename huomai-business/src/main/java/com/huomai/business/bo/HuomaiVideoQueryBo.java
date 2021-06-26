@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 视频信息分页查询对象 huomai_video
  *
@@ -20,7 +22,11 @@ public class HuomaiVideoQueryBo extends PageBo {
 	/**
 	 * 用户Id
 	 */
-	@ApiModelProperty("用户Id")
+//	@ApiModelProperty("用户Id")
 	private Long userId;
+
+	@ApiModelProperty("类型，1-所有 2-私密 3-赞过")
+	@NotNull(message = "类型不能为空")
+	private Integer type;
 
 }

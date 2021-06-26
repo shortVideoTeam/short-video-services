@@ -1,7 +1,6 @@
 package com.huomai.app.controller.search;
 
 import com.huomai.business.bo.HuomaiUserSeachHisAddBo;
-import com.huomai.business.bo.HuomaiUserSeachHisEditBo;
 import com.huomai.business.bo.HuomaiUserSeachHisQueryBo;
 import com.huomai.business.service.IHuomaiUserSeachHisService;
 import com.huomai.business.vo.HuomaiUserSeachHisVo;
@@ -16,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 
 /**
@@ -43,31 +41,12 @@ public class HuomaiUserSeachHisController extends BaseController {
 	}
 
 	/**
-	 * 获取搜索历史记录详细信息
-	 */
-	@ApiOperation("获取搜索历史记录详细信息")
-	@GetMapping("/{id}")
-	public AjaxResult<HuomaiUserSeachHisVo> getInfo(@NotNull(message = "主键不能为空")
-													@PathVariable("id") Long id) {
-		return AjaxResult.success(iHuomaiUserSeachHisService.queryById(id));
-	}
-
-	/**
 	 * 新增搜索历史记录
 	 */
 	@ApiOperation("新增搜索历史记录")
 	@PostMapping()
 	public AjaxResult<Void> add(@Validated @RequestBody HuomaiUserSeachHisAddBo bo) {
 		return toAjax(iHuomaiUserSeachHisService.insertByAddBo(bo) ? 1 : 0);
-	}
-
-	/**
-	 * 修改搜索历史记录
-	 */
-	@ApiOperation("修改搜索历史记录")
-	@PutMapping()
-	public AjaxResult<Void> edit(@Validated @RequestBody HuomaiUserSeachHisEditBo bo) {
-		return toAjax(iHuomaiUserSeachHisService.updateByEditBo(bo) ? 1 : 0);
 	}
 
 	/**

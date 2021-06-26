@@ -9,6 +9,7 @@ import com.huomai.common.utils.file.FileUploadUtils;
 import com.huomai.common.utils.file.FileUtils;
 import com.huomai.framework.config.ServerConfig;
 import com.huomai.system.service.ISysConfigService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import java.util.Map;
  * @author jie
  * 2021年01月20日10:01:43
  */
+@Api(value = "文件上传", tags = {"文件上传管理"})
 @Slf4j
 @RestController
 @RequestMapping("/common")

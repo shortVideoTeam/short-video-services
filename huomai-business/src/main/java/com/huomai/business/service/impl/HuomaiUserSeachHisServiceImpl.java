@@ -1,7 +1,6 @@
 package com.huomai.business.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,12 +13,15 @@ import com.huomai.business.service.IHuomaiUserSeachHisService;
 import com.huomai.business.vo.HuomaiUserSeachHisVo;
 import com.huomai.common.core.page.PagePlus;
 import com.huomai.common.core.page.TableDataInfo;
+import com.huomai.common.utils.DateUtils;
 import com.huomai.common.utils.PageUtils;
+import com.huomai.common.utils.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 搜索历史记录Service业务层处理
@@ -30,11 +32,20 @@ import java.util.Map;
 @Service
 public class HuomaiUserSeachHisServiceImpl extends ServiceImpl<HuomaiUserSeachHisMapper, HuomaiUserSeachHis> implements IHuomaiUserSeachHisService {
 
+	@Autowired
+	private HuomaiUserSeachHisMapper seachHisMapper;
+
 	@Override
 	public HuomaiUserSeachHisVo queryById(Long id) {
 		return getVoById(id, HuomaiUserSeachHisVo.class);
 	}
 
+
+	/***
+	 * @description: 搜索记录列表
+	 * @author chenshufeng
+	 * @date: 2021/6/26 1:16 下午
+	 */
 	@Override
 	public TableDataInfo<HuomaiUserSeachHisVo> queryPageList(HuomaiUserSeachHisQueryBo bo) {
 		PagePlus<HuomaiUserSeachHis, HuomaiUserSeachHisVo> result = pageVo(PageUtils.buildPagePlus(), buildQueryWrapper(bo), HuomaiUserSeachHisVo.class);
@@ -47,18 +58,46 @@ public class HuomaiUserSeachHisServiceImpl extends ServiceImpl<HuomaiUserSeachHi
 	}
 
 	private LambdaQueryWrapper<HuomaiUserSeachHis> buildQueryWrapper(HuomaiUserSeachHisQueryBo bo) {
-		Map<String, Object> params = bo.getParams();
 		LambdaQueryWrapper<HuomaiUserSeachHis> lqw = Wrappers.lambdaQuery();
-		lqw.eq(bo.getUserId() != null, HuomaiUserSeachHis::getUserId, bo.getUserId());
-		lqw.eq(StrUtil.isNotBlank(bo.getContent()), HuomaiUserSeachHis::getContent, bo.getContent());
+		lqw.eq(HuomaiUserSeachHis::getUserId, SecurityUtils.getUserId());
+		lqw.orderByDesc(HuomaiUserSeachHis::getCreateTime);
 		return lqw;
 	}
 
+	/***
+	 * @description: 新增搜索历史
+	 * @author chenshufeng
+	 * @date: 2021/6/26 1:39 下午
+	 */
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public Boolean insertByAddBo(HuomaiUserSeachHisAddBo bo) {
 		HuomaiUserSeachHis add = BeanUtil.toBean(bo, HuomaiUserSeachHis.class);
 		validEntityBeforeSave(add);
-		return save(add);
+		String content = bo.getContent();
+		Long userId = SecurityUtils.getUserId();
+		LambdaQueryWrapper<HuomaiUserSeachHis> queryWrapper = Wrappers.<HuomaiUserSeachHis>lambdaQuery().eq(HuomaiUserSeachHis::getUserId, userId).eq(HuomaiUserSeachHis::getContent, content);
+		List<HuomaiUserSeachHis> hisList = seachHisMapper.selectList(queryWrapper);
+		//保留一条相同内容的记录
+		if (hisList.size() > 1) {
+			seachHisMapper.delete(queryWrapper);
+			save(content, userId);
+		} else if (hisList.size() == 1) {
+			HuomaiUserSeachHis his = hisList.get(0);
+			his.setCreateTime(DateUtils.getNowDate());
+			updateById(his);
+		} else {
+			save(content, userId);
+		}
+		return Boolean.TRUE;
+	}
+
+	public void save(String content, Long userId) {
+		HuomaiUserSeachHis his = new HuomaiUserSeachHis();
+		his.setCreateTime(DateUtils.getNowDate());
+		his.setContent(content);
+		his.setUserId(userId);
+		seachHisMapper.insert(his);
 	}
 
 	@Override

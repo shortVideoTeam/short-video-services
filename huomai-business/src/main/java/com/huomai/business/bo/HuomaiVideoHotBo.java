@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
 @ApiModel("热门视频分页查询对象")
 public class HuomaiVideoHotBo extends PageBo {
 
-	@ApiModelProperty("当前用户ID")
+//	@ApiModelProperty("当前用户ID")
 	private Long curUserId;
 
 }

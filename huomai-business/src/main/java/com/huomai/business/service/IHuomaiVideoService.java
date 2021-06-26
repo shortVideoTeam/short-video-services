@@ -1,10 +1,8 @@
 package com.huomai.business.service;
 
-import com.huomai.business.bo.HuomaiVideoAddBo;
-import com.huomai.business.bo.HuomaiVideoEditBo;
-import com.huomai.business.bo.HuomaiVideoHotBo;
-import com.huomai.business.bo.HuomaiVideoQueryBo;
+import com.huomai.business.bo.*;
 import com.huomai.business.domain.HuomaiVideo;
+import com.huomai.business.vo.HuomaiVideoAttendVo;
 import com.huomai.business.vo.HuomaiVideoHotVo;
 import com.huomai.business.vo.HuomaiVideoVo;
 import com.huomai.common.core.page.IServicePlus;
@@ -68,4 +66,11 @@ public interface IHuomaiVideoService extends IServicePlus<HuomaiVideo> {
 	* @date: 2021/6/25 3:38 下午
 	*/
 	TableDataInfo<HuomaiVideoHotVo> hotList(HuomaiVideoHotBo bo);
+
+	/***
+	* @description: 关注列表
+	* @author chenshufeng
+	* @date: 2021/6/26 12:15 下午
+	*/
+    TableDataInfo<HuomaiVideoAttendVo> attendList(HuomaiVideoAttendBo bo);
 }

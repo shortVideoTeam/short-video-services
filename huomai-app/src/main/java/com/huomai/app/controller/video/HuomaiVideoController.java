@@ -1,10 +1,11 @@
 package com.huomai.app.controller.video;
 
 import com.huomai.business.bo.HuomaiVideoAddBo;
+import com.huomai.business.bo.HuomaiVideoAttendBo;
 import com.huomai.business.bo.HuomaiVideoEditBo;
 import com.huomai.business.bo.HuomaiVideoHotBo;
-import com.huomai.business.bo.HuomaiVideoQueryBo;
 import com.huomai.business.service.IHuomaiVideoService;
+import com.huomai.business.vo.HuomaiVideoAttendVo;
 import com.huomai.business.vo.HuomaiVideoHotVo;
 import com.huomai.business.vo.HuomaiVideoVo;
 import com.huomai.common.annotation.Log;
@@ -51,8 +52,8 @@ public class HuomaiVideoController extends BaseController {
 	 */
 	@ApiOperation("关注视频列表")
 	@GetMapping("/attendList")
-	public TableDataInfo<HuomaiVideoVo> attendList(@Validated HuomaiVideoQueryBo bo) {
-		return iHuomaiVideoService.queryPageList(bo);
+	public TableDataInfo<HuomaiVideoAttendVo> attendList(@Validated HuomaiVideoAttendBo bo) {
+		return iHuomaiVideoService.attendList(bo);
 	}
 
 

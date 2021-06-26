@@ -1,8 +1,6 @@
 package com.huomai.business.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huomai.business.bo.HuomaiUserAddBo;
@@ -12,14 +10,14 @@ import com.huomai.business.domain.HuomaiUser;
 import com.huomai.business.mapper.HuomaiUserMapper;
 import com.huomai.business.service.IHuomaiUserService;
 import com.huomai.business.vo.HuomaiUserVo;
-import com.huomai.common.core.page.PagePlus;
 import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.utils.PageUtils;
+import com.huomai.common.utils.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 用户信息Service业务层处理
@@ -30,41 +28,31 @@ import java.util.Map;
 @Service
 public class HuomaiUserServiceImpl extends ServiceImpl<HuomaiUserMapper, HuomaiUser> implements IHuomaiUserService {
 
+	@Autowired
+	private HuomaiUserMapper userMapper;
+
 	@Override
 	public HuomaiUserVo queryById(Long userId) {
 		return getVoById(userId, HuomaiUserVo.class);
 	}
 
+	/***
+	 * @description: 用户列表
+	 * @author chenshufeng
+	 * @date: 2021/6/26 12:38 下午
+	 */
 	@Override
 	public TableDataInfo<HuomaiUserVo> queryPageList(HuomaiUserQueryBo bo) {
-		PagePlus<HuomaiUser, HuomaiUserVo> result = pageVo(PageUtils.buildPagePlus(), buildQueryWrapper(bo), HuomaiUserVo.class);
-		return PageUtils.buildDataInfo(result);
+		bo.setCurUserId(SecurityUtils.getUserId());
+		List<HuomaiUserVo> userVos = userMapper.queryUserList(PageUtils.buildPage(), bo);
+		return PageUtils.buildDataInfo(userVos);
 	}
 
 	@Override
 	public List<HuomaiUserVo> queryList(HuomaiUserQueryBo bo) {
-		return listVo(buildQueryWrapper(bo), HuomaiUserVo.class);
+		return listVo(Wrappers.emptyWrapper(), HuomaiUserVo.class);
 	}
 
-	private LambdaQueryWrapper<HuomaiUser> buildQueryWrapper(HuomaiUserQueryBo bo) {
-		Map<String, Object> params = bo.getParams();
-		LambdaQueryWrapper<HuomaiUser> lqw = Wrappers.lambdaQuery();
-		lqw.eq(StrUtil.isNotBlank(bo.getUuid()), HuomaiUser::getUuid, bo.getUuid());
-		lqw.eq(StrUtil.isNotBlank(bo.getOpenid()), HuomaiUser::getOpenid, bo.getOpenid());
-		lqw.eq(StrUtil.isNotBlank(bo.getUnionid()), HuomaiUser::getUnionid, bo.getUnionid());
-		lqw.eq(StrUtil.isNotBlank(bo.getAvatar()), HuomaiUser::getAvatar, bo.getAvatar());
-		lqw.like(StrUtil.isNotBlank(bo.getNickName()), HuomaiUser::getNickName, bo.getNickName());
-		lqw.eq(StrUtil.isNotBlank(bo.getSex()), HuomaiUser::getSex, bo.getSex());
-		lqw.eq(bo.getBirthday() != null, HuomaiUser::getBirthday, bo.getBirthday());
-		lqw.eq(StrUtil.isNotBlank(bo.getPhone()), HuomaiUser::getPhone, bo.getPhone());
-		lqw.eq(StrUtil.isNotBlank(bo.getConstellation()), HuomaiUser::getConstellation, bo.getConstellation());
-		lqw.eq(bo.getProvince() != null, HuomaiUser::getProvince, bo.getProvince());
-		lqw.eq(bo.getCity() != null, HuomaiUser::getCity, bo.getCity());
-		lqw.eq(bo.getArea() != null, HuomaiUser::getArea, bo.getArea());
-		lqw.eq(StrUtil.isNotBlank(bo.getAddress()), HuomaiUser::getAddress, bo.getAddress());
-		lqw.eq(StrUtil.isNotBlank(bo.getDesc()), HuomaiUser::getUserDesc, bo.getDesc());
-		return lqw;
-	}
 
 	@Override
 	public Boolean insertByAddBo(HuomaiUserAddBo bo) {

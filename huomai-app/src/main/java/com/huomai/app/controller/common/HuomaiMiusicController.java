@@ -1,23 +1,18 @@
 package com.huomai.app.controller.common;
 
-import com.huomai.business.bo.HuomaiMiusicAddBo;
-import com.huomai.business.bo.HuomaiMiusicEditBo;
 import com.huomai.business.bo.HuomaiMiusicQueryBo;
 import com.huomai.business.service.IHuomaiMiusicService;
 import com.huomai.business.vo.HuomaiMiusicVo;
 import com.huomai.common.core.controller.BaseController;
-import com.huomai.common.core.domain.AjaxResult;
 import com.huomai.common.core.page.TableDataInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.Arrays;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 音乐模板Controller
@@ -40,44 +35,5 @@ public class HuomaiMiusicController extends BaseController {
 	@GetMapping("/list")
 	public TableDataInfo<HuomaiMiusicVo> list(@Validated HuomaiMiusicQueryBo bo) {
 		return iHuomaiMiusicService.queryPageList(bo);
-	}
-
-	/**
-	 * 获取音乐模板详细信息
-	 */
-	@ApiOperation("获取音乐模板详细信息")
-	//@PreAuthorize("@ss.hasPermi('business:miusic:query')")
-	@GetMapping("/{id}")
-	public AjaxResult<HuomaiMiusicVo> getInfo(@NotNull(message = "主键不能为空")
-											  @PathVariable("id") Long id) {
-		return AjaxResult.success(iHuomaiMiusicService.queryById(id));
-	}
-
-	/**
-	 * 新增音乐模板
-	 */
-	@ApiOperation("新增音乐模板")
-	@PostMapping()
-	public AjaxResult<Void> add(@Validated @RequestBody HuomaiMiusicAddBo bo) {
-		return toAjax(iHuomaiMiusicService.insertByAddBo(bo) ? 1 : 0);
-	}
-
-	/**
-	 * 修改音乐模板
-	 */
-	@ApiOperation("修改音乐模板")
-	@PutMapping()
-	public AjaxResult<Void> edit(@Validated @RequestBody HuomaiMiusicEditBo bo) {
-		return toAjax(iHuomaiMiusicService.updateByEditBo(bo) ? 1 : 0);
-	}
-
-	/**
-	 * 删除音乐模板
-	 */
-	@ApiOperation("删除音乐模板")
-	@DeleteMapping("/{ids}")
-	public AjaxResult<Void> remove(@NotEmpty(message = "主键不能为空")
-								   @PathVariable Long[] ids) {
-		return toAjax(iHuomaiMiusicService.deleteWithValidByIds(Arrays.asList(ids), true) ? 1 : 0);
 	}
 }

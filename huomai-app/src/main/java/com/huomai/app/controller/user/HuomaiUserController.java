@@ -5,6 +5,7 @@ import com.huomai.business.bo.HuomaiUserQueryBo;
 import com.huomai.business.service.IHuomaiUserService;
 import com.huomai.business.vo.HuomaiUserDetailVo;
 import com.huomai.business.vo.HuomaiUserVo;
+import com.huomai.business.vo.HuomaiUserWalleVo;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
 import com.huomai.common.core.page.TableDataInfo;
@@ -41,7 +42,6 @@ public class HuomaiUserController extends BaseController {
 	}
 
 
-
 	/**
 	 * 用户详情（我的|他人）
 	 */
@@ -59,5 +59,15 @@ public class HuomaiUserController extends BaseController {
 	@PutMapping()
 	public AjaxResult<Void> edit(@Validated @RequestBody HuomaiUserEditBo bo) {
 		return toAjax(iHuomaiUserService.updateByEditBo(bo) ? 1 : 0);
+	}
+
+	/**
+	 * 我的钱包
+	 */
+	@ApiOperation("我的钱包")
+	@GetMapping("{userId}")
+	public AjaxResult<HuomaiUserWalleVo> edit(@NotNull(message = "主键不能为空")
+											  @PathVariable("userId") Long userId) {
+		return AjaxResult.success(iHuomaiUserService.getVoById(userId, HuomaiUserWalleVo.class));
 	}
 }

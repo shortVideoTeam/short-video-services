@@ -16,8 +16,8 @@ import java.util.Date;
  * @date 2021-06-19
  */
 @Data
-@ApiModel("订单记录视图对象")
-public class HuomaiOrderVo {
+@ApiModel("订单详情视图对象")
+public class HuomaiOrderDetailVo {
 
 	private static final long serialVersionUID = 1L;
 

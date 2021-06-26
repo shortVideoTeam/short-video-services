@@ -1,9 +1,9 @@
 package com.huomai.app.controller.order;
 
 import com.huomai.business.bo.HuomaiOrderAddBo;
-import com.huomai.business.bo.HuomaiOrderEditBo;
 import com.huomai.business.bo.HuomaiOrderQueryBo;
 import com.huomai.business.service.IHuomaiOrderService;
+import com.huomai.business.vo.HuomaiOrderDetailVo;
 import com.huomai.business.vo.HuomaiOrderVo;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
@@ -15,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Arrays;
 
 /**
  * 订单记录Controller
@@ -43,40 +41,21 @@ public class HuomaiOrderController extends BaseController {
 	}
 
 	/**
-	 * 获取订单记录详细信息
+	 * 推广详情
 	 */
-	@ApiOperation("获取订单记录详细信息")
+	@ApiOperation("推广详情")
 	@GetMapping("/{id}")
-	public AjaxResult<HuomaiOrderVo> getInfo(@NotNull(message = "主键不能为空")
-											 @PathVariable("id") Long id) {
-		return AjaxResult.success(iHuomaiOrderService.queryById(id));
+	public AjaxResult<HuomaiOrderDetailVo> getInfo(@NotNull(message = "主键不能为空")
+												   @PathVariable("id") Long id) {
+		return AjaxResult.success(iHuomaiOrderService.getInfo(id));
 	}
 
 	/**
-	 * 新增订单记录
+	 * 作品推广下单
 	 */
-	@ApiOperation("新增订单记录")
+	@ApiOperation("作品推广下单")
 	@PostMapping()
 	public AjaxResult<Void> add(@Validated @RequestBody HuomaiOrderAddBo bo) {
 		return toAjax(iHuomaiOrderService.insertByAddBo(bo) ? 1 : 0);
-	}
-
-	/**
-	 * 修改订单记录
-	 */
-	@ApiOperation("修改订单记录")
-	@PutMapping()
-	public AjaxResult<Void> edit(@Validated @RequestBody HuomaiOrderEditBo bo) {
-		return toAjax(iHuomaiOrderService.updateByEditBo(bo) ? 1 : 0);
-	}
-
-	/**
-	 * 删除订单记录
-	 */
-	@ApiOperation("删除订单记录")
-	@DeleteMapping("/{ids}")
-	public AjaxResult<Void> remove(@NotEmpty(message = "主键不能为空")
-								   @PathVariable Long[] ids) {
-		return toAjax(iHuomaiOrderService.deleteWithValidByIds(Arrays.asList(ids), true) ? 1 : 0);
 	}
 }

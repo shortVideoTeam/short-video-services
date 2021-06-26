@@ -4,24 +4,31 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 
 /**
- * 钱包明细视图对象 huomai_user_walle
+ * 用户信息视图对象 huomai_user
  *
  * @author huomai
  * @date 2021-06-19
  */
 @Data
-@ApiModel("钱包明细视图对象")
+@ApiModel("我的钱包视图对象")
 public class HuomaiUserWalleVo {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * ID
+	 * 用户Id
 	 */
-	@ApiModelProperty("ID")
-	private Long id;
+	@ApiModelProperty("用户Id")
+	private Long userId;
 
-
+	//总金额
+	@ApiModelProperty("总金额")
+	private BigDecimal totalAmount;
+	//可提现金额
+	@ApiModelProperty("可提现金额")
+	private BigDecimal cashAmount;
 }

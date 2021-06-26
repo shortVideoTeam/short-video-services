@@ -1,13 +1,11 @@
 package com.huomai.business.bo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 
 /**
@@ -50,28 +48,9 @@ public class HuomaiVideoCommentReplyAddBo {
 	private String content;
 
 	/**
-	 * 回复用户ID
-	 */
-	@ApiModelProperty("回复用户ID")
-	@NotNull(message = "回复用户ID不能为空")
-	private Long replyUserId;
-
-	/**
 	 * 目标用户id
 	 */
 	@ApiModelProperty("目标用户id")
 	private Long toUserId;
 
-	/**
-	 * 点赞数
-	 */
-	@ApiModelProperty("点赞数")
-	private Long star;
-
-	/**
-	 * 创建时间
-	 */
-	@ApiModelProperty("创建时间")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date createTime;
 }

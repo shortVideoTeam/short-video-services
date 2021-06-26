@@ -9,6 +9,7 @@ import com.huomai.business.bo.HuomaiUserQueryBo;
 import com.huomai.business.domain.HuomaiUser;
 import com.huomai.business.mapper.HuomaiUserMapper;
 import com.huomai.business.service.IHuomaiUserService;
+import com.huomai.business.vo.HuomaiUserDetailVo;
 import com.huomai.business.vo.HuomaiUserVo;
 import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.utils.PageUtils;
@@ -84,4 +85,15 @@ public class HuomaiUserServiceImpl extends ServiceImpl<HuomaiUserMapper, HuomaiU
 		}
 		return removeByIds(ids);
 	}
+
+	/***
+	 * @description: 用户详情
+	 * @author chenshufeng
+	 * @date: 2021/6/26 3:50 下午
+	 */
+	@Override
+	public HuomaiUserDetailVo getInfo(Long userId) {
+		return userMapper.detail(userId, SecurityUtils.getUserId());
+	}
+
 }

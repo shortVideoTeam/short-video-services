@@ -66,52 +66,34 @@ public class HuomaiVideoVo {
 	@ApiModelProperty("关联好友 (按逗号拼接)")
 	private String buddy;
 
-	/**
-	 * 是否可见 (1 公开 0 私密)
-	 */
-	@Excel(name = "是否可见 (1 公开 0 私密)")
-	@ApiModelProperty("是否可见 (1 公开 0 私密)")
-	private String visible;
-
-	/**
-	 * 状态( 0 草稿 1: 审核通过 2: 审核不通过 3: 删除 )
-	 */
-	@Excel(name = "状态( 0 草稿 1: 审核通过 2: 审核不通过 3: 删除 )")
-	@ApiModelProperty("状态( 0 草稿 1: 审核通过 2: 审核不通过 3: 删除 )")
-	private String status;
 
 	/**
 	 * 点赞量
 	 */
-	@Excel(name = "点赞量")
 	@ApiModelProperty("点赞量")
 	private Long starNum;
 
 	/**
 	 * 评论量
 	 */
-	@Excel(name = "评论量")
 	@ApiModelProperty("评论量")
 	private Long commentNum;
 
 	/**
 	 * 播放量
 	 */
-	@Excel(name = "播放量")
 	@ApiModelProperty("播放量")
 	private Long viewNum;
 
 	/**
 	 * 关键词ID (按","逗号拼接)
 	 */
-	@Excel(name = "关键词ID (按逗号拼接)")
 	@ApiModelProperty("关键词ID (按逗号拼接)")
 	private String keywordId;
 
 	/**
 	 * 备注
 	 */
-	@Excel(name = "备注")
 	@ApiModelProperty("备注")
 	private String remark;
 

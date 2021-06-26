@@ -23,7 +23,7 @@ public interface IHuomaiVideoService extends IServicePlus<HuomaiVideo> {
 	 *
 	 * @return
 	 */
-	HuomaiVideoVo queryById(Long videoId);
+	HuomaiVideoHotVo queryById(Long videoId);
 
 	/**
 	 * 查询列表
@@ -73,4 +73,11 @@ public interface IHuomaiVideoService extends IServicePlus<HuomaiVideo> {
 	* @date: 2021/6/26 12:15 下午
 	*/
     TableDataInfo<HuomaiVideoAttendVo> attendList(HuomaiVideoAttendBo bo);
+
+    /***
+    * @description: 视频列表
+    * @author chenshufeng
+    * @date: 2021/6/26 4:10 下午
+    */
+	TableDataInfo<HuomaiVideoVo> videoList(HuomaiVideoQueryBo bo);
 }

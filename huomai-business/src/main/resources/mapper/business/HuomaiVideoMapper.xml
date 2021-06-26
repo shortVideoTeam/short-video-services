@@ -24,14 +24,20 @@
             u.nick_name,
             u.openid,
             u.phone,
-            (select IF(count(1) > 0,1,0) from huomai_user_follow where follow_user_id = u.user_id  and user_id = #{bo.curUserId}) as attend_flag,
-			(select IF(count(1) > 0,1,0) from huomai_video_love where video_id = v.video_id  and user_id = #{bo.curUserId}) as love_flag
+            (select IF(count(1) > 0,1,0) from huomai_user_follow where  and user_id = #{bo.curUserId}) as attend_flag,
+            (select IF(count(1) > 0,1,0) from huomai_user_follow where  and follow_user_id = #{bo.curUserId}) as follow_flag,
+			(select IF(count(1) > 0,1,0) from huomai_user_love where business_id = v.video_id and type = 1 and user_id = #{bo.curUserId}) as love_flag
         FROM
             huomai_video v
             INNER JOIN huomai_user u ON v.user_id = u.user_id
-        WHERE
+        <where>
             v.`status` = '1'
             AND v.visible = '1'
+            <if test="videoId != null">
+                and v.video_id = #{videoId}
+            </if>
+        </where>
+
         order by v.create_time desc
     </select>
     <select id="attendList" resultType="com.huomai.business.vo.HuomaiVideoAttendVo">

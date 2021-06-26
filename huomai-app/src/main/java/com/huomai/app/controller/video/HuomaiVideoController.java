@@ -1,9 +1,6 @@
 package com.huomai.app.controller.video;
 
-import com.huomai.business.bo.HuomaiVideoAddBo;
-import com.huomai.business.bo.HuomaiVideoAttendBo;
-import com.huomai.business.bo.HuomaiVideoEditBo;
-import com.huomai.business.bo.HuomaiVideoHotBo;
+import com.huomai.business.bo.*;
 import com.huomai.business.service.IHuomaiVideoService;
 import com.huomai.business.vo.HuomaiVideoAttendVo;
 import com.huomai.business.vo.HuomaiVideoHotVo;
@@ -56,14 +53,23 @@ public class HuomaiVideoController extends BaseController {
 		return iHuomaiVideoService.attendList(bo);
 	}
 
+	/**
+	 * 用户作品列表
+	 */
+	@ApiOperation("视频列表")
+	@GetMapping("/videoList")
+	public TableDataInfo<HuomaiVideoVo> videoList(@Validated HuomaiVideoQueryBo bo) {
+		return iHuomaiVideoService.videoList(bo);
+	}
+
 
 	/**
 	 * 获取视频信息详细信息
 	 */
 	@ApiOperation("获取视频信息详细信息")
 	@GetMapping("/{videoId}")
-	public AjaxResult<HuomaiVideoVo> getInfo(@NotNull(message = "videoId不能为空")
-											 @PathVariable("videoId") Long videoId) {
+	public AjaxResult<HuomaiVideoHotVo> getInfo(@NotNull(message = "videoId不能为空")
+												@PathVariable("videoId") Long videoId) {
 		return AjaxResult.success(iHuomaiVideoService.queryById(videoId));
 	}
 

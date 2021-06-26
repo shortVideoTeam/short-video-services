@@ -14,9 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotEmpty;
-import java.util.Arrays;
-
 /**
  * 搜索历史记录Controller
  *
@@ -52,10 +49,9 @@ public class HuomaiUserSeachHisController extends BaseController {
 	/**
 	 * 删除搜索历史记录
 	 */
-	@ApiOperation("删除搜索历史记录")
-	@DeleteMapping("/{ids}")
-	public AjaxResult<Void> remove(@NotEmpty(message = "主键不能为空")
-								   @PathVariable Long[] ids) {
-		return toAjax(iHuomaiUserSeachHisService.deleteWithValidByIds(Arrays.asList(ids), true) ? 1 : 0);
+	@ApiOperation("清空搜索历史记录")
+	@PostMapping("/cleanHis")
+	public AjaxResult<Void> cleanHis() {
+		return toAjax(iHuomaiUserSeachHisService.cleanHis() ? 1 : 0);
 	}
 }

@@ -98,10 +98,16 @@ public class HuomaiVideoHotVo {
 
 
 	/**
-	 * 是否已关注用户
+	 * 我是否关注了ta
 	 */
-	@ApiModelProperty("是否已关注用户,0-否，1-是")
+	@ApiModelProperty("我是否关注了ta 1-是 0-否")
 	private int attendFlag;
+
+	/**
+	 * ta是否关注了我
+	 */
+	@ApiModelProperty("ta是否关注了我 1-是 0-否")
+	private int followFlag;
 
 	/**
 	 * 是否已点赞

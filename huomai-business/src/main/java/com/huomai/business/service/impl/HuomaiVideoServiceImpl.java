@@ -1,6 +1,7 @@
 package com.huomai.business.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huomai.business.bo.*;
@@ -32,14 +33,32 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 	@Autowired
 	private HuomaiVideoMapper videoMapper;
 
+	/***
+	 * @description: 视频详情
+	 * @author chenshufeng
+	 * @date: 2021/6/26 2:08 下午
+	 */
 	@Override
-	public HuomaiVideoVo queryById(Long videoId) {
-		return getVoById(videoId, HuomaiVideoVo.class);
+	public HuomaiVideoHotVo queryById(Long videoId) {
+		List<HuomaiVideoHotVo> vos = queryList(HuomaiVideoHotBo.builder().videoId(videoId).build());
+		if (vos.size() > 0) {
+			return vos.get(0);
+		}
+		return new HuomaiVideoHotVo();
 	}
 
+	/***
+	 * @description: 视频列表
+	 * @author chenshufeng
+	 * @date: 2021/6/26 4:14 下午
+	 */
 	@Override
 	public TableDataInfo<HuomaiVideoVo> queryPageList(HuomaiVideoQueryBo bo) {
-		PagePlus<HuomaiVideo, HuomaiVideoVo> result = pageVo(PageUtils.buildPagePlus(), Wrappers.emptyWrapper(), HuomaiVideoVo.class);
+		LambdaQueryWrapper<HuomaiVideo> queryWrapper = Wrappers.lambdaQuery();
+		queryWrapper.eq(HuomaiVideo::getStatus, 1);
+		queryWrapper.eq(bo.getUserId() != null, HuomaiVideo::getUserId, bo.getUserId());
+		queryWrapper.orderByDesc(HuomaiVideo::getCreateTime);
+		PagePlus<HuomaiVideo, HuomaiVideoVo> result = pageVo(PageUtils.buildPagePlus(), queryWrapper, HuomaiVideoVo.class);
 		return PageUtils.buildDataInfo(result);
 	}
 
@@ -48,17 +67,33 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 		return listVo(Wrappers.emptyWrapper(), HuomaiVideoVo.class);
 	}
 
+	/***
+	 * @description: 发布视频
+	 * @author chenshufeng
+	 * @date: 2021/6/26 2:20 下午
+	 */
 	@Override
 	public Boolean insertByAddBo(HuomaiVideoAddBo bo) {
 		HuomaiVideo add = BeanUtil.toBean(bo, HuomaiVideo.class);
 		validEntityBeforeSave(add);
+		//发布人
+		add.setUserId(SecurityUtils.getUserId());
+		//发布状态
+		add.setStatus("0");
 		return save(add);
 	}
 
+	/***
+	 * @description: 编辑视频
+	 * @author chenshufeng
+	 * @date: 2021/6/26 2:20 下午
+	 */
 	@Override
 	public Boolean updateByEditBo(HuomaiVideoEditBo bo) {
 		HuomaiVideo update = BeanUtil.toBean(bo, HuomaiVideo.class);
 		validEntityBeforeSave(update);
+		//重置发布状态
+		update.setStatus("0");
 		return updateById(update);
 	}
 
@@ -87,8 +122,17 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 	@Override
 	public TableDataInfo<HuomaiVideoHotVo> hotList(HuomaiVideoHotBo bo) {
 		bo.setCurUserId(SecurityUtils.getUserId());
-		List<HuomaiVideoHotVo> videoVos = videoMapper.hotList(PageUtils.buildPage(), bo);
+		List<HuomaiVideoHotVo> videoVos = queryList(bo);
 		return PageUtils.buildDataInfo(videoVos);
+	}
+
+	/***
+	 * @description: 视频列表
+	 * @author chenshufeng
+	 * @date: 2021/6/26 2:11 下午
+	 */
+	public List<HuomaiVideoHotVo> queryList(HuomaiVideoHotBo bo) {
+		return videoMapper.hotList(PageUtils.buildPage(), bo);
 	}
 
 	/***
@@ -101,5 +145,10 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 		bo.setCurUserId(SecurityUtils.getUserId());
 		List<HuomaiVideoAttendVo> videoVos = videoMapper.attendList(PageUtils.buildPage(), bo);
 		return PageUtils.buildDataInfo(videoVos);
+	}
+
+	@Override
+	public TableDataInfo<HuomaiVideoVo> videoList(HuomaiVideoQueryBo bo) {
+		return queryPageList(bo);
 	}
 }

@@ -59,4 +59,11 @@ public interface IHuomaiUserSeachHisService extends IServicePlus<HuomaiUserSeach
 	 * @return
 	 */
 	Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+	/***
+	* @description: 清空搜索历史
+	* @author chenshufeng
+	* @date: 2021/6/26 2:00 下午
+	*/
+	Boolean cleanHis();
 }

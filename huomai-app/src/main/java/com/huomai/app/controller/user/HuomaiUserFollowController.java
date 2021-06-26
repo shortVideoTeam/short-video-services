@@ -1,7 +1,6 @@
 package com.huomai.app.controller.user;
 
 import com.huomai.business.bo.HuomaiUserFollowAddBo;
-import com.huomai.business.bo.HuomaiUserFollowEditBo;
 import com.huomai.business.bo.HuomaiUserFollowQueryBo;
 import com.huomai.business.service.IHuomaiUserFollowService;
 import com.huomai.business.vo.HuomaiUserFollowVo;
@@ -36,10 +35,28 @@ public class HuomaiUserFollowController extends BaseController {
 	/**
 	 * 查询用户关注列表
 	 */
-	@ApiOperation("查询用户关注列表")
-	@GetMapping("/list")
-	public TableDataInfo<HuomaiUserFollowVo> list(@Validated HuomaiUserFollowQueryBo bo) {
-		return iHuomaiUserFollowService.queryPageList(bo);
+	@ApiOperation("用户关注列表")
+	@GetMapping("/attendList")
+	public TableDataInfo<HuomaiUserFollowVo> attendList(@Validated HuomaiUserFollowQueryBo bo) {
+		return iHuomaiUserFollowService.attendList(bo);
+	}
+
+	/**
+	 * 查询用户粉丝列表
+	 */
+	@ApiOperation("用户粉丝列表")
+	@GetMapping("/followMeList")
+	public TableDataInfo<HuomaiUserFollowVo> followMeList(@Validated HuomaiUserFollowQueryBo bo) {
+		return iHuomaiUserFollowService.followMeList(bo);
+	}
+
+	/**
+	 * 我的好友列表
+	 */
+	@ApiOperation("我的好友列表")
+	@GetMapping("/friendsList")
+	public TableDataInfo<HuomaiUserFollowVo> friendsList(@Validated HuomaiUserFollowQueryBo bo) {
+		return iHuomaiUserFollowService.friendsList(bo);
 	}
 
 	/**
@@ -55,25 +72,16 @@ public class HuomaiUserFollowController extends BaseController {
 	/**
 	 * 新增用户关注
 	 */
-	@ApiOperation("新增用户关注")
+	@ApiOperation("关注")
 	@PostMapping()
 	public AjaxResult<Void> add(@Validated @RequestBody HuomaiUserFollowAddBo bo) {
 		return toAjax(iHuomaiUserFollowService.insertByAddBo(bo) ? 1 : 0);
 	}
 
 	/**
-	 * 修改用户关注
-	 */
-	@ApiOperation("修改用户关注")
-	@PutMapping()
-	public AjaxResult<Void> edit(@Validated @RequestBody HuomaiUserFollowEditBo bo) {
-		return toAjax(iHuomaiUserFollowService.updateByEditBo(bo) ? 1 : 0);
-	}
-
-	/**
 	 * 删除用户关注
 	 */
-	@ApiOperation("删除用户关注")
+	@ApiOperation("取消关注")
 	@DeleteMapping("/{userIds}")
 	public AjaxResult<Void> remove(@NotEmpty(message = "主键不能为空")
 								   @PathVariable Long[] userIds) {

@@ -1,7 +1,6 @@
 package com.huomai.app.controller.video;
 
 import com.huomai.business.bo.HuomaiVideoCommentReplyAddBo;
-import com.huomai.business.bo.HuomaiVideoCommentReplyEditBo;
 import com.huomai.business.bo.HuomaiVideoCommentReplyQueryBo;
 import com.huomai.business.service.IHuomaiVideoCommentReplyService;
 import com.huomai.business.vo.HuomaiVideoCommentReplyVo;
@@ -60,15 +59,6 @@ public class HuomaiVideoCommentReplyController extends BaseController {
 	@PostMapping()
 	public AjaxResult<Void> add(@Validated @RequestBody HuomaiVideoCommentReplyAddBo bo) {
 		return toAjax(iHuomaiVideoCommentReplyService.insertByAddBo(bo) ? 1 : 0);
-	}
-
-	/**
-	 * 修改回复
-	 */
-	@ApiOperation("修改回复")
-	@PutMapping()
-	public AjaxResult<Void> edit(@Validated @RequestBody HuomaiVideoCommentReplyEditBo bo) {
-		return toAjax(iHuomaiVideoCommentReplyService.updateByEditBo(bo) ? 1 : 0);
 	}
 
 	/**

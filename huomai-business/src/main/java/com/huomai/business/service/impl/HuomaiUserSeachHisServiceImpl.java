@@ -123,4 +123,15 @@ public class HuomaiUserSeachHisServiceImpl extends ServiceImpl<HuomaiUserSeachHi
 		}
 		return removeByIds(ids);
 	}
+
+	/***
+	 * @description: 清空搜索历史
+	 * @author chenshufeng
+	 * @date: 2021/6/26 2:00 下午
+	 */
+	@Override
+	public Boolean cleanHis() {
+		seachHisMapper.delete(Wrappers.<HuomaiUserSeachHis>lambdaQuery().eq(HuomaiUserSeachHis::getUserId, SecurityUtils.getUserId()));
+		return Boolean.TRUE;
+	}
 }

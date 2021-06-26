@@ -2,7 +2,7 @@ package com.huomai.business.bo;
 
 import com.huomai.common.core.domain.PageBo;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,10 +15,14 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
+@Builder
 @ApiModel("热门视频分页查询对象")
 public class HuomaiVideoHotBo extends PageBo {
 
-//	@ApiModelProperty("当前用户ID")
+	//	@ApiModelProperty("当前用户ID")
 	private Long curUserId;
+
+	//视频id
+	private Long videoId;
 
 }

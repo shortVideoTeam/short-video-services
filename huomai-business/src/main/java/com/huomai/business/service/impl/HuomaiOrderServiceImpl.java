@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.binarywang.wxpay.bean.entpay.EntPayRequest;
 import com.github.binarywang.wxpay.bean.order.WxPayMpOrderResult;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
@@ -134,6 +135,7 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 		String orderNo = String.valueOf(System.currentTimeMillis());
 		HuomaiOrder add = BeanUtil.toBean(bo, HuomaiOrder.class);
 		add.setOrderType(1);
+		add.setUserId(SecurityUtils.getUserId());
 		add.setOrderNo(orderNo);
 
 		//新增订单项
@@ -253,11 +255,29 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 	 * @return
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public AjaxResult cashApply(HuomaiCashAddBo bo) {
 		HuomaiOrder add = BeanUtil.toBean(bo, HuomaiOrder.class);
 		add.setOrderType(3);
 		add.setOrderNo(String.valueOf(System.currentTimeMillis()));
+		add.setUserId(SecurityUtils.getUserId());
 		save(add);
+		//打款
+		EntPayRequest request = new EntPayRequest();
+		try {
+			HuomaiUser user = userService.getById(SecurityUtils.getUserId());
+			request.setPartnerTradeNo(String.valueOf(System.currentTimeMillis()));
+			request.setAppid("ww50a132e280d40c42");
+			request.setCheckName("NO_CHECK");
+			request.setAmount(bo.getAmount().intValue());
+			request.setOpenid(user.getOpenid());
+			request.setDescription("提现");
+			request.setSpbillCreateIp(IpUtils.getHostIp());
+			this.wxService.getEntPayService().entPay(request);
+		} catch (WxPayException e) {
+			log.error(e.getMessage(), e);
+			throw new BaseException("提现失败");
+		}
 		return AjaxResult.success();
 	}
 

@@ -8,9 +8,7 @@ import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
-import com.huomai.business.bo.HuomaiOrderAddBo;
-import com.huomai.business.bo.HuomaiOrderEditBo;
-import com.huomai.business.bo.HuomaiOrderQueryBo;
+import com.huomai.business.bo.*;
 import com.huomai.business.domain.HuomaiOrder;
 import com.huomai.business.domain.HuomaiUser;
 import com.huomai.business.mapper.HuomaiOrderMapper;
@@ -124,20 +122,23 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public AjaxResult createOrder(HuomaiOrderAddBo bo) {
-		bo.setOrderNo(String.valueOf(System.currentTimeMillis()));
-
 		String payWay = bo.getPayWay();
+		HuomaiOrder add = BeanUtil.toBean(bo, HuomaiOrder.class);
+		add.setOrderType(1);
+		add.setOrderNo(String.valueOf(System.currentTimeMillis()));
 		//微信支付
 		if ("1".equals(payWay)) {
-			bo.setStatus("1");
-			return wxPay(bo);
+			add.setStatus("1");
+			//插入订单记录
+			save(add);
+			return wxPay(add.getOrderNo(), bo.getAmount(), "作品推广购买", bo.getDomain());
 		} else if ("2".equals(payWay)) {
 			//余额支付
-			bo.setStatus("2");
-			bo.setPayTime(DateUtils.getNowDate());
+			add.setStatus("2");
+			add.setPayTime(DateUtils.getNowDate());
+			//插入订单记录
+			save(add);
 		}
-		//插入订单记录
-		insertByAddBo(bo);
 		return AjaxResult.success();
 	}
 
@@ -164,26 +165,67 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 	}
 
 	/**
-	 * 调用微信支付api
+	 * 充值
 	 *
 	 * @param bo
 	 * @return
 	 */
-	public AjaxResult wxPay(HuomaiOrderAddBo bo) {
+	@Override
+	public AjaxResult recharge(HuomaiRechargeAddBo bo) {
+		String payWay = bo.getPayWay();
+		HuomaiOrder add = BeanUtil.toBean(bo, HuomaiOrder.class);
+		add.setOrderNo(String.valueOf(System.currentTimeMillis()));
+		//微信支付
+		if ("1".equals(payWay)) {
+			add.setStatus("1");
+			add.setOrderType(2);
+			//插入订单记录
+			save(add);
+			return wxPay(add.getOrderNo(), bo.getAmount(), "充值购买", bo.getDomain());
+		}
+		return AjaxResult.success();
+	}
+
+	/**
+	 * 提现申请,后台审核
+	 *
+	 * @param bo
+	 * @return
+	 */
+	@Override
+	public AjaxResult cashApply(HuomaiCashAddBo bo) {
+		HuomaiOrder add = BeanUtil.toBean(bo, HuomaiOrder.class);
+		add.setOrderType(3);
+		add.setOrderNo(String.valueOf(System.currentTimeMillis()));
+		save(add);
+		return AjaxResult.success();
+	}
+
+	/**
+	 * 调用微信支付api
+	 *
+	 * @param orderNo
+	 * @param money
+	 * @param body
+	 * @param apiDomain
+	 * @return
+	 */
+	public AjaxResult wxPay(String orderNo, BigDecimal money, String body, String apiDomain) {
+
 		HuomaiUser user = userService.getById(SecurityUtils.getUserId());
 		WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();
-		orderRequest.setBody("购买作品推广");
-		orderRequest.setOutTradeNo(bo.getOrderNo());
-		orderRequest.setTotalFee(bo.getAmount().multiply(BigDecimal.valueOf(100)).intValue());
+		orderRequest.setBody(body);
+		orderRequest.setOutTradeNo(orderNo);
+		orderRequest.setTotalFee(money.multiply(BigDecimal.valueOf(100)).intValue());
 		orderRequest.setSpbillCreateIp(IpUtils.getHostIp());
-		orderRequest.setNotifyUrl(bo.getDomain() + "/wx/pay/callback");
+		orderRequest.setNotifyUrl(apiDomain + "/business/wxpay/callback");
 		orderRequest.setTradeType(WxPayConstants.TradeType.JSAPI);
 		orderRequest.setOpenid(user.getOpenid());
 		try {
 			return AjaxResult.success(wxService.createOrder(orderRequest));
 		} catch (WxPayException e) {
 			log.error(e.getMessage(), e);
-			throw new BaseException("下单失败");
+			throw new BaseException("微信支付失败");
 		}
 	}
 }

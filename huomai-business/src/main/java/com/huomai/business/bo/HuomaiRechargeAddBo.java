@@ -7,7 +7,6 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 订单记录添加对象 huomai_order
@@ -16,22 +15,12 @@ import java.util.Date;
  * @date 2021-06-19
  */
 @Data
-@ApiModel("订单记录添加对象")
-public class HuomaiOrderAddBo {
+@ApiModel("充值记录添加对象")
+public class HuomaiRechargeAddBo {
 
-	/**
-	 * 推广时长
-	 */
-	@ApiModelProperty("推广时长")
-	@NotNull(message = "推广时长不能为空")
-	private Long time;
-
-	/**
-	 * 推荐页面，1-热门页
-	 */
-	@ApiModelProperty("推荐页面，1-热门页")
-	@NotBlank(message = "推荐页面不能为空")
-	private String page;
+	@ApiModelProperty("充值规则ID")
+	@NotNull(message = "充值规则ID不能为空")
+	private Long rechargeRuleId;
 
 	/**
 	 * 金额
@@ -43,7 +32,7 @@ public class HuomaiOrderAddBo {
 	/**
 	 * 支付方式 1-微信 2-余额
 	 */
-	@ApiModelProperty("支付方式 1-微信 2-余额")
+	@ApiModelProperty("支付方式 1-微信")
 	@NotBlank(message = "支付方式不能为空")
 	private String payWay;
 

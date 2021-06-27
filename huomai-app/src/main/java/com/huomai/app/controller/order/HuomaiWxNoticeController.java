@@ -26,9 +26,9 @@ import springfox.documentation.annotations.ApiIgnore;
 @Slf4j
 @ApiIgnore
 @RestController
-@RequestMapping("/wx/pay")
+@RequestMapping("/business/wxpay")
 @AllArgsConstructor
-public class PayNoticeController {
+public class HuomaiWxNoticeController {
 
 	/**
 	 * 小程序支付

@@ -1,8 +1,6 @@
 package com.huomai.business.service;
 
-import com.huomai.business.bo.HuomaiOrderAddBo;
-import com.huomai.business.bo.HuomaiOrderEditBo;
-import com.huomai.business.bo.HuomaiOrderQueryBo;
+import com.huomai.business.bo.*;
 import com.huomai.business.domain.HuomaiOrder;
 import com.huomai.business.vo.HuomaiOrderDetailVo;
 import com.huomai.business.vo.HuomaiOrderVo;
@@ -12,7 +10,6 @@ import com.huomai.common.core.page.TableDataInfo;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 订单记录Service接口
@@ -64,14 +61,15 @@ public interface IHuomaiOrderService extends IServicePlus<HuomaiOrder> {
 	Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 
 	/***
-	* @description: 订单详情
-	* @author chenshufeng
-	* @date: 2021/6/26 9:51 下午
-	*/
+	 * @description: 订单详情
+	 * @author chenshufeng
+	 * @date: 2021/6/26 9:51 下午
+	 */
 	HuomaiOrderDetailVo getInfo(Long id);
 
 	/**
 	 * 下单接口
+	 *
 	 * @param bo
 	 * @return
 	 */
@@ -79,8 +77,24 @@ public interface IHuomaiOrderService extends IServicePlus<HuomaiOrder> {
 
 	/**
 	 * 微信支付回调处理
+	 *
 	 * @param payNo
 	 * @param bizPayNo
 	 */
 	void paySuccess(String payNo, String bizPayNo);
+
+	/**
+	 * 充值
+	 *
+	 * @param bo
+	 * @return
+	 */
+	AjaxResult recharge(HuomaiRechargeAddBo bo);
+
+	/**
+	 * 提现申请
+	 * @param bo
+	 * @return
+	 */
+	AjaxResult cashApply(HuomaiCashAddBo bo);
 }

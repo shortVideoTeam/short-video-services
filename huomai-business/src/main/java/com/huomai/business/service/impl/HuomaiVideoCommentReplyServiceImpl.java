@@ -1,8 +1,6 @@
 package com.huomai.business.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huomai.business.bo.HuomaiVideoCommentReplyAddBo;
@@ -12,14 +10,16 @@ import com.huomai.business.domain.HuomaiVideoCommentReply;
 import com.huomai.business.mapper.HuomaiVideoCommentReplyMapper;
 import com.huomai.business.service.IHuomaiVideoCommentReplyService;
 import com.huomai.business.vo.HuomaiVideoCommentReplyVo;
-import com.huomai.common.core.page.PagePlus;
 import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.utils.PageUtils;
+import com.huomai.common.utils.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 回复Service业务层处理
@@ -30,39 +30,41 @@ import java.util.Map;
 @Service
 public class HuomaiVideoCommentReplyServiceImpl extends ServiceImpl<HuomaiVideoCommentReplyMapper, HuomaiVideoCommentReply> implements IHuomaiVideoCommentReplyService {
 
+	@Autowired
+	private HuomaiVideoCommentReplyMapper replyMapper;
+
 	@Override
 	public HuomaiVideoCommentReplyVo queryById(Long id) {
 		return getVoById(id, HuomaiVideoCommentReplyVo.class);
 	}
 
+	/***
+	 * @description: 回复列表
+	 * @author chenshufeng
+	 * @date: 2021/6/26 3:32 下午
+	 */
 	@Override
 	public TableDataInfo<HuomaiVideoCommentReplyVo> queryPageList(HuomaiVideoCommentReplyQueryBo bo) {
-		PagePlus<HuomaiVideoCommentReply, HuomaiVideoCommentReplyVo> result = pageVo(PageUtils.buildPagePlus(), buildQueryWrapper(bo), HuomaiVideoCommentReplyVo.class);
-		return PageUtils.buildDataInfo(result);
+		List<HuomaiVideoCommentReplyVo> vos = replyMapper.queryReplyList(PageUtils.buildPage(), bo, SecurityUtils.getUserId());
+		return PageUtils.buildDataInfo(vos);
 	}
 
 	@Override
 	public List<HuomaiVideoCommentReplyVo> queryList(HuomaiVideoCommentReplyQueryBo bo) {
-		return listVo(buildQueryWrapper(bo), HuomaiVideoCommentReplyVo.class);
+		return listVo(Wrappers.emptyWrapper(), HuomaiVideoCommentReplyVo.class);
 	}
 
-	private LambdaQueryWrapper<HuomaiVideoCommentReply> buildQueryWrapper(HuomaiVideoCommentReplyQueryBo bo) {
-		Map<String, Object> params = bo.getParams();
-		LambdaQueryWrapper<HuomaiVideoCommentReply> lqw = Wrappers.lambdaQuery();
-		lqw.eq(StrUtil.isNotBlank(bo.getReplyType()), HuomaiVideoCommentReply::getReplyType, bo.getReplyType());
-		lqw.eq(bo.getCommentId() != null, HuomaiVideoCommentReply::getCommentId, bo.getCommentId());
-		lqw.eq(bo.getReplyId() != null, HuomaiVideoCommentReply::getReplyId, bo.getReplyId());
-		lqw.eq(StrUtil.isNotBlank(bo.getContent()), HuomaiVideoCommentReply::getContent, bo.getContent());
-		lqw.eq(bo.getReplyUserId() != null, HuomaiVideoCommentReply::getReplyUserId, bo.getReplyUserId());
-		lqw.eq(bo.getToUserId() != null, HuomaiVideoCommentReply::getToUserId, bo.getToUserId());
-		lqw.eq(bo.getStar() != null, HuomaiVideoCommentReply::getStar, bo.getStar());
-		return lqw;
-	}
-
+	/***
+	 * @description: 新增回复
+	 * @author chenshufeng
+	 * @date: 2021/6/26 3:34 下午
+	 */
 	@Override
 	public Boolean insertByAddBo(HuomaiVideoCommentReplyAddBo bo) {
 		HuomaiVideoCommentReply add = BeanUtil.toBean(bo, HuomaiVideoCommentReply.class);
 		validEntityBeforeSave(add);
+		//回复用户ID
+		add.setReplyUserId(SecurityUtils.getUserId());
 		return save(add);
 	}
 
@@ -88,5 +90,16 @@ public class HuomaiVideoCommentReplyServiceImpl extends ServiceImpl<HuomaiVideoC
 			//TODO 做一些业务上的校验,判断是否需要校验
 		}
 		return removeByIds(ids);
+	}
+
+	/***
+	 * @description: 回复列表查询
+	 * @author chenshufeng
+	 * @date: 2021/6/26 3:07 下午
+	 */
+	@Override
+	public Map<Long, List<HuomaiVideoCommentReplyVo>> batchQueryReplyListByCommentIds(List<Long> cIdList) {
+		List<HuomaiVideoCommentReplyVo> vos = replyMapper.batchQueryReplyListByCommentIds(cIdList, SecurityUtils.getUserId());
+		return vos.stream().collect(Collectors.groupingBy(HuomaiVideoCommentReplyVo::getCommentId));
 	}
 }

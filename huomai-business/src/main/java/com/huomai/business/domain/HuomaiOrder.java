@@ -1,9 +1,7 @@
 package com.huomai.business.domain;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -30,8 +28,12 @@ public class HuomaiOrder implements Serializable {
 	/**
 	 * ID
 	 */
-	@TableId(value = "id")
+	@TableId(value = "id", type = IdType.AUTO)
 	private Long id;
+
+	//订单类型 1-购买 2-充值 3-提现 4-收益
+	@ApiModelProperty("订单类型 1-购买 2-充值 3-提现 4-收益")
+	private Integer orderType;
 
 	/**
 	 * 订单号

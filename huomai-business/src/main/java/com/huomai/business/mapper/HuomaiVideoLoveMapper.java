@@ -1,6 +1,6 @@
 package com.huomai.business.mapper;
 
-import com.huomai.business.domain.HuomaiVideoLove;
+import com.huomai.business.domain.HuomaiUserLove;
 import com.huomai.common.core.page.BaseMapperPlus;
 
 /**
@@ -9,6 +9,6 @@ import com.huomai.common.core.page.BaseMapperPlus;
  * @author huomai
  * @date 2021-06-19
  */
-public interface HuomaiVideoLoveMapper extends BaseMapperPlus<HuomaiVideoLove> {
+public interface HuomaiVideoLoveMapper extends BaseMapperPlus<HuomaiUserLove> {
 
 }

@@ -4,5 +4,43 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.huomai.business.mapper.HuomaiUserFollowMapper">
 
+    <sql id="queryFollow">
+        SELECT
+        f.id,
+        f.user_id,
+        f.source,
+        f.follow_user_id,
+        f.create_time,
+        u.uuid,
+        u.avatar,
+        u.nick_name,
+        (select IF(count(1)>0,1,0) from huomai_user_follow where user_id = #{bo.curUserId}) as attend_flag,
+		(select IF(count(1)>0,1,0) from huomai_user_follow where follow_user_id = #{bo.curUserId}) as follow_flag
+        FROM huomai_user_follow f LEFT JOIN huomai_user u on f.follow_user_id = u.user_id
+    </sql>
+    <select id="queryList" resultType="com.huomai.business.vo.HuomaiUserFollowVo">
 
+    </select>
+    <select id="userFollowList" resultType="com.huomai.business.vo.HuomaiUserFollowVo">
+        <include refid="queryFollow"/>
+        <where>
+            <choose>
+                <when test="bo.type != null and bo.type == 1">
+                    and f.user_id = #{bo.curUserId}
+                </when>
+                <when test="bo.type != null and bo.type == 2">
+                    and f.follow_id = #{bo.curUserId}
+                </when>
+            </choose>
+        </where>
+        order by f.create_time desc
+    </select>
+    <select id="friendsList" resultType="com.huomai.business.vo.HuomaiUserFollowVo">
+        <include refid="queryFollow"/>
+        <where>
+            and f.user_id = #{bo.curUserId}
+        </where>
+        HAVING attend_flag = 1 and follow_flag = 1
+        order by f.create_time desc
+    </select>
 </mapper>

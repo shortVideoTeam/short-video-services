@@ -5,4 +5,23 @@
 <mapper namespace="com.huomai.business.mapper.HuomaiVideoCommentMapper">
 
 
+    <select id="queryList" resultType="com.huomai.business.vo.HuomaiVideoCommentVo">
+        SELECT
+            c.comment_id,
+            c.content,
+            c.create_time,
+            c.star_num,
+            c.video_id,
+            u.user_id,
+            u.uuid,
+            u.avatar,
+            u.nick_name,
+            u.sex,
+            (select IF(count(1) > 0,1,0) from huomai_video_love where business_id = c.comment_id and type = 2  and user_id = #{bo.curUserId}) as love_flag
+        FROM
+            huomai_video_comment c
+            LEFT JOIN huomai_user u ON c.user_id = u.user_id
+        WHERE
+            c.video_id = #{bo.videoId}
+    </select>
 </mapper>

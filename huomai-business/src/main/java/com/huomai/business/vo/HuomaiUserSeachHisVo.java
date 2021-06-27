@@ -1,6 +1,5 @@
 package com.huomai.business.vo;
 
-import com.huomai.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -27,14 +26,12 @@ public class HuomaiUserSeachHisVo {
 	/**
 	 * 用户ID
 	 */
-	@Excel(name = "用户ID")
 	@ApiModelProperty("用户ID")
 	private Long userId;
 
 	/**
 	 * 搜索内容
 	 */
-	@Excel(name = "搜索内容")
 	@ApiModelProperty("搜索内容")
 	private String content;
 

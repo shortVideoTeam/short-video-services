@@ -5,6 +5,7 @@ import com.huomai.business.bo.HuomaiUserAddBo;
 import com.huomai.business.bo.HuomaiUserEditBo;
 import com.huomai.business.bo.HuomaiUserQueryBo;
 import com.huomai.business.domain.HuomaiUser;
+import com.huomai.business.vo.HuomaiUserDetailVo;
 import com.huomai.business.vo.HuomaiUserVo;
 import com.huomai.common.core.page.IServicePlus;
 import com.huomai.common.core.page.TableDataInfo;
@@ -61,4 +62,12 @@ public interface IHuomaiUserService extends IServicePlus<HuomaiUser> {
 	 * @return
 	 */
 	Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+	/***
+	* @description: 用户详情
+	* @author chenshufeng
+	* @date: 2021/6/26 3:50 下午
+	*/
+	HuomaiUserDetailVo getInfo(Long userId);
+
 }

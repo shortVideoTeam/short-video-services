@@ -59,4 +59,11 @@ public interface IHuomaiVideoCommentService extends IServicePlus<HuomaiVideoComm
 	 * @return
 	 */
 	Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+	/***
+	 * @description: 评论列表
+	 * @author chenshufeng
+	 * @date: 2021/6/26 2:55 下午
+	 */
+	List<HuomaiVideoCommentVo> listWithReply(HuomaiVideoCommentQueryBo bo);
 }

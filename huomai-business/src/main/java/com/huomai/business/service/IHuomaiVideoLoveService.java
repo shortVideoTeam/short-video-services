@@ -1,9 +1,9 @@
 package com.huomai.business.service;
 
-import com.huomai.business.bo.HuomaiVideoLoveAddBo;
+import com.huomai.business.bo.HuomaiUserLoveAddBo;
 import com.huomai.business.bo.HuomaiVideoLoveEditBo;
 import com.huomai.business.bo.HuomaiVideoLoveQueryBo;
-import com.huomai.business.domain.HuomaiVideoLove;
+import com.huomai.business.domain.HuomaiUserLove;
 import com.huomai.business.vo.HuomaiVideoLoveVo;
 import com.huomai.common.core.page.IServicePlus;
 import com.huomai.common.core.page.TableDataInfo;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author huomai
  * @date 2021-06-19
  */
-public interface IHuomaiVideoLoveService extends IServicePlus<HuomaiVideoLove> {
+public interface IHuomaiVideoLoveService extends IServicePlus<HuomaiUserLove> {
 	/**
 	 * 查询单个
 	 *
@@ -41,7 +41,7 @@ public interface IHuomaiVideoLoveService extends IServicePlus<HuomaiVideoLove> {
 	 * @param bo 点赞记录新增业务对象
 	 * @return
 	 */
-	Boolean insertByAddBo(HuomaiVideoLoveAddBo bo);
+	Boolean insertByAddBo(HuomaiUserLoveAddBo bo);
 
 	/**
 	 * 根据编辑业务对象修改点赞记录

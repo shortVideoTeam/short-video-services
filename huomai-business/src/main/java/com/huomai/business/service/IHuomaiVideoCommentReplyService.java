@@ -10,6 +10,7 @@ import com.huomai.common.core.page.TableDataInfo;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 回复Service接口
@@ -59,4 +60,11 @@ public interface IHuomaiVideoCommentReplyService extends IServicePlus<HuomaiVide
 	 * @return
 	 */
 	Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+	/***
+	 * @description: 批量查询评论下面的回复列表
+	 * @author chenshufeng
+	 * @date: 2021/6/26 3:06 下午
+	 */
+	Map<Long, List<HuomaiVideoCommentReplyVo>> batchQueryReplyListByCommentIds(List<Long> cIdList);
 }

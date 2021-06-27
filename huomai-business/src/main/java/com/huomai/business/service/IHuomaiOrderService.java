@@ -4,6 +4,7 @@ import com.huomai.business.bo.HuomaiOrderAddBo;
 import com.huomai.business.bo.HuomaiOrderEditBo;
 import com.huomai.business.bo.HuomaiOrderQueryBo;
 import com.huomai.business.domain.HuomaiOrder;
+import com.huomai.business.vo.HuomaiOrderDetailVo;
 import com.huomai.business.vo.HuomaiOrderVo;
 import com.huomai.common.core.page.IServicePlus;
 import com.huomai.common.core.page.TableDataInfo;
@@ -59,4 +60,11 @@ public interface IHuomaiOrderService extends IServicePlus<HuomaiOrder> {
 	 * @return
 	 */
 	Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+	/***
+	* @description: 订单详情
+	* @author chenshufeng
+	* @date: 2021/6/26 9:51 下午
+	*/
+	HuomaiOrderDetailVo getInfo(Long id);
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 
 
 /**
- * 点赞记录编辑对象 huomai_video_love
+ * 点赞记录编辑对象 huomai_user_love
  *
  * @author huomai
  * @date 2021-06-19

@@ -5,6 +5,7 @@ import com.huomai.business.bo.HuomaiUserFollowEditBo;
 import com.huomai.business.bo.HuomaiUserFollowQueryBo;
 import com.huomai.business.domain.HuomaiUserFollow;
 import com.huomai.business.vo.HuomaiUserFollowVo;
+import com.huomai.business.vo.HuomaiUserVo;
 import com.huomai.common.core.page.IServicePlus;
 import com.huomai.common.core.page.TableDataInfo;
 
@@ -59,4 +60,25 @@ public interface IHuomaiUserFollowService extends IServicePlus<HuomaiUserFollow>
 	 * @return
 	 */
 	Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+	/***
+	* @description: 关注列表
+	* @author chenshufeng
+	* @date: 2021/6/26 4:48 下午
+	*/
+	TableDataInfo<HuomaiUserFollowVo> attendList(HuomaiUserFollowQueryBo bo);
+
+	/***
+	* @description: 粉丝列表
+	* @author chenshufeng
+	* @date: 2021/6/26 5:10 下午
+	*/
+	TableDataInfo<HuomaiUserFollowVo> followMeList(HuomaiUserFollowQueryBo bo);
+
+	/***
+	* @description: 我的好友列表
+	* @author chenshufeng
+	* @date: 2021/6/26 5:57 下午
+	*/
+	TableDataInfo<HuomaiUserFollowVo> friendsList(HuomaiUserFollowQueryBo bo);
 }

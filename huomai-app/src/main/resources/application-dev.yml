@@ -118,3 +118,18 @@ wx:
     subAppId: #服务商模式下的子商户公众账号ID
     subMchId: #服务商模式下的子商户号
     keyPath: # p12证书的位置，可以指定绝对路径，也可以指定类路径（以classpath:开头）
+
+#oss文件储存信息
+file:
+  #储存地址
+  endpoint: oss-cn-shanghai.aliyuncs.com
+  #keyId
+  accessKeyId: LTAI5tPoYf3qicto1nAVctYh
+  #secret
+  accessKeySecret: NU6wFuqE5zfMesuaHSZeCOLhbkvhT3
+  #储存名
+  bucketName: huomai-oss
+  #储存文件夹 以环境为名（dev）
+  fileFolder: dev
+  #外网地址
+  internetAddress: oss-cn-shanghai.aliyuncs.com

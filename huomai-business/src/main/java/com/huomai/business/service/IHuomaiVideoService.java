@@ -1,9 +1,9 @@
 package com.huomai.business.service;
 
-import com.huomai.business.bo.HuomaiVideoAddBo;
-import com.huomai.business.bo.HuomaiVideoEditBo;
-import com.huomai.business.bo.HuomaiVideoQueryBo;
+import com.huomai.business.bo.*;
 import com.huomai.business.domain.HuomaiVideo;
+import com.huomai.business.vo.HuomaiVideoAttendVo;
+import com.huomai.business.vo.HuomaiVideoHotVo;
 import com.huomai.business.vo.HuomaiVideoVo;
 import com.huomai.common.core.page.IServicePlus;
 import com.huomai.common.core.page.TableDataInfo;
@@ -23,7 +23,7 @@ public interface IHuomaiVideoService extends IServicePlus<HuomaiVideo> {
 	 *
 	 * @return
 	 */
-	HuomaiVideoVo queryById(Long videoId);
+	HuomaiVideoHotVo queryById(Long videoId);
 
 	/**
 	 * 查询列表
@@ -59,4 +59,25 @@ public interface IHuomaiVideoService extends IServicePlus<HuomaiVideo> {
 	 * @return
 	 */
 	Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+	/***
+	* @description: 热门
+	* @author chenshufeng
+	* @date: 2021/6/25 3:38 下午
+	*/
+	TableDataInfo<HuomaiVideoHotVo> hotList(HuomaiVideoHotBo bo);
+
+	/***
+	* @description: 关注列表
+	* @author chenshufeng
+	* @date: 2021/6/26 12:15 下午
+	*/
+    TableDataInfo<HuomaiVideoAttendVo> attendList(HuomaiVideoAttendBo bo);
+
+    /***
+    * @description: 视频列表
+    * @author chenshufeng
+    * @date: 2021/6/26 4:10 下午
+    */
+	TableDataInfo<HuomaiVideoVo> videoList(HuomaiVideoQueryBo bo);
 }

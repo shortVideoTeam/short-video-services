@@ -12,4 +12,11 @@ public class SecurityUtils {
 	public static String getUsername() {
 		return String.valueOf(ServletUtils.getRequest().getAttribute("userId"));
 	}
+
+	/**
+	 * 获取用户ID
+	 **/
+	public static Long getUserId() {
+		return Long.parseLong(String.valueOf(ServletUtils.getRequest().getAttribute("userId")));
+	}
 }

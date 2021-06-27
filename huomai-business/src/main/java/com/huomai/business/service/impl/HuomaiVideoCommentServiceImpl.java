@@ -1,8 +1,6 @@
 package com.huomai.business.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huomai.business.bo.HuomaiVideoCommentAddBo;
@@ -12,14 +10,13 @@ import com.huomai.business.domain.HuomaiVideoComment;
 import com.huomai.business.mapper.HuomaiVideoCommentMapper;
 import com.huomai.business.service.IHuomaiVideoCommentService;
 import com.huomai.business.vo.HuomaiVideoCommentVo;
-import com.huomai.common.core.page.PagePlus;
 import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.utils.PageUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 评论Service业务层处理
@@ -30,6 +27,9 @@ import java.util.Map;
 @Service
 public class HuomaiVideoCommentServiceImpl extends ServiceImpl<HuomaiVideoCommentMapper, HuomaiVideoComment> implements IHuomaiVideoCommentService {
 
+	@Autowired
+	private HuomaiVideoCommentMapper commentMapper;
+
 	@Override
 	public HuomaiVideoCommentVo queryById(Long commentId) {
 		return getVoById(commentId, HuomaiVideoCommentVo.class);
@@ -37,24 +37,24 @@ public class HuomaiVideoCommentServiceImpl extends ServiceImpl<HuomaiVideoCommen
 
 	@Override
 	public TableDataInfo<HuomaiVideoCommentVo> queryPageList(HuomaiVideoCommentQueryBo bo) {
-		PagePlus<HuomaiVideoComment, HuomaiVideoCommentVo> result = pageVo(PageUtils.buildPagePlus(), buildQueryWrapper(bo), HuomaiVideoCommentVo.class);
-		return PageUtils.buildDataInfo(result);
+		List<HuomaiVideoCommentVo> vos = queryCommentWithUserList(bo);
+		return PageUtils.buildDataInfo(vos);
+	}
+
+	/***
+	 * @description: 用户评论列表
+	 * @author chenshufeng
+	 * @date: 2021/6/26 2:59 下午
+	 */
+	public List<HuomaiVideoCommentVo> queryCommentWithUserList(HuomaiVideoCommentQueryBo bo) {
+		return commentMapper.queryList(PageUtils.buildPage(), bo);
 	}
 
 	@Override
 	public List<HuomaiVideoCommentVo> queryList(HuomaiVideoCommentQueryBo bo) {
-		return listVo(buildQueryWrapper(bo), HuomaiVideoCommentVo.class);
+		return listVo(Wrappers.emptyWrapper(), HuomaiVideoCommentVo.class);
 	}
 
-	private LambdaQueryWrapper<HuomaiVideoComment> buildQueryWrapper(HuomaiVideoCommentQueryBo bo) {
-		Map<String, Object> params = bo.getParams();
-		LambdaQueryWrapper<HuomaiVideoComment> lqw = Wrappers.lambdaQuery();
-		lqw.eq(bo.getVideoId() != null, HuomaiVideoComment::getVideoId, bo.getVideoId());
-		lqw.eq(StrUtil.isNotBlank(bo.getContent()), HuomaiVideoComment::getContent, bo.getContent());
-		lqw.eq(bo.getUserId() != null, HuomaiVideoComment::getUserId, bo.getUserId());
-		lqw.eq(bo.getStarNum() != null, HuomaiVideoComment::getStarNum, bo.getStarNum());
-		return lqw;
-	}
 
 	@Override
 	public Boolean insertByAddBo(HuomaiVideoCommentAddBo bo) {
@@ -85,5 +85,15 @@ public class HuomaiVideoCommentServiceImpl extends ServiceImpl<HuomaiVideoCommen
 			//TODO 做一些业务上的校验,判断是否需要校验
 		}
 		return removeByIds(ids);
+	}
+
+	/***
+	 * @description: 评论列表
+	 * @author chenshufeng
+	 * @date: 2021/6/26 2:55 下午
+	 */
+	@Override
+	public List<HuomaiVideoCommentVo> listWithReply(HuomaiVideoCommentQueryBo bo) {
+		return queryCommentWithUserList(bo);
 	}
 }

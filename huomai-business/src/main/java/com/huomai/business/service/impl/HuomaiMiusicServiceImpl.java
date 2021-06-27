@@ -1,8 +1,6 @@
 package com.huomai.business.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huomai.business.bo.HuomaiMiusicAddBo;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 音乐模板Service业务层处理
@@ -37,22 +34,13 @@ public class HuomaiMiusicServiceImpl extends ServiceImpl<HuomaiMiusicMapper, Huo
 
 	@Override
 	public TableDataInfo<HuomaiMiusicVo> queryPageList(HuomaiMiusicQueryBo bo) {
-		PagePlus<HuomaiMiusic, HuomaiMiusicVo> result = pageVo(PageUtils.buildPagePlus(), buildQueryWrapper(bo), HuomaiMiusicVo.class);
+		PagePlus<HuomaiMiusic, HuomaiMiusicVo> result = pageVo(PageUtils.buildPagePlus(), Wrappers.emptyWrapper(), HuomaiMiusicVo.class);
 		return PageUtils.buildDataInfo(result);
 	}
 
 	@Override
 	public List<HuomaiMiusicVo> queryList(HuomaiMiusicQueryBo bo) {
-		return listVo(buildQueryWrapper(bo), HuomaiMiusicVo.class);
-	}
-
-	private LambdaQueryWrapper<HuomaiMiusic> buildQueryWrapper(HuomaiMiusicQueryBo bo) {
-		Map<String, Object> params = bo.getParams();
-		LambdaQueryWrapper<HuomaiMiusic> lqw = Wrappers.lambdaQuery();
-		lqw.eq(StrUtil.isNotBlank(bo.getTitle()), HuomaiMiusic::getTitle, bo.getTitle());
-		lqw.eq(StrUtil.isNotBlank(bo.getCoverImg()), HuomaiMiusic::getCoverImg, bo.getCoverImg());
-		lqw.eq(StrUtil.isNotBlank(bo.getMiusicUrl()), HuomaiMiusic::getMiusicUrl, bo.getMiusicUrl());
-		return lqw;
+		return listVo(Wrappers.emptyWrapper(), HuomaiMiusicVo.class);
 	}
 
 	@Override

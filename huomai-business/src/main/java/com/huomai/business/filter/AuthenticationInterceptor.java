@@ -22,11 +22,12 @@ import java.util.Set;
 
 /***
  * @description:
- * @author chenshufeng
+ * @author huomai
  * @date: 2021/6/21 3:17 下午
  */
 public class AuthenticationInterceptor implements HandlerInterceptor {
 	public static final String USER_KEY = "userId";
+	public static final String USER_NAME = "userName";
 
 	private final static Set<String> set = Sets.newHashSet("/doc.html", "/swagger-resources", "/v2/api-docs");
 
@@ -69,9 +70,20 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 			throw new CustomException("token已过期，请重新登录", HttpStatus.HTTP_UNAUTHORIZED);
 		}
 		// 设置userId到request里，后续根据userId，获取用户信息
-		request.setAttribute(USER_KEY, appUser.getUserId());
-		ServletUtils.getRequest().setAttribute(USER_KEY,appUser.getUserId());
+		userHolder(request, appUser);
 		return true;
+	}
+
+	/***
+	 * @description: 将用户信息放入threadlocal
+	 * @author chenshufeng
+	 * @date: 2021/6/25 4:10 下午
+	 */
+	private void userHolder(HttpServletRequest request, HuomaiUser appUser) {
+		request.setAttribute(USER_KEY, appUser.getUserId());
+		request.setAttribute(USER_NAME, appUser.getNickName());
+		ServletUtils.getRequest().setAttribute(USER_KEY, appUser.getUserId());
+		ServletUtils.getRequest().setAttribute(USER_NAME, appUser.getNickName());
 	}
 
 	@Override

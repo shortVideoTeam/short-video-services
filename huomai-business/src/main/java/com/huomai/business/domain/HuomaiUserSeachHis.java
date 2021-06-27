@@ -1,9 +1,6 @@
 package com.huomai.business.domain;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -29,7 +26,7 @@ public class HuomaiUserSeachHis implements Serializable {
 	/**
 	 * ID
 	 */
-	@TableId(value = "id")
+	@TableId(value = "id", type = IdType.AUTO)
 	private Long id;
 
 	/**

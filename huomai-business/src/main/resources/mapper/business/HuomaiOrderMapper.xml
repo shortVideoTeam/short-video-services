@@ -5,4 +5,29 @@
 <mapper namespace="com.huomai.business.mapper.HuomaiOrderMapper">
 
 
+    <select id="queryList" resultType="com.huomai.business.vo.HuomaiOrderVo">
+        SELECT
+            o.id,
+            o.order_no,
+            o.order_type,
+            o.create_time,
+            o.page,
+            o.time,
+            o.amount,
+            o.pay_way,
+            u.nick_name,
+            u.avatar,
+            u.uuid
+        FROM
+            huomai_order o
+            LEFT JOIN huomai_user u ON o.user_id = u.user_id
+        <where>
+            <if test="bo.curUserId != null">
+                o.user_id = #{bo.curUserId}
+            </if>
+            <if test="bo.orderType != null">
+                o.order_type = #{bo.orderType}
+            </if>
+        </where>
+    </select>
 </mapper>

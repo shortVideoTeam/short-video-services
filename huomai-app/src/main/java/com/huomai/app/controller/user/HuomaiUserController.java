@@ -65,8 +65,8 @@ public class HuomaiUserController extends BaseController {
 	 * 我的钱包
 	 */
 	@ApiOperation("我的钱包")
-	@GetMapping("{userId}")
-	public AjaxResult<HuomaiUserWalleVo> edit(@NotNull(message = "主键不能为空")
+	@GetMapping("/myWalle/{userId}")
+	public AjaxResult<HuomaiUserWalleVo> myWalle(@NotNull(message = "主键不能为空")
 											  @PathVariable("userId") Long userId) {
 		return AjaxResult.success(iHuomaiUserService.getVoById(userId, HuomaiUserWalleVo.class));
 	}

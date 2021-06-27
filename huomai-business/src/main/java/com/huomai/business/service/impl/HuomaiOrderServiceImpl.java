@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.binarywang.wxpay.bean.order.WxPayMpOrderResult;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.exception.WxPayException;
@@ -233,6 +234,7 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 		String payWay = bo.getPayWay();
 		HuomaiOrder add = BeanUtil.toBean(bo, HuomaiOrder.class);
 		add.setOrderNo(String.valueOf(System.currentTimeMillis()));
+		add.setUserId(SecurityUtils.getUserId());
 		//微信支付
 		if ("1".equals(payWay)) {
 			add.setStatus("1");
@@ -280,7 +282,8 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 		orderRequest.setTradeType(WxPayConstants.TradeType.JSAPI);
 		orderRequest.setOpenid(user.getOpenid());
 		try {
-			return AjaxResult.success(wxService.createOrder(orderRequest));
+			WxPayMpOrderResult order = wxService.createOrder(orderRequest);
+			return AjaxResult.success(order);
 		} catch (WxPayException e) {
 			log.error(e.getMessage(), e);
 			throw new BaseException("微信支付失败");

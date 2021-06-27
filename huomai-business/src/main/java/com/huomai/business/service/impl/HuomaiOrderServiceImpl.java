@@ -138,8 +138,28 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 			add.setPayTime(DateUtils.getNowDate());
 			//插入订单记录
 			save(add);
+
+			//扣减用户金额
+			subtractUserAccount(bo);
 		}
 		return AjaxResult.success();
+	}
+
+	/**
+	 * 扣减用户金额
+	 *
+	 * @param bo
+	 */
+	public void subtractUserAccount(HuomaiOrderAddBo bo) {
+		HuomaiUser user = userService.getById(SecurityUtils.getUserId());
+		BigDecimal subtract = user.getTotalAmount().subtract(bo.getAmount());
+		if (subtract.doubleValue() < 0) {
+			throw new BaseException("账户余额不足,请先充值后购买");
+		}
+		HuomaiUser upt = new HuomaiUser();
+		upt.setUserId(user.getUserId());
+		upt.setTotalAmount(subtract);
+		userService.updateById(upt);
 	}
 
 	/**
@@ -148,6 +168,7 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 	 * @param payNo
 	 * @param bizPayNo
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public void paySuccess(String payNo, String bizPayNo) {
 		LambdaQueryWrapper<HuomaiOrder> wrapper = Wrappers.lambdaQuery();
@@ -157,11 +178,30 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 		if (order == null && order.getStatus().equals("2")) {
 			return;
 		}
+		Integer orderType = order.getOrderType();
+		//充值
+		if ("2".equals(orderType)) {
+			addUserAccount(order.getUserId(), order.getAmount());
+		}
 		HuomaiOrder opt = new HuomaiOrder();
 		opt.setId(order.getId());
 		opt.setPayTime(DateUtils.getNowDate());
 		opt.setStatus("2");//支付成功
 		orderMapper.updateById(opt);
+	}
+
+	/**
+	 * 更新用户余额
+	 *
+	 * @param userId
+	 * @param amount
+	 */
+	public void addUserAccount(Long userId, BigDecimal amount) {
+		HuomaiUser user = userService.getById(userId);
+		HuomaiUser upt = new HuomaiUser();
+		upt.setUserId(userId);
+		upt.setTotalAmount(user.getTotalAmount().add(amount));
+		userService.updateById(upt);
 	}
 
 	/**

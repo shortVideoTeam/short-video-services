@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -26,7 +27,7 @@ public class HuomaiUser implements Serializable {
 	/**
 	 * 用户Id
 	 */
-	@TableId(value = "user_id",type = IdType.AUTO)
+	@TableId(value = "user_id", type = IdType.AUTO)
 	private Long userId;
 
 	/**
@@ -132,5 +133,8 @@ public class HuomaiUser implements Serializable {
 	 * 用户状态
 	 */
 	private String status;
+
+	private BigDecimal totalAmount;
+	private BigDecimal cashAmount;
 
 }

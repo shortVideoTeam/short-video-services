@@ -31,6 +31,7 @@
         <feign-okhttp.version>11.0</feign-okhttp.version>
         <spring-boot-admin.version>2.3.1</spring-boot-admin.version>
         <redisson.version>3.15.2</redisson.version>
+        <weixin-java.version>4.1.0</weixin-java.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -173,11 +174,17 @@
                 <version>${redisson.version}</version>
             </dependency>
 
-            <!-- wx sdk -->
+            <!-- wx sdk 小程序登录授权-->
             <dependency>
                 <groupId>com.github.binarywang</groupId>
                 <artifactId>weixin-java-miniapp</artifactId>
-                <version>4.1.0</version>
+                <version>${weixin-java.version}</version>
+            </dependency>
+            <!--wx sdk 支付-->
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-pay</artifactId>
+                <version>${weixin-java.version}</version>
             </dependency>
 
         </dependencies>

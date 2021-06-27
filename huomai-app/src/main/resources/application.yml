@@ -60,7 +60,11 @@ logging:
   level:
     com.huomai: @logging.level@
     org.springframework: warn
+    com.github.binarywang.demo.wx.pay: debug
+    com.github.binarywang.wxpay: debug
   config: classpath:logback.xml
+
+
 
 # Spring配置
 spring:

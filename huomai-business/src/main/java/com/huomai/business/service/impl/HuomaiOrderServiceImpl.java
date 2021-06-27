@@ -1,22 +1,35 @@
 package com.huomai.business.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
+import com.github.binarywang.wxpay.constant.WxPayConstants;
+import com.github.binarywang.wxpay.exception.WxPayException;
+import com.github.binarywang.wxpay.service.WxPayService;
 import com.huomai.business.bo.HuomaiOrderAddBo;
 import com.huomai.business.bo.HuomaiOrderEditBo;
 import com.huomai.business.bo.HuomaiOrderQueryBo;
 import com.huomai.business.domain.HuomaiOrder;
+import com.huomai.business.domain.HuomaiUser;
 import com.huomai.business.mapper.HuomaiOrderMapper;
 import com.huomai.business.service.IHuomaiOrderService;
+import com.huomai.business.service.IHuomaiUserService;
 import com.huomai.business.vo.HuomaiOrderDetailVo;
 import com.huomai.business.vo.HuomaiOrderVo;
+import com.huomai.common.core.domain.AjaxResult;
 import com.huomai.common.core.page.TableDataInfo;
+import com.huomai.common.exception.BaseException;
 import com.huomai.common.utils.DateUtils;
 import com.huomai.common.utils.PageUtils;
+import com.huomai.common.utils.SecurityUtils;
+import com.huomai.common.utils.ip.IpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,6 +44,13 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 
 	@Autowired
 	private HuomaiOrderMapper orderMapper;
+
+	@Autowired
+	private WxPayService wxService;
+
+	@Autowired
+	private IHuomaiUserService userService;
+
 
 	@Override
 	public HuomaiOrderVo queryById(Long id) {
@@ -58,10 +78,6 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 	public Boolean insertByAddBo(HuomaiOrderAddBo bo) {
 		HuomaiOrder add = BeanUtil.toBean(bo, HuomaiOrder.class);
 		validEntityBeforeSave(add);
-		add.setOrderNo(String.valueOf(System.currentTimeMillis()));
-		add.setPayTime(DateUtils.getNowDate());
-		//已付款
-		add.setStatus("2");
 		return save(add);
 	}
 
@@ -97,5 +113,77 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 	@Override
 	public HuomaiOrderDetailVo getInfo(Long id) {
 		return getVoById(id, HuomaiOrderDetailVo.class);
+	}
+
+	/**
+	 * 下单接口
+	 *
+	 * @param bo
+	 * @return
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public AjaxResult createOrder(HuomaiOrderAddBo bo) {
+		bo.setOrderNo(String.valueOf(System.currentTimeMillis()));
+
+		String payWay = bo.getPayWay();
+		//微信支付
+		if ("1".equals(payWay)) {
+			bo.setStatus("1");
+			return wxPay(bo);
+		} else if ("2".equals(payWay)) {
+			//余额支付
+			bo.setStatus("2");
+			bo.setPayTime(DateUtils.getNowDate());
+		}
+		//插入订单记录
+		insertByAddBo(bo);
+		return AjaxResult.success();
+	}
+
+	/**
+	 * 微信支付回调处理
+	 *
+	 * @param payNo
+	 * @param bizPayNo
+	 */
+	@Override
+	public void paySuccess(String payNo, String bizPayNo) {
+		LambdaQueryWrapper<HuomaiOrder> wrapper = Wrappers.lambdaQuery();
+		wrapper.eq(HuomaiOrder::getOrderNo, payNo);
+		HuomaiOrder order = orderMapper.selectOne(wrapper);
+		//已支付不处理
+		if (order == null && order.getStatus().equals("2")) {
+			return;
+		}
+		HuomaiOrder opt = new HuomaiOrder();
+		opt.setId(order.getId());
+		opt.setPayTime(DateUtils.getNowDate());
+		opt.setStatus("2");//支付成功
+		orderMapper.updateById(opt);
+	}
+
+	/**
+	 * 调用微信支付api
+	 *
+	 * @param bo
+	 * @return
+	 */
+	public AjaxResult wxPay(HuomaiOrderAddBo bo) {
+		HuomaiUser user = userService.getById(SecurityUtils.getUserId());
+		WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();
+		orderRequest.setBody("购买作品推广");
+		orderRequest.setOutTradeNo(bo.getOrderNo());
+		orderRequest.setTotalFee(bo.getAmount().multiply(BigDecimal.valueOf(100)).intValue());
+		orderRequest.setSpbillCreateIp(IpUtils.getHostIp());
+		orderRequest.setNotifyUrl(bo.getDomain() + "/wx/pay/callback");
+		orderRequest.setTradeType(WxPayConstants.TradeType.JSAPI);
+		orderRequest.setOpenid(user.getOpenid());
+		try {
+			return AjaxResult.success(wxService.createOrder(orderRequest));
+		} catch (WxPayException e) {
+			log.error(e.getMessage(), e);
+			throw new BaseException("下单失败");
+		}
 	}
 }

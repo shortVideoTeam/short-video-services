@@ -6,11 +6,13 @@ import com.huomai.business.bo.HuomaiOrderQueryBo;
 import com.huomai.business.domain.HuomaiOrder;
 import com.huomai.business.vo.HuomaiOrderDetailVo;
 import com.huomai.business.vo.HuomaiOrderVo;
+import com.huomai.common.core.domain.AjaxResult;
 import com.huomai.common.core.page.IServicePlus;
 import com.huomai.common.core.page.TableDataInfo;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 订单记录Service接口
@@ -67,4 +69,18 @@ public interface IHuomaiOrderService extends IServicePlus<HuomaiOrder> {
 	* @date: 2021/6/26 9:51 下午
 	*/
 	HuomaiOrderDetailVo getInfo(Long id);
+
+	/**
+	 * 下单接口
+	 * @param bo
+	 * @return
+	 */
+	AjaxResult createOrder(HuomaiOrderAddBo bo);
+
+	/**
+	 * 微信支付回调处理
+	 * @param payNo
+	 * @param bizPayNo
+	 */
+	void paySuccess(String payNo, String bizPayNo);
 }

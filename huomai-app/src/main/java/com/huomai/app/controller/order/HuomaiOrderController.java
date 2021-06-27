@@ -8,6 +8,7 @@ import com.huomai.business.vo.HuomaiOrderVo;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
 import com.huomai.common.core.page.TableDataInfo;
+import com.huomai.system.service.ISysConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,8 @@ import javax.validation.constraints.NotNull;
 public class HuomaiOrderController extends BaseController {
 
 	private final IHuomaiOrderService iHuomaiOrderService;
+
+	private final ISysConfigService configService;
 
 	/**
 	 * 查询订单记录列表
@@ -54,8 +57,9 @@ public class HuomaiOrderController extends BaseController {
 	 * 作品推广下单
 	 */
 	@ApiOperation("作品推广下单")
-	@PostMapping()
-	public AjaxResult<Void> add(@Validated @RequestBody HuomaiOrderAddBo bo) {
-		return toAjax(iHuomaiOrderService.insertByAddBo(bo) ? 1 : 0);
+	@PostMapping("/createOrder")
+	public AjaxResult createOrder(@Validated @RequestBody HuomaiOrderAddBo bo) {
+		bo.setDomain(configService.selectConfigByKey("api_domain"));
+		return AjaxResult.success(iHuomaiOrderService.createOrder(bo));
 	}
 }

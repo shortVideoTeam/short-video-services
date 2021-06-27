@@ -10,8 +10,10 @@ import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.huomai.business.bo.*;
 import com.huomai.business.domain.HuomaiOrder;
+import com.huomai.business.domain.HuomaiOrderItem;
 import com.huomai.business.domain.HuomaiUser;
 import com.huomai.business.mapper.HuomaiOrderMapper;
+import com.huomai.business.service.IHuomaiOrderItemService;
 import com.huomai.business.service.IHuomaiOrderService;
 import com.huomai.business.service.IHuomaiUserService;
 import com.huomai.business.vo.HuomaiOrderDetailVo;
@@ -29,7 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 订单记录Service业务层处理
@@ -48,6 +52,9 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 
 	@Autowired
 	private IHuomaiUserService userService;
+
+	@Autowired
+	private IHuomaiOrderItemService itemService;
 
 
 	@Override
@@ -123,9 +130,19 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 	@Override
 	public AjaxResult createOrder(HuomaiOrderAddBo bo) {
 		String payWay = bo.getPayWay();
+		String orderNo = String.valueOf(System.currentTimeMillis());
 		HuomaiOrder add = BeanUtil.toBean(bo, HuomaiOrder.class);
 		add.setOrderType(1);
-		add.setOrderNo(String.valueOf(System.currentTimeMillis()));
+		add.setOrderNo(orderNo);
+
+		//新增订单项
+		Date date = DateUtils.getNowDate();
+		List<Long> videoList = bo.getVideoList();
+		if (videoList != null && videoList.size() > 0) {
+			List<HuomaiOrderItem> items = videoList.stream().map(videoId -> HuomaiOrderItem.builder().orderNo(orderNo).videoId(videoId).createTime(date).build()).collect(Collectors.toList());
+			itemService.saveBatch(items);
+		}
+
 		//微信支付
 		if ("1".equals(payWay)) {
 			add.setStatus("1");
@@ -142,6 +159,7 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 			//扣减用户金额
 			subtractUserAccount(bo);
 		}
+
 		return AjaxResult.success();
 	}
 

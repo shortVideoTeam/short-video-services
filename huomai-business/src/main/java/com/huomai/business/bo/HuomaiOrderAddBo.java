@@ -7,7 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.util.List;
 
 /**
  * 订单记录添加对象 huomai_order
@@ -46,6 +46,9 @@ public class HuomaiOrderAddBo {
 	@ApiModelProperty("支付方式 1-微信 2-余额")
 	@NotBlank(message = "支付方式不能为空")
 	private String payWay;
+
+	@ApiModelProperty("推广作品列表")
+	private List<Long> videoList;
 
 	//服务器域名
 	private String domain;

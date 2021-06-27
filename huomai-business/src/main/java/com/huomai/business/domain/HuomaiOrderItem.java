@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -20,6 +21,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
+@Builder
 @TableName("huomai_order_item")
 public class HuomaiOrderItem implements Serializable {
 

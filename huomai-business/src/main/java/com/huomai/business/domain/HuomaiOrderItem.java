@@ -19,7 +19,6 @@ import java.util.Date;
  * @date 2021-06-19
  */
 @Data
-@NoArgsConstructor
 @Accessors(chain = true)
 @Builder
 @TableName("huomai_order_item")

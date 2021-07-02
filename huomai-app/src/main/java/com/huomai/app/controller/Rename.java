@@ -32,7 +32,9 @@ public class Rename {
 	public static void main(String[] args) {
 		try {
 			//创建新项目路径
-			Runtime.getRuntime().exec("rm -rf" + user_home + File.separator + new_module);
+			String rmCommand = "rm -rf" + user_home + File.separator + new_module;
+			Runtime.getRuntime().exec(rmCommand);
+			System.out.println(rmCommand);
 			Runtime.getRuntime().exec("mkdir -p " + user_home + File.separator + new_module + File.separator + new_project);
 			System.out.println("cp 项目=================");
 			//cp 模板项目为新项目

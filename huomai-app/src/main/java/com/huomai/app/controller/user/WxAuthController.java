@@ -128,7 +128,7 @@ public class WxAuthController {
 		HuomaiUser user = userService.getById(userId);
 		HashMap<Object, Object> map = Maps.newHashMap();
 		map.put("token", JwtUtil.sign(String.valueOf(user.getUserId()), SecureUtil.md5(user.getOpenid())));
-		map.put("user", user);
+//		map.put("user", user);
 		return AjaxResult.success(map);
 	}
 }

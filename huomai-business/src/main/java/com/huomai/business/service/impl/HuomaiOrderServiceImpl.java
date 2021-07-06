@@ -276,7 +276,7 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 			this.wxService.getEntPayService().entPay(request);
 		} catch (WxPayException e) {
 			log.error(e.getMessage(), e);
-			throw new BaseException("提现失败");
+			throw new BaseException("提现失败"+e.getMessage());
 		}
 		return AjaxResult.success();
 	}

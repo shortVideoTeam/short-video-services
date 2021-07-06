@@ -45,6 +45,7 @@ public class HuomaiVideoCommentReplyServiceImpl extends ServiceImpl<HuomaiVideoC
 	 */
 	@Override
 	public TableDataInfo<HuomaiVideoCommentReplyVo> queryPageList(HuomaiVideoCommentReplyQueryBo bo) {
+		bo.setCurUserId(SecurityUtils.getUserId());
 		List<HuomaiVideoCommentReplyVo> vos = replyMapper.queryReplyList(PageUtils.buildPage(), bo, SecurityUtils.getUserId());
 		return PageUtils.buildDataInfo(vos);
 	}

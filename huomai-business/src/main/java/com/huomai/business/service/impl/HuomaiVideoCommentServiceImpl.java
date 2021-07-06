@@ -12,6 +12,7 @@ import com.huomai.business.service.IHuomaiVideoCommentService;
 import com.huomai.business.vo.HuomaiVideoCommentVo;
 import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.utils.PageUtils;
+import com.huomai.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,7 @@ public class HuomaiVideoCommentServiceImpl extends ServiceImpl<HuomaiVideoCommen
 	 * @date: 2021/6/26 2:59 下午
 	 */
 	public List<HuomaiVideoCommentVo> queryCommentWithUserList(HuomaiVideoCommentQueryBo bo) {
+		bo.setCurUserId(SecurityUtils.getUserId());
 		return commentMapper.queryList(PageUtils.buildPage(), bo);
 	}
 
@@ -59,6 +61,7 @@ public class HuomaiVideoCommentServiceImpl extends ServiceImpl<HuomaiVideoCommen
 	@Override
 	public Boolean insertByAddBo(HuomaiVideoCommentAddBo bo) {
 		HuomaiVideoComment add = BeanUtil.toBean(bo, HuomaiVideoComment.class);
+		add.setUserId(SecurityUtils.getUserId());
 		validEntityBeforeSave(add);
 		return save(add);
 	}

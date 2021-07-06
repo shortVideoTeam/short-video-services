@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -23,39 +24,19 @@ public class HuomaiUserEditBo {
 	 * 用户Id
 	 */
 	@ApiModelProperty("用户Id")
+	@NotNull(message = "用户Id不能为空")
 	private Long userId;
-
-	/**
-	 * 用户火脉号Id
-	 */
-	@ApiModelProperty("用户火脉号Id")
-	@NotBlank(message = "用户火脉号Id不能为空")
-	private String uuid;
-
-	/**
-	 * 微信同一用户同一应用唯一标识
-	 */
-	@ApiModelProperty("微信同一用户同一应用唯一标识")
-	private String openid;
-
-	/**
-	 * 微信同一用户不同应用唯一标识
-	 */
-	@ApiModelProperty("微信同一用户不同应用唯一标识")
-	private String unionid;
 
 	/**
 	 * 用户头像
 	 */
 	@ApiModelProperty("用户头像")
-	@NotBlank(message = "用户头像不能为空")
 	private String avatar;
 
 	/**
 	 * 用户昵称
 	 */
 	@ApiModelProperty("用户昵称")
-	@NotBlank(message = "用户昵称不能为空")
 	private String nickName;
 
 	/**
@@ -112,23 +93,4 @@ public class HuomaiUserEditBo {
 	 */
 	@ApiModelProperty("个人介绍")
 	private String desc;
-
-	/**
-	 * 更新者
-	 */
-	@ApiModelProperty("更新者")
-	private String updateBy;
-
-	/**
-	 * 更新时间
-	 */
-	@ApiModelProperty("更新时间")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date updateTime;
-
-	/**
-	 * 备注
-	 */
-	@ApiModelProperty("备注")
-	private String remark;
 }

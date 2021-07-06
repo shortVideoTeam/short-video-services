@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * @author huomai
  * @date 2021-06-19
  */
-@Api(value = "评论控制器", tags = {"评论管理"})
+@Api(value = "评论控制器", tags = {"评论模块"})
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
 @RequestMapping("/business/comment")

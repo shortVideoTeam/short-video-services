@@ -37,6 +37,7 @@ public class HuomaiRechargeAddBo {
 	private String payWay;
 
 	//服务器域名
+	@ApiModelProperty(value = "服务器域名", hidden = true)
 	private String domain;
 
 }

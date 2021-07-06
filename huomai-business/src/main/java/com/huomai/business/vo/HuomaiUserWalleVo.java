@@ -27,8 +27,8 @@ public class HuomaiUserWalleVo {
 
 	//总金额
 	@ApiModelProperty("总金额")
-	private BigDecimal totalAmount;
+	private BigDecimal totalAmount = BigDecimal.ZERO;
 	//可提现金额
 	@ApiModelProperty("可提现金额")
-	private BigDecimal cashAmount;
+	private BigDecimal cashAmount = BigDecimal.ZERO;
 }

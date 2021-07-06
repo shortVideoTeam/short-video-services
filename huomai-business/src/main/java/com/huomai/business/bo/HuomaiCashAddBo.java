@@ -28,6 +28,7 @@ public class HuomaiCashAddBo {
 	@NotNull(message = "金额不能为空")
 	private BigDecimal amount;
 
+	@ApiModelProperty(value = "服务器域名", hidden = true)
 	private String domain;
 
 }

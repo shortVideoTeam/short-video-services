@@ -20,14 +20,6 @@ import java.util.Date;
 @ApiModel("搜索历史记录添加对象")
 public class HuomaiUserSeachHisAddBo {
 
-
-	/**
-	 * 用户ID
-	 */
-	@ApiModelProperty("用户ID")
-	@NotNull(message = "用户ID不能为空")
-	private Long userId;
-
 	/**
 	 * 搜索内容
 	 */
@@ -35,11 +27,4 @@ public class HuomaiUserSeachHisAddBo {
 	@NotBlank(message = "搜索内容不能为空")
 	private String content;
 
-	/**
-	 * 搜索时间
-	 */
-	@ApiModelProperty("搜索时间")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@NotNull(message = "搜索时间不能为空")
-	private Date createTime;
 }

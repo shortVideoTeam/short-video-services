@@ -66,7 +66,7 @@ public class HuomaiVideoCommentReplyVo {
 	 * 点赞数
 	 */
 	@ApiModelProperty("点赞数")
-	private Long star;
+	private long star;
 
 	/**
 	 * 创建时间

@@ -1,5 +1,7 @@
 package com.huomai.business.bo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 
@@ -14,13 +16,21 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ToString
+@ApiModel(value = "小程序用户加密信息")
 public class WxUserData {
+	@ApiModelProperty(value = "appid")
 	@NotNull(message = "appid不能为空")
 	private String appid;
+
+	@ApiModelProperty(value = "encryptedData")
 	@NotNull(message = "encryptedData不能为空")
 	private String encryptedData;
+
+	@ApiModelProperty(value = "iv")
 	@NotNull(message = "iv不能为空")
 	private String iv;
+
+	@ApiModelProperty(value = "userKey")
 	@NotNull(message = "userKey不能为空")
 	private String userKey;
 }

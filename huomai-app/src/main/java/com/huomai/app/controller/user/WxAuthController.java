@@ -48,6 +48,7 @@ public class WxAuthController {
 
 	@PassToken
 	@PostMapping("/auth")
+	@ApiOperation(value = "授权")
 	public AjaxResult auth(@RequestBody WxLoginInfo loginInfo) {
 		final WxMaService wxService = WxMaConfiguration.getMaService(loginInfo.getAppid());
 		try {
@@ -66,7 +67,7 @@ public class WxAuthController {
 				addBo.setNickName(loginInfo.getUserInfo().getNickName());
 				addBo.setCreateTime(DateUtils.getNowDate());
 				addBo.setStatus("1");
-				addBo.setInviteCode(UUID.randomUUID().toString().replaceAll("-",""));
+				addBo.setInviteCode(UUID.randomUUID().toString().replaceAll("-", ""));
 				userService.insertByAddBo(addBo);
 			}
 
@@ -85,6 +86,7 @@ public class WxAuthController {
 	 * 绑定手机号，返回token
 	 * </pre>
 	 */
+	@ApiOperation(value = "绑定手机号")
 	@PassToken
 	@PostMapping("/phone")
 	public AjaxResult phone(@RequestBody WxUserData userData) {

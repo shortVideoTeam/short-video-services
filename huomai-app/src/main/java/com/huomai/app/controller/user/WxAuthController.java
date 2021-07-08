@@ -49,6 +49,9 @@ public class WxAuthController {
 	@PassToken
 	@PostMapping("/auth")
 	public AjaxResult auth(@RequestBody WxLoginInfo loginInfo) {
+
+		HashMap<Object, Object> map = Maps.newHashMap();
+
 		final WxMaService wxService = WxMaConfiguration.getMaService(loginInfo.getAppid());
 		try {
 			WxMaJscode2SessionResult session = wxService.getUserService().getSessionInfo(loginInfo.getCode());
@@ -66,11 +69,22 @@ public class WxAuthController {
 				addBo.setNickName(loginInfo.getUserInfo().getNickName());
 				addBo.setCreateTime(DateUtils.getNowDate());
 				addBo.setStatus("1");
-				addBo.setInviteCode(UUID.randomUUID().toString().replaceAll("-",""));
+				addBo.setInviteCode(UUID.randomUUID().toString().replaceAll("-", ""));
 				userService.insertByAddBo(addBo);
+			} else {
+				log.info("用户已经存在,则直接返回token");
+				HuomaiUser upt = new HuomaiUser();
+				upt.setUserId(huomaiUser.getUserId());
+				upt.setAvatar(loginInfo.getUserInfo().getAvatarUrl());
+				upt.setNickName(loginInfo.getUserInfo().getNickName());
+				upt.setUpdateTime(DateUtils.getNowDate());
+				userService.updateById(upt);
+				if (StringUtils.isNotEmpty(huomaiUser.getPhone())) {
+					map.put("token", JwtUtil.sign(String.valueOf(huomaiUser.getUserId()), SecureUtil.md5(huomaiUser.getOpenid())));
+					map.put("userId", huomaiUser.getUserId());
+				}
 			}
 
-			HashMap<Object, Object> map = Maps.newHashMap();
 			map.put("userKey", session.getOpenid());
 			redisCache.setCacheObject(session.getOpenid(), session.getSessionKey());
 			return AjaxResult.success(map);

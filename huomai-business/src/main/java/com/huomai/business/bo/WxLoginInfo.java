@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 public class WxLoginInfo {
 
 	@ApiModelProperty(value = "appid")
-	@NotBlank(message = "appId不能为空")
+	@NotBlank(message = "appid不能为空")
 	private String appid;
 	@ApiModelProperty(value = "code")
 	@NotBlank(message = "code不能为空")

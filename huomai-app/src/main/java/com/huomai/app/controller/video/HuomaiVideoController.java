@@ -28,7 +28,7 @@ import java.util.Arrays;
  * @author huomai
  * @date 2021-06-19
  */
-@Api(value = "视频信息控制器", tags = {"视频信息管理"})
+@Api(value = "视频信息控制器", tags = {"视频模块"})
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
 @RequestMapping("/business/video")
@@ -57,7 +57,7 @@ public class HuomaiVideoController extends BaseController {
 	/**
 	 * 用户作品列表
 	 */
-	@ApiOperation("视频列表")
+	@ApiOperation("用户作品列表")
 	@GetMapping("/videoList")
 	public TableDataInfo<HuomaiVideoVo> videoList(@Validated HuomaiVideoQueryBo bo) {
 

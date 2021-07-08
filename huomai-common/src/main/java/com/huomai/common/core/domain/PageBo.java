@@ -17,10 +17,10 @@ public class PageBo {
 	 * 分页大小
 	 */
 	@ApiModelProperty("分页大小")
-	private Integer pageSize;
+	private Integer pageSize = 5;
 	/**
 	 * 当前页数
 	 */
 	@ApiModelProperty("当前页数")
-	private Integer pageNum;
+	private Integer pageNum = 1;
 }

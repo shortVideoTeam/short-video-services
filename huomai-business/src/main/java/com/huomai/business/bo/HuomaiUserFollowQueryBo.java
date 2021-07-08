@@ -2,6 +2,7 @@ package com.huomai.business.bo;
 
 import com.huomai.common.core.domain.PageBo;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,8 +18,11 @@ import lombok.EqualsAndHashCode;
 @ApiModel("用户关注|粉丝分页查询对象")
 public class HuomaiUserFollowQueryBo extends PageBo {
 
+	@ApiModelProperty(value = "当前用户ID", hidden = true)
 	private Long curUserId;
 
+	//1-关注列表
+	@ApiModelProperty(value = "查询类型 1-关注列表，2-粉丝列表", hidden = true)
 	private Integer type;
 
 }

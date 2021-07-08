@@ -48,6 +48,7 @@ public class WxAuthController {
 
 	@PassToken
 	@PostMapping("/auth")
+	@ApiOperation(value = "授权")
 	public AjaxResult auth(@RequestBody WxLoginInfo loginInfo) {
 
 		HashMap<Object, Object> map = Maps.newHashMap();
@@ -99,6 +100,7 @@ public class WxAuthController {
 	 * 绑定手机号，返回token
 	 * </pre>
 	 */
+	@ApiOperation(value = "绑定手机号")
 	@PassToken
 	@PostMapping("/phone")
 	public AjaxResult phone(@RequestBody WxUserData userData) {
@@ -142,7 +144,7 @@ public class WxAuthController {
 		HuomaiUser user = userService.getById(userId);
 		HashMap<Object, Object> map = Maps.newHashMap();
 		map.put("token", JwtUtil.sign(String.valueOf(user.getUserId()), SecureUtil.md5(user.getOpenid())));
-		map.put("user", user);
+//		map.put("user", user);
 		return AjaxResult.success(map);
 	}
 }

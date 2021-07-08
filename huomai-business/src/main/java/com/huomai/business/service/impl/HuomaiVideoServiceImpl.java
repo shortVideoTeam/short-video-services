@@ -40,7 +40,9 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 	 */
 	@Override
 	public HuomaiVideoHotVo queryById(Long videoId) {
-		List<HuomaiVideoHotVo> vos = queryList(HuomaiVideoHotBo.builder().videoId(videoId).build());
+		HuomaiVideoHotBo hotBo = new HuomaiVideoHotBo();
+		hotBo.setVideoId(videoId);
+		List<HuomaiVideoHotVo> vos = queryList(hotBo);
 		if (vos.size() > 0) {
 			return vos.get(0);
 		}

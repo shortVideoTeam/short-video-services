@@ -36,5 +36,4 @@ public interface HuomaiVideoMapper extends BaseMapperPlus<HuomaiVideo> {
     */
     List<HuomaiVideoAttendVo> attendList(@Param("page") Page page, @Param("bo") HuomaiVideoAttendBo bo);
 
-	List<HuomaiVideoVo> queryPageList(Page page, HuomaiVideoQueryBo bo);
 }

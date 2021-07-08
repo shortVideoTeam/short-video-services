@@ -29,7 +29,7 @@
                     and f.user_id = #{bo.curUserId}
                 </when>
                 <when test="bo.type != null and bo.type == 2">
-                    and f.follow_id = #{bo.curUserId}
+                    and f.follow_user_id = #{bo.curUserId}
                 </when>
             </choose>
         </where>

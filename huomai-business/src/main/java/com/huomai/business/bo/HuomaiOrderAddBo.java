@@ -47,10 +47,11 @@ public class HuomaiOrderAddBo {
 	@NotBlank(message = "支付方式不能为空")
 	private String payWay;
 
-	@ApiModelProperty("推广作品列表")
+	@ApiModelProperty("推广作品ID列表")
 	private List<Long> videoList;
 
 	//服务器域名
+	@ApiModelProperty(value = "服务器域名", hidden = true)
 	private String domain;
 
 }

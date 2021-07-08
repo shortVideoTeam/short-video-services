@@ -21,6 +21,7 @@ public class HuomaiUserQueryBo extends PageBo {
 	/**
 	 * 当前用户
 	 */
+	@ApiModelProperty(value = "当前用户ID", hidden = true)
 	private Long curUserId;
 
 	/**

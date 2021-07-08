@@ -21,6 +21,7 @@ public class HuomaiVideoAddBo {
 	/**
 	 * 用户Id
 	 */
+	@ApiModelProperty(value = "用户Id", hidden = true)
 	private Long userId;
 
 	/**
@@ -65,6 +66,7 @@ public class HuomaiVideoAddBo {
 	/**
 	 * 状态( 0 草稿 1: 审核通过 2: 审核不通过 3: 删除 )
 	 */
+	@ApiModelProperty(value = "状态", hidden = true)
 	private String status;
 
 	/**

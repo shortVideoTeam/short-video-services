@@ -13,6 +13,7 @@ import com.huomai.business.vo.HuomaiUserFollowVo;
 import com.huomai.business.vo.HuomaiUserVo;
 import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.utils.PageUtils;
+import com.huomai.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +51,7 @@ public class HuomaiUserFollowServiceImpl extends ServiceImpl<HuomaiUserFollowMap
 	@Override
 	public Boolean insertByAddBo(HuomaiUserFollowAddBo bo) {
 		HuomaiUserFollow add = BeanUtil.toBean(bo, HuomaiUserFollow.class);
+		add.setUserId(SecurityUtils.getUserId());
 		validEntityBeforeSave(add);
 		return save(add);
 	}
@@ -86,6 +88,7 @@ public class HuomaiUserFollowServiceImpl extends ServiceImpl<HuomaiUserFollowMap
 	@Override
 	public TableDataInfo<HuomaiUserFollowVo> attendList(HuomaiUserFollowQueryBo bo) {
 		bo.setType(1);
+		bo.setCurUserId(SecurityUtils.getUserId());
 		return PageUtils.buildDataInfo(followMapper.userFollowList(PageUtils.buildPage(), bo));
 	}
 
@@ -97,6 +100,7 @@ public class HuomaiUserFollowServiceImpl extends ServiceImpl<HuomaiUserFollowMap
 	@Override
 	public TableDataInfo<HuomaiUserFollowVo> followMeList(HuomaiUserFollowQueryBo bo) {
 		bo.setType(2);
+		bo.setCurUserId(SecurityUtils.getUserId());
 		return PageUtils.buildDataInfo(followMapper.userFollowList(PageUtils.buildPage(), bo));
 	}
 
@@ -107,6 +111,7 @@ public class HuomaiUserFollowServiceImpl extends ServiceImpl<HuomaiUserFollowMap
 	*/
 	@Override
 	public TableDataInfo<HuomaiUserFollowVo> friendsList(HuomaiUserFollowQueryBo bo) {
+		bo.setCurUserId(SecurityUtils.getUserId());
 		return PageUtils.buildDataInfo(followMapper.friendsList(PageUtils.buildPage(),bo));
 	}
 }

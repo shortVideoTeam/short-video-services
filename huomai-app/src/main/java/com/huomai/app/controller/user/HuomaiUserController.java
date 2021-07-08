@@ -9,6 +9,7 @@ import com.huomai.business.vo.HuomaiUserWalleVo;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
 import com.huomai.common.core.page.TableDataInfo;
+import com.huomai.common.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -65,9 +66,8 @@ public class HuomaiUserController extends BaseController {
 	 * 我的钱包
 	 */
 	@ApiOperation("我的钱包")
-	@GetMapping("/myWalle/{userId}")
-	public AjaxResult<HuomaiUserWalleVo> myWalle(@NotNull(message = "主键不能为空")
-											  @PathVariable("userId") Long userId) {
-		return AjaxResult.success(iHuomaiUserService.getVoById(userId, HuomaiUserWalleVo.class));
+	@GetMapping("/myWalle")
+	public AjaxResult<HuomaiUserWalleVo> myWalle() {
+		return AjaxResult.success(iHuomaiUserService.getVoById(SecurityUtils.getUserId(), HuomaiUserWalleVo.class));
 	}
 }

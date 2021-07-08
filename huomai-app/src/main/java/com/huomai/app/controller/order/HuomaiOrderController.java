@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
  * @author huomai
  * @date 2021-06-19
  */
-@Api(value = "订单记录控制器", tags = {"订单记录管理"})
+@Api(value = "订单记录控制器", tags = {"订单模块"})
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
 @RequestMapping("/business/order")

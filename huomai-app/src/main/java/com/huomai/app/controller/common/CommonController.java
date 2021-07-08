@@ -11,6 +11,7 @@ import com.huomai.framework.config.ServerConfig;
 import com.huomai.system.service.ISysConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -49,7 +50,7 @@ public class CommonController {
 	 */
 	@ApiOperation("文件上传")
 	@PostMapping("/fileUpload")
-	public AjaxResult fileUpload(@NotNull @RequestBody MultipartFile file) {
+	public AjaxResult fileUpload(@NotNull @RequestBody @ApiParam(name = "文件") MultipartFile file) {
 		String ossPath = configService.selectConfigByKey("oss_path");
 		String fileUrl = uploadService.upload(file);
 		Map<String, Object> resultMap = new HashMap<>();

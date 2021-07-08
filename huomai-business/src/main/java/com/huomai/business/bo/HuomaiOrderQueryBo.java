@@ -22,6 +22,7 @@ public class HuomaiOrderQueryBo extends PageBo {
 	@ApiModelProperty("订单类型 1-购买 2-充值 3-提现 4-收益")
 	private Integer orderType;
 
+	@ApiModelProperty(value = "当前用户ID", hidden = true)
 	private Long curUserId;
 
 }

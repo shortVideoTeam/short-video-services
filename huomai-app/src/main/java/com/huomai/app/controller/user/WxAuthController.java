@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -49,7 +50,7 @@ public class WxAuthController {
 	@PassToken
 	@PostMapping("/auth")
 	@ApiOperation(value = "授权")
-	public AjaxResult auth(@RequestBody WxLoginInfo loginInfo) {
+	public AjaxResult auth(@Validated @RequestBody WxLoginInfo loginInfo) {
 
 		HashMap<Object, Object> map = Maps.newHashMap();
 
@@ -103,7 +104,7 @@ public class WxAuthController {
 	@ApiOperation(value = "绑定手机号")
 	@PassToken
 	@PostMapping("/phone")
-	public AjaxResult phone(@RequestBody WxUserData userData) {
+	public AjaxResult phone(@Validated @RequestBody WxUserData userData) {
 		try {
 			final WxMaService wxService = WxMaConfiguration.getMaService(userData.getAppid());
 			String sessionKey = redisCache.getCacheObject(userData.getUserKey());

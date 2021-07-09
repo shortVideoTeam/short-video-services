@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -19,18 +20,18 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "小程序用户加密信息")
 public class WxUserData {
 	@ApiModelProperty(value = "appid")
-	@NotNull(message = "appid不能为空")
+	@NotBlank(message = "appid不能为空")
 	private String appid;
 
 	@ApiModelProperty(value = "encryptedData")
-	@NotNull(message = "encryptedData不能为空")
+	@NotBlank(message = "encryptedData不能为空")
 	private String encryptedData;
 
 	@ApiModelProperty(value = "iv")
-	@NotNull(message = "iv不能为空")
+	@NotBlank(message = "iv不能为空")
 	private String iv;
 
 	@ApiModelProperty(value = "userKey")
-	@NotNull(message = "userKey不能为空")
+	@NotBlank(message = "userKey不能为空")
 	private String userKey;
 }

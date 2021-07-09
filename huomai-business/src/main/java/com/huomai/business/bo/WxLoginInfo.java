@@ -28,15 +28,15 @@ public class WxLoginInfo {
 	@NotNull(message = "userInfo不能为空")
 	private UserInfo userInfo;
 	@ApiModelProperty(value = "encryptedData")
-	@NotNull(message = "encryptedData不能为空")
+	@NotBlank(message = "encryptedData不能为空")
 	private String encryptedData;
 	@ApiModelProperty(value = "iv")
-	@NotNull(message = "iv不能为空")
+	@NotBlank(message = "iv不能为空")
 	private String iv;
-	@NotNull(message = "rawData不能为空")
+	@NotBlank(message = "rawData不能为空")
 	@ApiModelProperty(value = "rawData")
 	private String rawData;
-	@NotNull(message = "signature不能为空")
+	@NotBlank(message = "signature不能为空")
 	@ApiModelProperty(value = "signature")
 	private String signature;
 }

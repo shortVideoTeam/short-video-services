@@ -142,11 +142,13 @@ public class HuomaiUserAddBo {
 	/**
 	 * 用户状态
 	 */
+	@ApiModelProperty("用户状态")
 	private String status;
 
 	/**
 	 * 邀请码
 	 */
+	@ApiModelProperty("邀请码")
 	private String inviteCode;
 	private String password;
 

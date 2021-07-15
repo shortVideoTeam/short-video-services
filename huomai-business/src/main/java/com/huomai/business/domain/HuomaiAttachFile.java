@@ -7,6 +7,7 @@ import com.huomai.common.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -17,7 +18,7 @@ import java.util.Date;
  */
 @Data
 @ToString
-public class HuomaiAttachFile extends BaseEntity {
+public class HuomaiAttachFile implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**

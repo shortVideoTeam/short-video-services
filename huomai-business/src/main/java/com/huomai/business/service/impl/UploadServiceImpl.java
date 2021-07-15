@@ -7,6 +7,7 @@ import com.aliyun.oss.model.ObjectMetadata;
 import com.huomai.business.domain.HuomaiAttachFile;
 import com.huomai.business.mapper.HuomaiAttachFileMapper;
 import com.huomai.business.service.IUploadService;
+import com.huomai.common.exception.BaseException;
 import com.huomai.common.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -96,9 +97,10 @@ public class UploadServiceImpl implements IUploadService {
 			// 上传文件流
 			ossClient.putObject(bucketName, fileUrl, inputStream, o);
 			//保存文件信息
-			saveFile(filename, size, fileUrl, suffix);
+//			saveFile(filename, size, fileUrl, suffix);
 		} catch (Exception e) {
-			fileUrl = "上传失败";
+			log.error("文件上传失败,",e);
+			throw new BaseException("文件上传失败"+e.getMessage());
 		} finally {
 			// 关闭OSSClient
 			assert ossClient != null;

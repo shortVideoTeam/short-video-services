@@ -137,4 +137,9 @@ public class HuomaiUser implements Serializable {
 	private BigDecimal totalAmount;
 	private BigDecimal cashAmount;
 
+	/**
+	 * 邀请码
+	 */
+	private String inviteCode;
+
 }

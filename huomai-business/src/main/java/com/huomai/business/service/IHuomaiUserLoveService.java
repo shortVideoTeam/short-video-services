@@ -17,23 +17,7 @@ import java.util.List;
  * @author huomai
  * @date 2021-06-19
  */
-public interface IHuomaiVideoLoveService extends IServicePlus<HuomaiUserLove> {
-	/**
-	 * 查询单个
-	 *
-	 * @return
-	 */
-	HuomaiVideoLoveVo queryById(Long id);
-
-	/**
-	 * 查询列表
-	 */
-	TableDataInfo<HuomaiVideoLoveVo> queryPageList(HuomaiVideoLoveQueryBo bo);
-
-	/**
-	 * 查询列表
-	 */
-	List<HuomaiVideoLoveVo> queryList(HuomaiVideoLoveQueryBo bo);
+public interface IHuomaiUserLoveService extends IServicePlus<HuomaiUserLove> {
 
 	/**
 	 * 根据新增业务对象插入点赞记录
@@ -43,13 +27,6 @@ public interface IHuomaiVideoLoveService extends IServicePlus<HuomaiUserLove> {
 	 */
 	Boolean insertByAddBo(HuomaiUserLoveAddBo bo);
 
-	/**
-	 * 根据编辑业务对象修改点赞记录
-	 *
-	 * @param bo 点赞记录编辑业务对象
-	 * @return
-	 */
-	Boolean updateByEditBo(HuomaiVideoLoveEditBo bo);
 
 	/**
 	 * 校验并删除数据

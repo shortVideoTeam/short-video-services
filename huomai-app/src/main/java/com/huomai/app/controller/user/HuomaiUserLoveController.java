@@ -2,7 +2,7 @@ package com.huomai.app.controller.user;
 
 import com.huomai.business.bo.HuomaiUserLoveAddBo;
 import com.huomai.business.bo.HuomaiUserLoveDelBo;
-import com.huomai.business.service.IHuomaiVideoLoveService;
+import com.huomai.business.service.IHuomaiUserLoveService;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
 import io.swagger.annotations.Api;
@@ -29,15 +29,15 @@ import java.util.Arrays;
 @RequestMapping("/business/love")
 public class HuomaiUserLoveController extends BaseController {
 
-	private final IHuomaiVideoLoveService iHuomaiVideoLoveService;
+	private final IHuomaiUserLoveService loveService;
 
 	/**
 	 * 新增点赞记录
 	 */
-	@ApiOperation("点赞")
+	@ApiOperation("点赞|取消点赞")
 	@PostMapping("/add")
 	public AjaxResult<Void> add(@Validated @RequestBody HuomaiUserLoveAddBo bo) {
-		return toAjax(iHuomaiVideoLoveService.insertByAddBo(bo) ? 1 : 0);
+		return toAjax(loveService.insertByAddBo(bo) ? 1 : 0);
 	}
 
 	/**
@@ -46,6 +46,6 @@ public class HuomaiUserLoveController extends BaseController {
 	@ApiOperation("取消点赞")
 	@PostMapping("/cancel")
 	public AjaxResult<Void> cancel(@Validated @RequestBody HuomaiUserLoveDelBo bo) {
-		return toAjax(iHuomaiVideoLoveService.deleteWithValidByIds(Arrays.asList(bo.getId()), true) ? 1 : 0);
+		return toAjax(loveService.deleteWithValidByIds(Arrays.asList(bo.getId()), true) ? 1 : 0);
 	}
 }

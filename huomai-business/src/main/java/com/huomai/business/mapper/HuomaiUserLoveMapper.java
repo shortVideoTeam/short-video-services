@@ -9,6 +9,6 @@ import com.huomai.common.core.page.BaseMapperPlus;
  * @author huomai
  * @date 2021-06-19
  */
-public interface HuomaiVideoLoveMapper extends BaseMapperPlus<HuomaiUserLove> {
+public interface HuomaiUserLoveMapper extends BaseMapperPlus<HuomaiUserLove> {
 
 }

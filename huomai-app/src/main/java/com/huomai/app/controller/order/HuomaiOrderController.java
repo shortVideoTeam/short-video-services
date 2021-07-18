@@ -4,10 +4,8 @@ import com.huomai.business.bo.HuomaiOrderAddBo;
 import com.huomai.business.bo.HuomaiOrderQueryBo;
 import com.huomai.business.service.IHuomaiOrderService;
 import com.huomai.business.vo.HuomaiOrderDetailVo;
-import com.huomai.business.vo.HuomaiOrderVo;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
-import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.system.service.ISysConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,8 +37,8 @@ public class HuomaiOrderController extends BaseController {
 	 */
 	@ApiOperation("查询订单记录列表")
 	@GetMapping("/list")
-	public TableDataInfo<HuomaiOrderVo> list(@Validated HuomaiOrderQueryBo bo) {
-		return iHuomaiOrderService.queryPageList(bo);
+	public AjaxResult list(@Validated HuomaiOrderQueryBo bo) {
+		return AjaxResult.success(iHuomaiOrderService.queryPageList(bo));
 	}
 
 	/**

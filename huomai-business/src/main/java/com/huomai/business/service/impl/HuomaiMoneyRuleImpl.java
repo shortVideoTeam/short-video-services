@@ -23,11 +23,11 @@ public class HuomaiMoneyRuleImpl implements IHuomaiMoneyRuleService {
 
 	@Override
 	public List<HuomaiMoneyRuleVo> rechargeMoneyList() {
-		return rechargeRuleMapper.selectList(Wrappers.emptyWrapper()).stream().map(rule -> BeanUtil.toBean(rule, HuomaiMoneyRuleVo.class)).collect(Collectors.toList());
+		return rechargeRuleMapper.selectList(Wrappers.emptyWrapper()).stream().map(rule -> BeanUtil.toBean(rule, HuomaiMoneyRuleVo.class)).limit(6).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<HuomaiMoneyRuleVo> cashMoneyList() {
-		return casheRuleMapper.selectList(Wrappers.emptyWrapper()).stream().map(rule -> BeanUtil.toBean(rule, HuomaiMoneyRuleVo.class)).collect(Collectors.toList());
+		return casheRuleMapper.selectList(Wrappers.emptyWrapper()).stream().map(rule -> BeanUtil.toBean(rule, HuomaiMoneyRuleVo.class)).limit(6).collect(Collectors.toList());
 	}
 }

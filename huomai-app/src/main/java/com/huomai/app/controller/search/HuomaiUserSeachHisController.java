@@ -3,10 +3,8 @@ package com.huomai.app.controller.search;
 import com.huomai.business.bo.HuomaiUserSeachHisAddBo;
 import com.huomai.business.bo.HuomaiUserSeachHisQueryBo;
 import com.huomai.business.service.IHuomaiUserSeachHisService;
-import com.huomai.business.vo.HuomaiUserSeachHisVo;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
-import com.huomai.common.core.page.TableDataInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -33,16 +31,16 @@ public class HuomaiUserSeachHisController extends BaseController {
 	 */
 	@ApiOperation("查询搜索历史记录列表")
 	@GetMapping("/list")
-	public TableDataInfo<HuomaiUserSeachHisVo> list(@Validated HuomaiUserSeachHisQueryBo bo) {
-		return iHuomaiUserSeachHisService.queryPageList(bo);
+	public AjaxResult list(@Validated HuomaiUserSeachHisQueryBo bo) {
+		return AjaxResult.success(iHuomaiUserSeachHisService.queryPageList(bo));
 	}
 
 	/**
 	 * 新增搜索历史记录
 	 */
 	@ApiOperation("新增搜索历史记录")
-	@PostMapping()
-	public AjaxResult<Void> add(@Validated @RequestBody HuomaiUserSeachHisAddBo bo) {
+	@PostMapping("/add")
+	public AjaxResult add(@Validated @RequestBody HuomaiUserSeachHisAddBo bo) {
 		return toAjax(iHuomaiUserSeachHisService.insertByAddBo(bo) ? 1 : 0);
 	}
 
@@ -51,7 +49,7 @@ public class HuomaiUserSeachHisController extends BaseController {
 	 */
 	@ApiOperation("清空搜索历史记录")
 	@PostMapping("/cleanHis")
-	public AjaxResult<Void> cleanHis() {
+	public AjaxResult cleanHis() {
 		return toAjax(iHuomaiUserSeachHisService.cleanHis() ? 1 : 0);
 	}
 }

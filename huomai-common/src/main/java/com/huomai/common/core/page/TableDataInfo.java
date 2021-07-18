@@ -35,18 +35,6 @@ public class TableDataInfo<T> implements Serializable {
 	private List<T> rows;
 
 	/**
-	 * 消息状态码
-	 */
-	@ApiModelProperty("消息状态码")
-	private int code;
-
-	/**
-	 * 消息内容
-	 */
-	@ApiModelProperty("消息内容")
-	private String msg;
-
-	/**
 	 * 分页
 	 *
 	 * @param list  列表数据

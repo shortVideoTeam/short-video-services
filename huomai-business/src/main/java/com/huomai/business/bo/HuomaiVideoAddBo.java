@@ -38,6 +38,9 @@ public class HuomaiVideoAddBo {
 	@NotBlank(message = "视频地址不能为空")
 	private String videoUrl;
 
+	@ApiModelProperty("封面图")
+	private String coverUrl;
+
 	/**
 	 * 视频时长
 	 */

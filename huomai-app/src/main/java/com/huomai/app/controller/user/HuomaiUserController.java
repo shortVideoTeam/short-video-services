@@ -4,11 +4,9 @@ import com.huomai.business.bo.HuomaiUserEditBo;
 import com.huomai.business.bo.HuomaiUserQueryBo;
 import com.huomai.business.service.IHuomaiUserService;
 import com.huomai.business.vo.HuomaiUserDetailVo;
-import com.huomai.business.vo.HuomaiUserVo;
 import com.huomai.business.vo.HuomaiUserWalleVo;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
-import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,8 +36,8 @@ public class HuomaiUserController extends BaseController {
 	 */
 	@ApiOperation("首页搜索用户信息列表")
 	@GetMapping("/list")
-	public TableDataInfo<HuomaiUserVo> list(@Validated HuomaiUserQueryBo bo) {
-		return iHuomaiUserService.queryPageList(bo);
+	public AjaxResult list(@Validated HuomaiUserQueryBo bo) {
+		return AjaxResult.success(iHuomaiUserService.queryPageList(bo));
 	}
 
 
@@ -57,7 +55,7 @@ public class HuomaiUserController extends BaseController {
 	 * 修改资料
 	 */
 	@ApiOperation("修改资料")
-	@PutMapping()
+	@PostMapping("/update")
 	public AjaxResult<Void> edit(@Validated @RequestBody HuomaiUserEditBo bo) {
 		return toAjax(iHuomaiUserService.updateByEditBo(bo) ? 1 : 0);
 	}

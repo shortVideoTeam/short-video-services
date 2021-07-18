@@ -47,6 +47,8 @@ public class HuomaiVideo implements Serializable {
 	 */
 	private String videoUrl;
 
+	private String coverUrl;
+
 	/**
 	 * 视频时长
 	 */

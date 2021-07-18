@@ -2,6 +2,7 @@ package com.huomai.app.controller.video;
 
 import com.google.common.collect.Lists;
 import com.huomai.business.bo.HuomaiVideoCommentAddBo;
+import com.huomai.business.bo.HuomaiVideoCommentDelBo;
 import com.huomai.business.bo.HuomaiVideoCommentQueryBo;
 import com.huomai.business.service.IHuomaiVideoCommentReplyService;
 import com.huomai.business.service.IHuomaiVideoCommentService;
@@ -9,7 +10,6 @@ import com.huomai.business.vo.HuomaiVideoCommentReplyVo;
 import com.huomai.business.vo.HuomaiVideoCommentVo;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
-import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.utils.PageUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +45,7 @@ public class HuomaiVideoCommentController extends BaseController {
 	 */
 	@ApiOperation("视频评论列表接口")
 	@GetMapping("/listWithReply")
-	public TableDataInfo<HuomaiVideoCommentVo> listWithReply(@Validated HuomaiVideoCommentQueryBo bo) {
+	public AjaxResult listWithReply(@Validated HuomaiVideoCommentQueryBo bo) {
 		List<HuomaiVideoCommentVo> voList = commentService.listWithReply(bo);
 		//批量查询评论下面的回复列表
 		if (voList.size() > 0) {
@@ -56,7 +55,7 @@ public class HuomaiVideoCommentController extends BaseController {
 				vo.setReplyVoList(map.getOrDefault(vo.getCommentId(), Lists.newArrayList()));
 			});
 		}
-		return PageUtils.buildDataInfo(voList);
+		return AjaxResult.success(PageUtils.buildDataInfo(voList));
 	}
 
 
@@ -74,7 +73,7 @@ public class HuomaiVideoCommentController extends BaseController {
 	 * 新增评论
 	 */
 	@ApiOperation("评论")
-	@PostMapping()
+	@PostMapping("/add")
 	public AjaxResult<Void> add(@Validated @RequestBody HuomaiVideoCommentAddBo bo) {
 		return toAjax(commentService.insertByAddBo(bo) ? 1 : 0);
 	}
@@ -83,9 +82,8 @@ public class HuomaiVideoCommentController extends BaseController {
 	 * 删除评论
 	 */
 	@ApiOperation("删除评论")
-	@DeleteMapping("/{commentIds}")
-	public AjaxResult<Void> remove(@NotEmpty(message = "commentIds不能为空")
-								   @PathVariable Long[] commentIds) {
-		return toAjax(commentService.deleteWithValidByIds(Arrays.asList(commentIds), true) ? 1 : 0);
+	@PostMapping("/del")
+	public AjaxResult<Void> remove(@Validated @RequestBody HuomaiVideoCommentDelBo bo) {
+		return toAjax(commentService.deleteWithValidByIds(Arrays.asList(bo.getCommentId()), true) ? 1 : 0);
 	}
 }

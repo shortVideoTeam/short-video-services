@@ -11,10 +11,8 @@
 package com.huomai.app.controller.order;
 
 import com.huomai.business.bo.HuomaiCashAddBo;
-import com.huomai.business.bo.HuomaiRechargeAddBo;
 import com.huomai.business.service.IHuomaiMoneyRuleService;
 import com.huomai.business.service.IHuomaiOrderService;
-import com.huomai.business.vo.HuomaiMoneyRuleVo;
 import com.huomai.common.core.domain.AjaxResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,8 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @Api(value = "提现模块", tags = {"提现管理"})
@@ -42,7 +38,7 @@ public class HuomaiCashController {
 
 	@ApiOperation("提现金额列表")
 	@GetMapping("/cashMoneyList")
-	public AjaxResult<List<HuomaiMoneyRuleVo>> cashMoneyList() {
+	public AjaxResult cashMoneyList() {
 		return AjaxResult.success(moneyRuleService.cashMoneyList());
 	}
 

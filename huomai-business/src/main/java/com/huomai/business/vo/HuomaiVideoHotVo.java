@@ -53,6 +53,9 @@ public class HuomaiVideoHotVo {
 	@ApiModelProperty("视频地址")
 	private String videoUrl;
 
+	@ApiModelProperty("封面图")
+	private String coverUrl;
+
 	/**
 	 * 视频时长
 	 */

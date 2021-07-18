@@ -2,15 +2,9 @@ package com.huomai.app.controller.video;
 
 import com.huomai.business.bo.*;
 import com.huomai.business.service.IHuomaiVideoService;
-import com.huomai.business.vo.HuomaiVideoAttendVo;
 import com.huomai.business.vo.HuomaiVideoHotVo;
-import com.huomai.business.vo.HuomaiVideoVo;
-import com.huomai.common.annotation.Log;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
-import com.huomai.common.core.page.TableDataInfo;
-import com.huomai.common.enums.BusinessType;
-import com.huomai.common.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 
@@ -41,8 +34,8 @@ public class HuomaiVideoController extends BaseController {
 	 */
 	@ApiOperation("热门视频列表")
 	@GetMapping("/hotList")
-	public TableDataInfo<HuomaiVideoHotVo> hotList(@Validated HuomaiVideoHotBo bo) {
-		return iHuomaiVideoService.hotList(bo);
+	public AjaxResult hotList(@Validated HuomaiVideoHotBo bo) {
+		return AjaxResult.success(iHuomaiVideoService.hotList(bo));
 	}
 
 	/**
@@ -50,8 +43,8 @@ public class HuomaiVideoController extends BaseController {
 	 */
 	@ApiOperation("关注视频列表")
 	@GetMapping("/attendList")
-	public TableDataInfo<HuomaiVideoAttendVo> attendList(@Validated HuomaiVideoAttendBo bo) {
-		return iHuomaiVideoService.attendList(bo);
+	public AjaxResult attendList(@Validated HuomaiVideoAttendBo bo) {
+		return AjaxResult.success(iHuomaiVideoService.attendList(bo));
 	}
 
 	/**
@@ -59,9 +52,9 @@ public class HuomaiVideoController extends BaseController {
 	 */
 	@ApiOperation("用户作品列表")
 	@GetMapping("/videoList")
-	public TableDataInfo<HuomaiVideoVo> videoList(@Validated HuomaiVideoQueryBo bo) {
+	public AjaxResult videoList(@Validated HuomaiVideoQueryBo bo) {
 
-		return iHuomaiVideoService.videoList(bo);
+		return AjaxResult.success(iHuomaiVideoService.videoList(bo));
 	}
 
 
@@ -79,7 +72,7 @@ public class HuomaiVideoController extends BaseController {
 	 * 发布视频
 	 */
 	@ApiOperation("发布视频")
-	@PostMapping()
+	@PostMapping("/add")
 	public AjaxResult<Void> add(@Validated @RequestBody HuomaiVideoAddBo bo) {
 		return toAjax(iHuomaiVideoService.insertByAddBo(bo) ? 1 : 0);
 	}
@@ -88,8 +81,7 @@ public class HuomaiVideoController extends BaseController {
 	 * 修改视频信息
 	 */
 	@ApiOperation("修改视频")
-	@Log(title = "视频信息", businessType = BusinessType.UPDATE)
-	@PutMapping()
+	@PostMapping("/update")
 	public AjaxResult<Void> edit(@Validated @RequestBody HuomaiVideoEditBo bo) {
 		return toAjax(iHuomaiVideoService.updateByEditBo(bo) ? 1 : 0);
 	}
@@ -98,9 +90,8 @@ public class HuomaiVideoController extends BaseController {
 	 * 删除视频信息
 	 */
 	@ApiOperation("删除视频")
-	@DeleteMapping("/{videoIds}")
-	public AjaxResult<Void> remove(@NotEmpty(message = "videoIds不能为空")
-								   @PathVariable Long[] videoIds) {
-		return toAjax(iHuomaiVideoService.deleteWithValidByIds(Arrays.asList(videoIds), true) ? 1 : 0);
+	@PostMapping("/del")
+	public AjaxResult<Void> remove(@Validated @RequestBody HuomaiVideoDelBo bo) {
+		return toAjax(iHuomaiVideoService.deleteWithValidByIds(Arrays.asList(bo.getVideoId()), true) ? 1 : 0);
 	}
 }

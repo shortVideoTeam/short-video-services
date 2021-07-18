@@ -96,8 +96,6 @@ public class PageUtils {
 
 	public static <T, K> TableDataInfo<K> buildDataInfo(PagePlus<T, K> page) {
 		TableDataInfo<K> rspData = new TableDataInfo<>();
-		rspData.setCode(HttpStatus.HTTP_OK);
-		rspData.setMsg("查询成功");
 		rspData.setRows(page.getRecordsVo());
 		rspData.setTotal(page.getTotal());
 		return rspData;
@@ -105,8 +103,6 @@ public class PageUtils {
 
 	public static <T> TableDataInfo<T> buildDataInfo(Page<T> page) {
 		TableDataInfo<T> rspData = new TableDataInfo<>();
-		rspData.setCode(HttpStatus.HTTP_OK);
-		rspData.setMsg("查询成功");
 		rspData.setRows(page.getRecords());
 		rspData.setTotal(page.getTotal());
 		return rspData;
@@ -114,8 +110,6 @@ public class PageUtils {
 
 	public static <T> TableDataInfo<T> buildDataInfo(List<T> list) {
 		TableDataInfo<T> rspData = new TableDataInfo<>();
-		rspData.setCode(HttpStatus.HTTP_OK);
-		rspData.setMsg("查询成功");
 		rspData.setRows(list);
 		rspData.setTotal(list.size());
 		return rspData;

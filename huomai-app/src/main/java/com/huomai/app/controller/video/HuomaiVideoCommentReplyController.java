@@ -1,12 +1,12 @@
 package com.huomai.app.controller.video;
 
 import com.huomai.business.bo.HuomaiVideoCommentReplyAddBo;
+import com.huomai.business.bo.HuomaiVideoCommentReplyDelBo;
 import com.huomai.business.bo.HuomaiVideoCommentReplyQueryBo;
 import com.huomai.business.service.IHuomaiVideoCommentReplyService;
 import com.huomai.business.vo.HuomaiVideoCommentReplyVo;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
-import com.huomai.common.core.page.TableDataInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 
@@ -37,8 +36,8 @@ public class HuomaiVideoCommentReplyController extends BaseController {
 	 */
 	@ApiOperation("查询回复列表")
 	@GetMapping("/list")
-	public TableDataInfo<HuomaiVideoCommentReplyVo> list(@Validated HuomaiVideoCommentReplyQueryBo bo) {
-		return iHuomaiVideoCommentReplyService.queryPageList(bo);
+	public AjaxResult list(@Validated HuomaiVideoCommentReplyQueryBo bo) {
+		return AjaxResult.success(iHuomaiVideoCommentReplyService.queryPageList(bo));
 	}
 
 
@@ -56,7 +55,7 @@ public class HuomaiVideoCommentReplyController extends BaseController {
 	 * 新增回复
 	 */
 	@ApiOperation("新增回复")
-	@PostMapping()
+	@PostMapping("/add")
 	public AjaxResult<Void> add(@Validated @RequestBody HuomaiVideoCommentReplyAddBo bo) {
 		return toAjax(iHuomaiVideoCommentReplyService.insertByAddBo(bo) ? 1 : 0);
 	}
@@ -65,9 +64,8 @@ public class HuomaiVideoCommentReplyController extends BaseController {
 	 * 删除回复
 	 */
 	@ApiOperation("删除回复")
-	@DeleteMapping("/{ids}")
-	public AjaxResult<Void> remove(@NotEmpty(message = "ids不能为空")
-								   @PathVariable Long[] ids) {
-		return toAjax(iHuomaiVideoCommentReplyService.deleteWithValidByIds(Arrays.asList(ids), true) ? 1 : 0);
+	@PostMapping("/del")
+	public AjaxResult<Void> remove(@Validated @RequestBody HuomaiVideoCommentReplyDelBo bo) {
+		return toAjax(iHuomaiVideoCommentReplyService.deleteWithValidByIds(Arrays.asList(bo.getId()), true) ? 1 : 0);
 	}
 }

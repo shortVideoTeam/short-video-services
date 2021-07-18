@@ -1,13 +1,11 @@
 package com.huomai.app.controller.user;
 
 import com.huomai.business.bo.HuomaiUserInviteAddBo;
-import com.huomai.business.bo.HuomaiUserInviteEditBo;
 import com.huomai.business.bo.HuomaiUserInviteQueryBo;
 import com.huomai.business.service.IHuomaiUserInviteService;
 import com.huomai.business.vo.HuomaiUserInviteVo;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
-import com.huomai.common.core.page.TableDataInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Arrays;
 
 /**
  * 邀请记录Controller
@@ -38,8 +34,8 @@ public class HuomaiUserInviteController extends BaseController {
 	 */
 	@ApiOperation("查询邀请记录列表")
 	@GetMapping("/list")
-	public TableDataInfo<HuomaiUserInviteVo> list(@Validated HuomaiUserInviteQueryBo bo) {
-		return iHuomaiUserInviteService.queryPageList(bo);
+	public AjaxResult list(@Validated HuomaiUserInviteQueryBo bo) {
+		return AjaxResult.success(iHuomaiUserInviteService.queryPageList(bo));
 	}
 
 	/**
@@ -56,27 +52,8 @@ public class HuomaiUserInviteController extends BaseController {
 	 * 新增邀请记录
 	 */
 	@ApiOperation("新增邀请记录")
-	@PostMapping()
+	@PostMapping("/add")
 	public AjaxResult<Void> add(@Validated @RequestBody HuomaiUserInviteAddBo bo) {
 		return toAjax(iHuomaiUserInviteService.insertByAddBo(bo) ? 1 : 0);
-	}
-
-	/**
-	 * 修改邀请记录
-	 */
-	@ApiOperation("修改邀请记录")
-	@PutMapping()
-	public AjaxResult<Void> edit(@Validated @RequestBody HuomaiUserInviteEditBo bo) {
-		return toAjax(iHuomaiUserInviteService.updateByEditBo(bo) ? 1 : 0);
-	}
-
-	/**
-	 * 删除邀请记录
-	 */
-	@ApiOperation("删除邀请记录")
-	@DeleteMapping("/{ids}")
-	public AjaxResult<Void> remove(@NotEmpty(message = "主键不能为空")
-								   @PathVariable Long[] ids) {
-		return toAjax(iHuomaiUserInviteService.deleteWithValidByIds(Arrays.asList(ids), true) ? 1 : 0);
 	}
 }

@@ -2,9 +2,8 @@ package com.huomai.app.controller.common;
 
 import com.huomai.business.bo.HuomaiMiusicQueryBo;
 import com.huomai.business.service.IHuomaiMiusicService;
-import com.huomai.business.vo.HuomaiMiusicVo;
 import com.huomai.common.core.controller.BaseController;
-import com.huomai.common.core.page.TableDataInfo;
+import com.huomai.common.core.domain.AjaxResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,7 @@ public class HuomaiMiusicController extends BaseController {
 	 */
 	@ApiOperation("查询音乐模板列表")
 	@GetMapping("/list")
-	public TableDataInfo<HuomaiMiusicVo> list(@Validated HuomaiMiusicQueryBo bo) {
-		return iHuomaiMiusicService.queryPageList(bo);
+	public AjaxResult list(@Validated HuomaiMiusicQueryBo bo) {
+		return AjaxResult.success(iHuomaiMiusicService.queryPageList(bo));
 	}
 }

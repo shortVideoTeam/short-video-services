@@ -72,6 +72,7 @@ public class HuomaiVideoCommentReplyVo {
 	 * 创建时间
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@ApiModelProperty("创建时间")
 	private Date createTime;
 
 

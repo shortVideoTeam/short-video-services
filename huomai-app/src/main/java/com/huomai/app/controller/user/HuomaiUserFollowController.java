@@ -1,12 +1,12 @@
 package com.huomai.app.controller.user;
 
 import com.huomai.business.bo.HuomaiUserFollowAddBo;
+import com.huomai.business.bo.HuomaiUserFollowDelBo;
 import com.huomai.business.bo.HuomaiUserFollowQueryBo;
 import com.huomai.business.service.IHuomaiUserFollowService;
 import com.huomai.business.vo.HuomaiUserFollowVo;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
-import com.huomai.common.core.page.TableDataInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 用户关注Controller
@@ -37,8 +37,8 @@ public class HuomaiUserFollowController extends BaseController {
 	 */
 	@ApiOperation("用户关注列表")
 	@GetMapping("/attendList")
-	public TableDataInfo<HuomaiUserFollowVo> attendList(@Validated HuomaiUserFollowQueryBo bo) {
-		return iHuomaiUserFollowService.attendList(bo);
+	public AjaxResult attendList(@Validated HuomaiUserFollowQueryBo bo) {
+		return AjaxResult.success(iHuomaiUserFollowService.attendList(bo));
 	}
 
 	/**
@@ -46,8 +46,8 @@ public class HuomaiUserFollowController extends BaseController {
 	 */
 	@ApiOperation("用户粉丝列表")
 	@GetMapping("/followMeList")
-	public TableDataInfo<HuomaiUserFollowVo> followMeList(@Validated HuomaiUserFollowQueryBo bo) {
-		return iHuomaiUserFollowService.followMeList(bo);
+	public AjaxResult followMeList(@Validated HuomaiUserFollowQueryBo bo) {
+		return AjaxResult.success(iHuomaiUserFollowService.followMeList(bo));
 	}
 
 	/**
@@ -55,8 +55,8 @@ public class HuomaiUserFollowController extends BaseController {
 	 */
 	@ApiOperation("我的好友列表")
 	@GetMapping("/friendsList")
-	public TableDataInfo<HuomaiUserFollowVo> friendsList(@Validated HuomaiUserFollowQueryBo bo) {
-		return iHuomaiUserFollowService.friendsList(bo);
+	public AjaxResult friendsList(@Validated HuomaiUserFollowQueryBo bo) {
+		return AjaxResult.success(iHuomaiUserFollowService.friendsList(bo));
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class HuomaiUserFollowController extends BaseController {
 	 * 新增用户关注
 	 */
 	@ApiOperation("关注")
-	@PostMapping()
+	@PostMapping("/attend")
 	public AjaxResult<Void> add(@Validated @RequestBody HuomaiUserFollowAddBo bo) {
 		return toAjax(iHuomaiUserFollowService.insertByAddBo(bo) ? 1 : 0);
 	}
@@ -82,9 +82,25 @@ public class HuomaiUserFollowController extends BaseController {
 	 * 删除用户关注
 	 */
 	@ApiOperation("取消关注")
-	@DeleteMapping("/{ids}")
-	public AjaxResult<Void> remove(@NotEmpty(message = "主键不能为空")
-								   @PathVariable Long[] ids) {
-		return toAjax(iHuomaiUserFollowService.deleteWithValidByIds(Arrays.asList(ids), true) ? 1 : 0);
+	@PostMapping("/attendCancel")
+	public AjaxResult attendCancel(@Validated @RequestBody HuomaiUserFollowDelBo bo) {
+		Long id = bo.getId();
+		if (id == null) {
+			return AjaxResult.error("id参数是必填");
+		}
+		return toAjax(iHuomaiUserFollowService.deleteWithValidByIds(Arrays.asList(bo.getId()), true) ? 1 : 0);
+	}
+
+	/**
+	 * 删除用户关注
+	 */
+	@ApiOperation("批量取消关注")
+	@PostMapping("/batchAttendCancel")
+	public AjaxResult<Void> batchAttendCancel(@Validated @RequestBody HuomaiUserFollowDelBo bo) {
+		List<Long> ids = bo.getIds();
+		if (ids == null || ids.size() == 0) {
+			return AjaxResult.error("ids参数是必填");
+		}
+		return toAjax(iHuomaiUserFollowService.deleteWithValidByIds(bo.getIds(), true) ? 1 : 0);
 	}
 }

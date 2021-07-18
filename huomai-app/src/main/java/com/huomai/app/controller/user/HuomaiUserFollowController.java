@@ -72,7 +72,7 @@ public class HuomaiUserFollowController extends BaseController {
 	/**
 	 * 新增用户关注
 	 */
-	@ApiOperation("关注")
+	@ApiOperation("关注|取消关注")
 	@PostMapping("/attend")
 	public AjaxResult<Void> add(@Validated @RequestBody HuomaiUserFollowAddBo bo) {
 		return toAjax(iHuomaiUserFollowService.insertByAddBo(bo) ? 1 : 0);

@@ -1,6 +1,7 @@
 package com.huomai.business.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huomai.business.bo.HuomaiUserFollowAddBo;
@@ -10,7 +11,6 @@ import com.huomai.business.domain.HuomaiUserFollow;
 import com.huomai.business.mapper.HuomaiUserFollowMapper;
 import com.huomai.business.service.IHuomaiUserFollowService;
 import com.huomai.business.vo.HuomaiUserFollowVo;
-import com.huomai.business.vo.HuomaiUserVo;
 import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.utils.PageUtils;
 import com.huomai.common.utils.SecurityUtils;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户关注Service业务层处理
@@ -50,10 +51,22 @@ public class HuomaiUserFollowServiceImpl extends ServiceImpl<HuomaiUserFollowMap
 
 	@Override
 	public Boolean insertByAddBo(HuomaiUserFollowAddBo bo) {
-		HuomaiUserFollow add = BeanUtil.toBean(bo, HuomaiUserFollow.class);
-		add.setUserId(SecurityUtils.getUserId());
-		validEntityBeforeSave(add);
-		return save(add);
+		Long userId = SecurityUtils.getUserId();
+		LambdaQueryWrapper<HuomaiUserFollow> queryWrapper = Wrappers.<HuomaiUserFollow>lambdaQuery().eq(HuomaiUserFollow::getFollowUserId, bo.getFollowUserId()).eq(HuomaiUserFollow::getUserId, userId);
+		//存在则取消关注，不存在则关注
+		List<HuomaiUserFollow> follows = followMapper.selectList(queryWrapper);
+		if (follows == null || follows.size() == 0) {
+			HuomaiUserFollow add = BeanUtil.toBean(bo, HuomaiUserFollow.class);
+			add.setUserId(SecurityUtils.getUserId());
+			validEntityBeforeSave(add);
+			return save(add);
+		} else {
+			List<Long> ids = follows.stream().map(HuomaiUserFollow::getId).collect(Collectors.toList());
+			if (ids.size() > 0) {
+				followMapper.deleteBatchIds(ids);
+			}
+			return Boolean.TRUE;
+		}
 	}
 
 	@Override
@@ -105,13 +118,13 @@ public class HuomaiUserFollowServiceImpl extends ServiceImpl<HuomaiUserFollowMap
 	}
 
 	/***
-	* @description: 我的好友列表
-	* @author chenshufeng
-	* @date: 2021/6/26 5:58 下午
-	*/
+	 * @description: 我的好友列表
+	 * @author chenshufeng
+	 * @date: 2021/6/26 5:58 下午
+	 */
 	@Override
 	public TableDataInfo<HuomaiUserFollowVo> friendsList(HuomaiUserFollowQueryBo bo) {
 		bo.setCurUserId(SecurityUtils.getUserId());
-		return PageUtils.buildDataInfo(followMapper.friendsList(PageUtils.buildPage(),bo));
+		return PageUtils.buildDataInfo(followMapper.friendsList(PageUtils.buildPage(), bo));
 	}
 }

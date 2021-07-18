@@ -11,8 +11,8 @@ import java.util.Date;
 
 @Slf4j
 public class JwtUtil {
-	// 过期时间300分钟
-	private static final long EXPIRE_TIME = 300 * 60 * 1000;
+	// 过期时间7天
+	private static final long EXPIRE_TIME = 10080 * 60 * 1000;
 
 	/**
 	 * 校验token是否正确
@@ -56,7 +56,7 @@ public class JwtUtil {
 	 */
 	public static String sign(String username, String secret) {
 		Date date = new Date(DateUtils.getNowDate().getTime() + EXPIRE_TIME);
-		log.info(String.format("date:%s",DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, date)));
+		log.info(String.format("date:%s", DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, date)));
 		Algorithm algorithm = Algorithm.HMAC256(secret);
 		// 附带username信息
 		return JWT.create().withClaim("username", username).withExpiresAt(date).sign(algorithm);

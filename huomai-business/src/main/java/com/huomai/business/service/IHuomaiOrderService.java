@@ -97,4 +97,7 @@ public interface IHuomaiOrderService extends IServicePlus<HuomaiOrder> {
 	 * @return
 	 */
 	AjaxResult cashApply(HuomaiCashAddBo bo);
+
+
+    void giftOrder(HuomaiSplitGiftBo bo);
 }

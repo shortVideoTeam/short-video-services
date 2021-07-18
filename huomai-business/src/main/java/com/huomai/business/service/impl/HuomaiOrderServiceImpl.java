@@ -11,13 +11,12 @@ import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.huomai.business.bo.*;
+import com.huomai.business.domain.HuomaiGiftConfig;
 import com.huomai.business.domain.HuomaiOrder;
 import com.huomai.business.domain.HuomaiOrderItem;
 import com.huomai.business.domain.HuomaiUser;
 import com.huomai.business.mapper.HuomaiOrderMapper;
-import com.huomai.business.service.IHuomaiOrderItemService;
-import com.huomai.business.service.IHuomaiOrderService;
-import com.huomai.business.service.IHuomaiUserService;
+import com.huomai.business.service.*;
 import com.huomai.business.vo.HuomaiOrderDetailVo;
 import com.huomai.business.vo.HuomaiOrderVo;
 import com.huomai.common.core.domain.AjaxResult;
@@ -57,6 +56,15 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 
 	@Autowired
 	private IHuomaiOrderItemService itemService;
+
+	@Autowired
+	private IHuomaiUserInviteService inviteService;
+
+	@Autowired
+	private IHuomaiOrderService orderService;
+
+	@Autowired
+	private IHuomaiGiftConfigService configService;
 
 
 	@Override
@@ -276,9 +284,50 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 			this.wxService.getEntPayService().entPay(request);
 		} catch (WxPayException e) {
 			log.error(e.getMessage(), e);
-			throw new BaseException("提现失败"+e.getMessage());
+			throw new BaseException("提现失败" + e.getMessage());
 		}
 		return AjaxResult.success();
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void giftOrder(HuomaiSplitGiftBo bo) {
+		Long userId = bo.getUserId();
+		Long userIdBy = bo.getUserIdBy();
+		Double money = bo.getMoney();
+		String inviteCode = bo.getInviteCode();
+		//新增两条订单记录
+		HuomaiOrder userOrder = new HuomaiOrder();
+		userOrder.setUserId(userId);
+		userOrder.setOrderType(4);
+		userOrder.setStatus("2");
+		userOrder.setPayTime(DateUtils.getNowDate());
+		userOrder.setOrderNo(String.valueOf(System.currentTimeMillis()));
+		userOrder.setAmount(BigDecimal.valueOf(money));
+		orderMapper.insert(userOrder);
+
+		HuomaiOrder userByOrder = new HuomaiOrder();
+		userByOrder.setUserId(userIdBy);
+		userByOrder.setOrderType(4);
+		userByOrder.setStatus("2");
+		userByOrder.setPayTime(DateUtils.getNowDate());
+		userByOrder.setOrderNo(String.valueOf(System.currentTimeMillis()));
+		userByOrder.setAmount(BigDecimal.valueOf(money));
+		orderMapper.insert(userOrder);
+
+
+		//生成邀请记录
+		HuomaiUserInviteAddBo addBo = new HuomaiUserInviteAddBo();
+		addBo.setUserId(userId);
+		addBo.setByUserId(userIdBy);
+		addBo.setInviteCode(inviteCode);
+		inviteService.insertByAddBo(addBo);
+
+		//扣减红包总金额
+
+		HuomaiGiftConfig config = bo.getConfig();
+		config.setTotalAmount(config.getTotalAmount().subtract(BigDecimal.valueOf(money).multiply(BigDecimal.valueOf(2))));
+		configService.updateById(config);
 	}
 
 	/**

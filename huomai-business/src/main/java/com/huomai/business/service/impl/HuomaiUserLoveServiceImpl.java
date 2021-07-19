@@ -41,6 +41,7 @@ public class HuomaiUserLoveServiceImpl extends ServiceImpl<HuomaiUserLoveMapper,
 	 * @date: 2021/6/26 2:47 下午
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Boolean insertByAddBo(HuomaiUserLoveAddBo bo) {
 
 		//存在则取消，不存在则新增
@@ -91,7 +92,9 @@ public class HuomaiUserLoveServiceImpl extends ServiceImpl<HuomaiUserLoveMapper,
 	@Transactional(rollbackFor = Exception.class)
 	public void changeStarByVideoId(Long videoId, int num) {
 		HuomaiVideo video = videoService.getVoById(videoId, HuomaiVideo.class);
-		video.setStarNum((video.getStarNum() + (num)));
-		videoService.updateById(video);
+		HuomaiVideo update = new HuomaiVideo();
+		update.setVideoId(videoId);
+		update.setStarNum((video.getStarNum() + (num)));
+		videoService.updateById(update);
 	}
 }

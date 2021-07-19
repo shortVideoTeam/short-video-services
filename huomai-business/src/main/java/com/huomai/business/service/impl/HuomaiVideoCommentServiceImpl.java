@@ -115,7 +115,9 @@ public class HuomaiVideoCommentServiceImpl extends ServiceImpl<HuomaiVideoCommen
 	@Transactional(rollbackFor = Exception.class)
 	public void changeCommentByVideoId(Long videoId) {
 		HuomaiVideo video = videoService.getVoById(videoId, HuomaiVideo.class);
-		video.setCommentNum(video.getCommentNum() + 1);
+		HuomaiVideo update = new HuomaiVideo();
+		update.setVideoId(videoId);
+		update.setCommentNum(video.getCommentNum() + 1);
 		videoService.updateById(video);
 	}
 }

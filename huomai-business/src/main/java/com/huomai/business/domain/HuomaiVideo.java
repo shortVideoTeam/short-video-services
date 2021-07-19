@@ -77,22 +77,22 @@ public class HuomaiVideo implements Serializable {
 	/**
 	 * 点赞量
 	 */
-	private int starNum;
+	private Integer starNum;
 
 	/**
 	 * 评论量
 	 */
-	private int commentNum;
+	private Integer commentNum;
 
 	/**
 	 * 播放量
 	 */
-	private int viewNum;
+	private Integer viewNum;
 
 	/**
 	 * 分享量
 	 */
-	private int shareNum;
+	private Integer shareNum;
 
 	/**
 	 * 关键词ID (按","逗号拼接)

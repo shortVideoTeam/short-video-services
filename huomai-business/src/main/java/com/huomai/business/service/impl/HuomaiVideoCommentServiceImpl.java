@@ -118,6 +118,6 @@ public class HuomaiVideoCommentServiceImpl extends ServiceImpl<HuomaiVideoCommen
 		HuomaiVideo update = new HuomaiVideo();
 		update.setVideoId(videoId);
 		update.setCommentNum(video.getCommentNum() + 1);
-		videoService.updateById(video);
+		videoService.updateById(update);
 	}
 }

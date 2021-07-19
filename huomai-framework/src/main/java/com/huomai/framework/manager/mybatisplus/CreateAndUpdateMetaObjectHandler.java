@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import com.huomai.common.utils.DateUtils;
 import com.huomai.common.utils.SecurityUtils;
 import org.apache.ibatis.reflection.MetaObject;
+import org.springframework.util.StringUtils;
 
 /**
  * MP注入处理器
@@ -23,7 +24,7 @@ public class CreateAndUpdateMetaObjectHandler implements MetaObjectHandler {
 			}
 		}
 		if (metaObject.hasGetter("createBy")) {
-			if (Strings.isNullOrEmpty(String.valueOf(metaObject.getValue("createBy")))) {
+			if (StringUtils.isEmpty(metaObject.getValue("createBy"))) {
 				this.setFieldValByName("createBy", SecurityUtils.getUsername(), metaObject);
 			}
 		}
@@ -32,7 +33,7 @@ public class CreateAndUpdateMetaObjectHandler implements MetaObjectHandler {
 	@Override
 	public void updateFill(MetaObject metaObject) {
 		if (metaObject.hasGetter("updateBy")) {
-			if (Strings.isNullOrEmpty(String.valueOf(metaObject.getValue("updateBy")))) {
+			if (StringUtils.isEmpty(metaObject.getValue("updateBy"))) {
 				this.setFieldValByName("updateBy", SecurityUtils.getUsername(), metaObject);
 			}
 		}

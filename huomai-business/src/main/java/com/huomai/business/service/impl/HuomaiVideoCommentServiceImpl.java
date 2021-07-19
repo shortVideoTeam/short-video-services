@@ -65,6 +65,7 @@ public class HuomaiVideoCommentServiceImpl extends ServiceImpl<HuomaiVideoCommen
 
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Boolean insertByAddBo(HuomaiVideoCommentAddBo bo) {
 		HuomaiVideoComment add = BeanUtil.toBean(bo, HuomaiVideoComment.class);
 		add.setUserId(SecurityUtils.getUserId());

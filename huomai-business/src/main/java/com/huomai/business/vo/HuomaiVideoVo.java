@@ -74,19 +74,25 @@ public class HuomaiVideoVo {
 	 * 点赞量
 	 */
 	@ApiModelProperty("点赞量")
-	private Long starNum;
+	private int starNum;
 
 	/**
 	 * 评论量
 	 */
 	@ApiModelProperty("评论量")
-	private Long commentNum;
+	private int commentNum;
 
 	/**
 	 * 播放量
 	 */
 	@ApiModelProperty("播放量")
-	private Long viewNum;
+	private int viewNum;
+
+	/**
+	 * 分享量
+	 */
+	@ApiModelProperty("分享量")
+	private int shareNum;
 
 	/**
 	 * 关键词ID (按","逗号拼接)

@@ -6,15 +6,18 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huomai.business.bo.HuomaiVideoCommentAddBo;
 import com.huomai.business.bo.HuomaiVideoCommentEditBo;
 import com.huomai.business.bo.HuomaiVideoCommentQueryBo;
+import com.huomai.business.domain.HuomaiVideo;
 import com.huomai.business.domain.HuomaiVideoComment;
 import com.huomai.business.mapper.HuomaiVideoCommentMapper;
 import com.huomai.business.service.IHuomaiVideoCommentService;
+import com.huomai.business.service.IHuomaiVideoService;
 import com.huomai.business.vo.HuomaiVideoCommentVo;
 import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.utils.PageUtils;
 import com.huomai.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,6 +33,9 @@ public class HuomaiVideoCommentServiceImpl extends ServiceImpl<HuomaiVideoCommen
 
 	@Autowired
 	private HuomaiVideoCommentMapper commentMapper;
+
+	@Autowired
+	private IHuomaiVideoService videoService;
 
 	@Override
 	public HuomaiVideoCommentVo queryById(Long commentId) {
@@ -63,6 +69,9 @@ public class HuomaiVideoCommentServiceImpl extends ServiceImpl<HuomaiVideoCommen
 		HuomaiVideoComment add = BeanUtil.toBean(bo, HuomaiVideoComment.class);
 		add.setUserId(SecurityUtils.getUserId());
 		validEntityBeforeSave(add);
+
+		changeCommentByVideoId(bo.getVideoId());
+
 		return save(add);
 	}
 
@@ -98,5 +107,15 @@ public class HuomaiVideoCommentServiceImpl extends ServiceImpl<HuomaiVideoCommen
 	@Override
 	public List<HuomaiVideoCommentVo> listWithReply(HuomaiVideoCommentQueryBo bo) {
 		return queryCommentWithUserList(bo);
+	}
+
+	/**
+	 * 更新视频评论数
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public void changeCommentByVideoId(Long videoId) {
+		HuomaiVideo video = videoService.getVoById(videoId, HuomaiVideo.class);
+		video.setCommentNum(video.getCommentNum() + 1);
+		videoService.updateById(video);
 	}
 }

@@ -6,11 +6,14 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huomai.business.bo.HuomaiUserLoveAddBo;
 import com.huomai.business.domain.HuomaiUserLove;
+import com.huomai.business.domain.HuomaiVideo;
 import com.huomai.business.mapper.HuomaiUserLoveMapper;
 import com.huomai.business.service.IHuomaiUserLoveService;
+import com.huomai.business.service.IHuomaiVideoService;
 import com.huomai.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,6 +30,9 @@ public class HuomaiUserLoveServiceImpl extends ServiceImpl<HuomaiUserLoveMapper,
 
 	@Autowired
 	private HuomaiUserLoveMapper loveMapper;
+
+	@Autowired
+	private IHuomaiVideoService videoService;
 
 
 	/***
@@ -46,12 +52,17 @@ public class HuomaiUserLoveServiceImpl extends ServiceImpl<HuomaiUserLoveMapper,
 			validEntityBeforeSave(add);
 			//点赞人
 			add.setUserId(userId);
+
+			changeStarByVideoId(bo.getBusinessId(), 1);
+
 			return save(add);
 		} else {
 			List<Long> ids = loveList.stream().map(HuomaiUserLove::getId).collect(Collectors.toList());
 			if (ids.size() > 0) {
 				loveMapper.deleteBatchIds(ids);
 			}
+			changeStarByVideoId(bo.getBusinessId(), -1);
+
 			return Boolean.TRUE;
 		}
 
@@ -72,5 +83,15 @@ public class HuomaiUserLoveServiceImpl extends ServiceImpl<HuomaiUserLoveMapper,
 			//TODO 做一些业务上的校验,判断是否需要校验
 		}
 		return removeByIds(ids);
+	}
+
+	/**
+	 * 更新视频点赞数
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public void changeStarByVideoId(Long videoId, int num) {
+		HuomaiVideo video = videoService.getVoById(videoId, HuomaiVideo.class);
+		video.setStarNum((video.getStarNum() + (num)));
+		videoService.updateById(video);
 	}
 }

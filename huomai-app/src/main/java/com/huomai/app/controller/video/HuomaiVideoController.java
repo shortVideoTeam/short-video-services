@@ -3,6 +3,7 @@ package com.huomai.app.controller.video;
 import com.huomai.business.bo.*;
 import com.huomai.business.service.IHuomaiVideoService;
 import com.huomai.business.vo.HuomaiVideoHotVo;
+import com.huomai.common.annotation.PassToken;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
 import io.swagger.annotations.Api;
@@ -32,6 +33,7 @@ public class HuomaiVideoController extends BaseController {
 	/**
 	 * 热门视频列表
 	 */
+	@PassToken
 	@ApiOperation("热门视频列表")
 	@GetMapping("/hotList")
 	public AjaxResult hotList(@Validated HuomaiVideoHotBo bo) {

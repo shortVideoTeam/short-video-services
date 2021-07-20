@@ -1,7 +1,6 @@
 package com.huomai.framework.manager.mybatisplus;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.google.common.base.Strings;
 import com.huomai.common.utils.DateUtils;
 import com.huomai.common.utils.SecurityUtils;
 import org.apache.ibatis.reflection.MetaObject;
@@ -25,7 +24,7 @@ public class CreateAndUpdateMetaObjectHandler implements MetaObjectHandler {
 		}
 		if (metaObject.hasGetter("createBy")) {
 			if (StringUtils.isEmpty(metaObject.getValue("createBy"))) {
-				this.setFieldValByName("createBy", SecurityUtils.getUsername(), metaObject);
+				this.setFieldValByName("createBy", SecurityUtils.getUserId(), metaObject);
 			}
 		}
 	}
@@ -34,7 +33,7 @@ public class CreateAndUpdateMetaObjectHandler implements MetaObjectHandler {
 	public void updateFill(MetaObject metaObject) {
 		if (metaObject.hasGetter("updateBy")) {
 			if (StringUtils.isEmpty(metaObject.getValue("updateBy"))) {
-				this.setFieldValByName("updateBy", SecurityUtils.getUsername(), metaObject);
+				this.setFieldValByName("updateBy", SecurityUtils.getUserId(), metaObject);
 			}
 		}
 		if (metaObject.hasGetter("updateTime")) {

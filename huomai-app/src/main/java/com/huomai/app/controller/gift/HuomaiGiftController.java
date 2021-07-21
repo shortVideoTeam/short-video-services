@@ -2,6 +2,7 @@ package com.huomai.app.controller.gift;
 
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.google.common.collect.Maps;
 import com.huomai.business.bo.HuomaiSplitGiftBo;
 import com.huomai.business.domain.HuomaiGiftConfig;
 import com.huomai.business.domain.HuomaiUser;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -51,6 +53,8 @@ public class HuomaiGiftController extends BaseController {
 	@ApiOperation("分红包")
 	@PostMapping("/splitGift")
 	public AjaxResult splitGift(@Validated @RequestBody HuomaiSplitGiftBo bo) {
+		HashMap<Object, Object> map = Maps.newHashMap();
+
 		//邀请码
 		String inviteCode = bo.getInviteCode();
 		//查询邀请人
@@ -59,7 +63,7 @@ public class HuomaiGiftController extends BaseController {
 		Long userIdBy = SecurityUtils.getUserId();
 		HuomaiUserInvite invite = inviteService.getOne(Wrappers.<HuomaiUserInvite>lambdaQuery().eq(HuomaiUserInvite::getUserId, userId).eq(HuomaiUserInvite::getByUserId, userIdBy));
 		if (invite != null) {
-			return AjaxResult.success("您已领取过了");
+			return AjaxResult.error("您已领取过了");
 		}
 		//判断钱包金额是否足够
 		List<HuomaiGiftConfig> list = configService.list();
@@ -69,16 +73,19 @@ public class HuomaiGiftController extends BaseController {
 			BigDecimal totalAmount = config.getTotalAmount();
 			double money = RandomUtil.randomDouble(0.01, singleAmount.doubleValue(), 2, RoundingMode.HALF_UP);
 			if (money * 2 > totalAmount.doubleValue()) {
-				return AjaxResult.success("您来晚了，红包已被抢光了");
+				return AjaxResult.error("您来晚了，红包已被抢光了");
 			}
 			bo.setUserId(userId);
 			bo.setUserIdBy(userIdBy);
 			bo.setMoney(money);
 			bo.setConfig(config);
 			orderService.giftOrder(bo);
-			return AjaxResult.success();
+
+			map.put("money", money);
+
+			return AjaxResult.success(map);
 		} else {
-			return AjaxResult.success("您来晚了，红包已被抢光了");
+			return AjaxResult.error("您来晚了，红包已被抢光了");
 		}
 	}
 }

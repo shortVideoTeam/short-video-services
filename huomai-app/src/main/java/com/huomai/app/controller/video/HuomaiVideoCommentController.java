@@ -8,6 +8,7 @@ import com.huomai.business.service.IHuomaiVideoCommentReplyService;
 import com.huomai.business.service.IHuomaiVideoCommentService;
 import com.huomai.business.vo.HuomaiVideoCommentReplyVo;
 import com.huomai.business.vo.HuomaiVideoCommentVo;
+import com.huomai.common.annotation.PassToken;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
 import com.huomai.common.utils.PageUtils;
@@ -43,6 +44,7 @@ public class HuomaiVideoCommentController extends BaseController {
 	/**
 	 * 视频评论列表接口
 	 */
+	@PassToken
 	@ApiOperation("视频评论列表接口")
 	@GetMapping("/listWithReply")
 	public AjaxResult listWithReply(@Validated HuomaiVideoCommentQueryBo bo) {

@@ -6,17 +6,15 @@ package com.huomai.common.utils;
  * @author huomai
  */
 public class SecurityUtils {
-	/**
-	 * 获取用户账户
-	 **/
-	public static String getUsername() {
-		return String.valueOf(ServletUtils.getRequest().getAttribute("userId"));
-	}
 
 	/**
 	 * 获取用户ID
 	 **/
 	public static Long getUserId() {
-		return Long.parseLong(String.valueOf(ServletUtils.getRequest().getAttribute("userId")));
+		Object userId = ServletUtils.getRequest().getAttribute("userId");
+		if (userId == null) {
+			return 0L;
+		}
+		return Long.parseLong(String.valueOf(userId));
 	}
 }

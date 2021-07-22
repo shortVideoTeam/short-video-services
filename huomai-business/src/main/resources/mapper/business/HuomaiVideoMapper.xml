@@ -25,6 +25,7 @@
             u.nick_name,
             u.openid,
             u.phone,
+            u.avatar,
             (select IF(count(1) > 0,1,0) from huomai_user_follow where user_id = #{bo.curUserId}) as attend_flag,
             (select IF(count(1) > 0,1,0) from huomai_user_follow where follow_user_id = #{bo.curUserId}) as follow_flag,
 			(select IF(count(1) > 0,1,0) from huomai_user_love where business_id = v.video_id and type = 1 and user_id = #{bo.curUserId}) as love_flag
@@ -59,7 +60,8 @@
         u.uuid,
         u.nick_name,
         u.openid,
-        u.phone
+        u.phone,
+        u.avatar
         FROM
         huomai_video v
         INNER JOIN huomai_user u ON v.user_id = u.user_id

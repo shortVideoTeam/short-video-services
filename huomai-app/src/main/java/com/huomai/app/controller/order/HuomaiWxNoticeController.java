@@ -49,14 +49,16 @@ public class HuomaiWxNoticeController {
 	public String callback(@RequestBody String xmlData) throws WxPayException {
 		log.info("微信支付回调========");
 		log.info(xmlData);
-		WxPayOrderNotifyResult parseOrderNotifyResult = wxMiniPayService.parseOrderNotifyResult(xmlData);
-
-		String payNo = parseOrderNotifyResult.getOutTradeNo();
-		String bizPayNo = parseOrderNotifyResult.getTransactionId();
-
-		// 根据内部订单号更新order
-		orderService.paySuccess(payNo, bizPayNo);
-
+		try {
+			WxPayOrderNotifyResult parseOrderNotifyResult = wxMiniPayService.parseOrderNotifyResult(xmlData);
+			String payNo = parseOrderNotifyResult.getOutTradeNo();
+			String bizPayNo = parseOrderNotifyResult.getTransactionId();
+			// 根据内部订单号更新order
+			orderService.paySuccess(payNo, bizPayNo);
+		} catch (Exception e) {
+			log.error("回调处理失败：", e);
+			return WxPayNotifyResponse.failResp("失败");
+		}
 		return WxPayNotifyResponse.success("成功");
 	}
 }

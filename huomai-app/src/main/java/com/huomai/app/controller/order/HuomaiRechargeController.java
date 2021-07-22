@@ -14,6 +14,7 @@ import com.huomai.business.bo.HuomaiRechargeAddBo;
 import com.huomai.business.service.IHuomaiMoneyRuleService;
 import com.huomai.business.service.IHuomaiOrderService;
 import com.huomai.common.core.domain.AjaxResult;
+import com.huomai.system.service.ISysConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,8 @@ public class HuomaiRechargeController {
 	@Autowired
 	private IHuomaiMoneyRuleService moneyRuleService;
 
+	private final ISysConfigService configService;
+
 
 	@ApiOperation("充值金额列表")
 	@GetMapping("/moneyList")
@@ -45,6 +48,7 @@ public class HuomaiRechargeController {
 	@ApiOperation("充值接口")
 	@PostMapping("/recharge")
 	public AjaxResult recharge(@Validated @RequestBody HuomaiRechargeAddBo bo) {
+		bo.setDomain(configService.selectConfigByKey("api_domain"));
 		return orderService.recharge(bo);
 	}
 }

@@ -10,11 +10,11 @@
 
 package com.huomai.app.controller.order;
 
+import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.huomai.business.service.IHuomaiOrderService;
-import com.huomai.common.core.domain.AjaxResult;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ public class HuomaiWxNoticeController {
 	 * @throws WxPayException
 	 */
 	@RequestMapping("/callback")
-	public AjaxResult<Void> callback(@RequestBody String xmlData) throws WxPayException {
+	public String callback(@RequestBody String xmlData) throws WxPayException {
 		log.info("微信支付回调========");
 		log.info(xmlData);
 		WxPayOrderNotifyResult parseOrderNotifyResult = wxMiniPayService.parseOrderNotifyResult(xmlData);
@@ -57,6 +57,6 @@ public class HuomaiWxNoticeController {
 		// 根据内部订单号更新order
 		orderService.paySuccess(payNo, bizPayNo);
 
-		return AjaxResult.success();
+		return WxPayNotifyResponse.success("成功");
 	}
 }

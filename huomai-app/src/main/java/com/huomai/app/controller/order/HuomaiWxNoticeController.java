@@ -43,10 +43,9 @@ public class HuomaiWxNoticeController {
 	 *
 	 * @param xmlData
 	 * @return
-	 * @throws WxPayException
 	 */
 	@RequestMapping("/callback")
-	public String callback(@RequestBody String xmlData) throws WxPayException {
+	public String callback(@RequestBody String xmlData) {
 		log.info("微信支付回调========");
 		log.info(xmlData);
 		try {

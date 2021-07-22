@@ -15,6 +15,7 @@ import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.huomai.business.service.IHuomaiOrderService;
+import com.huomai.common.annotation.PassToken;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class HuomaiWxNoticeController {
 	 * @param xmlData
 	 * @return
 	 */
+	@PassToken
 	@RequestMapping("/callback")
 	public String callback(@RequestBody String xmlData) {
 		log.info("微信支付回调========");

@@ -11,11 +11,9 @@ import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.huomai.business.bo.*;
-import com.huomai.business.domain.HuomaiGiftConfig;
-import com.huomai.business.domain.HuomaiOrder;
-import com.huomai.business.domain.HuomaiOrderItem;
-import com.huomai.business.domain.HuomaiUser;
+import com.huomai.business.domain.*;
 import com.huomai.business.mapper.HuomaiOrderMapper;
+import com.huomai.business.mapper.HuomaiPromoteConfigMapper;
 import com.huomai.business.service.*;
 import com.huomai.business.vo.HuomaiOrderDetailVo;
 import com.huomai.business.vo.HuomaiOrderVo;
@@ -62,10 +60,10 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 	private IHuomaiUserInviteService inviteService;
 
 	@Autowired
-	private IHuomaiOrderService orderService;
+	private IHuomaiGiftConfigService configService;
 
 	@Autowired
-	private IHuomaiGiftConfigService configService;
+	private HuomaiPromoteConfigMapper promoteConfigMapper;
 
 
 	@Override
@@ -141,11 +139,30 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 	@Override
 	public AjaxResult createOrder(HuomaiOrderAddBo bo) {
 		String payWay = bo.getPayWay();
+		Long userId = SecurityUtils.getUserId();
 		String orderNo = String.valueOf(System.currentTimeMillis());
 		HuomaiOrder add = BeanUtil.toBean(bo, HuomaiOrder.class);
 		add.setOrderType(1);
-		add.setUserId(SecurityUtils.getUserId());
+		add.setUserId(userId);
 		add.setOrderNo(orderNo);
+
+		//获取推广配置
+		List<HuomaiPromoteConfig> promoteConfigs = promoteConfigMapper.selectList(Wrappers.emptyWrapper());
+		if (promoteConfigs == null) {
+			throw new BaseException("请先设置推广配置信息");
+		}
+		HuomaiPromoteConfig promoteConfig = promoteConfigs.get(0);
+		Long inviteNum = promoteConfig.getInviteNum();
+		if (null != inviteNum && inviteNum > 0) {
+			//邀请人数限制
+			int count = inviteService.count(Wrappers.<HuomaiUserInvite>lambdaQuery().eq(HuomaiUserInvite::getUserId, userId));
+			if (count < inviteNum) {
+				throw new BaseException(String.format("您邀请的人数必须满【%s】人才能推广作品", inviteNum));
+			}
+		}
+		//热门人数限制
+		Long maxNum = promoteConfig.getMaxNum();
+
 
 		//新增订单项
 		Date date = DateUtils.getNowDate();
@@ -218,6 +235,8 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 		opt.setPayTime(DateUtils.getNowDate());
 		opt.setStatus("2");//支付成功
 		orderMapper.updateById(opt);
+
+		//推广分账
 	}
 
 	/**

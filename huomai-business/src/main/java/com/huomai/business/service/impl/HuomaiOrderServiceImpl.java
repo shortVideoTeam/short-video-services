@@ -34,6 +34,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -181,7 +182,7 @@ public class HuomaiOrderServiceImpl extends ServiceImpl<HuomaiOrderMapper, Huoma
 	 */
 	public void subtractUserAccount(HuomaiOrderAddBo bo) {
 		HuomaiUser user = userService.getById(SecurityUtils.getUserId());
-		BigDecimal subtract = user.getTotalAmount().subtract(bo.getAmount());
+		BigDecimal subtract = Optional.ofNullable(user.getTotalAmount()).orElse(BigDecimal.ZERO).subtract(bo.getAmount());
 		if (subtract.doubleValue() < 0) {
 			throw new BaseException("账户余额不足,请先充值后购买");
 		}

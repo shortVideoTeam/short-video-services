@@ -30,4 +30,31 @@
             </if>
         </where>
     </select>
+    <select id="groupOrderByTime" resultType="java.util.Map">
+        SELECT
+            time,
+            count( 1 ) num
+        FROM
+            (
+            SELECT
+                DATE_FORMAT( create_time, '%Y-%m-%d' ) AS time,
+                user_id,
+                count( 1 ) num
+            FROM
+                huomai_order
+            WHERE
+                `status` = 2
+                and pay_time > now()
+            GROUP BY
+                DATE_FORMAT( create_time, '%Y-%m-%d' ),
+                user_id
+            ) A
+        GROUP BY
+            time
+        ORDER BY
+            time
+    </select>
+    <select id="preUser" resultType="java.lang.Long">
+        select user_id from huomai_order where pay_time <![CDATA[<]]>#{payTime} and `status` = 2 and user_id not in (${userId}) order by pay_time desc limit 1
+    </select>
 </mapper>

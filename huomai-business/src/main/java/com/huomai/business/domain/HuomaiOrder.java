@@ -81,4 +81,9 @@ public class HuomaiOrder implements Serializable {
 	@TableField(fill = FieldFill.INSERT)
 	private Date createTime;
 
+	//热门开始时间
+	private Date hotStartTime;
+	//热门结束时间
+	private Date hotEndTime;
+
 }

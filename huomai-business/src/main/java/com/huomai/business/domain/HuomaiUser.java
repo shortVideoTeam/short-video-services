@@ -134,7 +134,9 @@ public class HuomaiUser implements Serializable {
 	 */
 	private String status;
 
+	//总金额
 	private BigDecimal totalAmount;
+	//可提现金额
 	private BigDecimal cashAmount;
 
 	/**

@@ -99,6 +99,13 @@ public class HuomaiVideo implements Serializable {
 	 */
 	private String keywordId;
 
+	//热门开始时间
+	private Date hotStartTime;
+	//热门结束时间
+	private Date hotEndTime;
+
+	private Long hotNum;
+
 	/**
 	 * 创建时间
 	 */

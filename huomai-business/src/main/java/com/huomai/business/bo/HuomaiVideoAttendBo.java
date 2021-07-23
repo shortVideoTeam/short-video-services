@@ -24,7 +24,7 @@ public class HuomaiVideoAttendBo extends PageBo {
 	/**
 	 * 搜索关键字
 	 */
-	@ApiModelProperty("搜索关键字")
+	@ApiModelProperty("搜索关键字,搜索关键字不为空则代表是搜索，否则是关注的视频列表")
 	private String searchKey;
 
 }

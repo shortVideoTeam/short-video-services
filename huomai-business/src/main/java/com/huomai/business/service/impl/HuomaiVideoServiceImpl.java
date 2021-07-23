@@ -2,6 +2,7 @@ package com.huomai.business.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huomai.business.bo.*;
@@ -15,6 +16,7 @@ import com.huomai.common.core.page.PagePlus;
 import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.utils.PageUtils;
 import com.huomai.common.utils.SecurityUtils;
+import jodd.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -154,7 +156,11 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 	 */
 	@Override
 	public TableDataInfo<HuomaiVideoAttendVo> attendList(HuomaiVideoAttendBo bo) {
-		bo.setCurUserId(SecurityUtils.getUserId());
+		String searchKey = bo.getSearchKey();
+		//如果搜索条件为空，那么就是查询用户关注的
+		if (StringUtil.isEmpty(searchKey)) {
+			bo.setCurUserId(SecurityUtils.getUserId());
+		}
 		List<HuomaiVideoAttendVo> videoVos = videoMapper.attendList(PageUtils.buildPage(), bo);
 		return PageUtils.buildDataInfo(videoVos);
 	}

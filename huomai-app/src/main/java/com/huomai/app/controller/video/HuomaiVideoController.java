@@ -43,10 +43,21 @@ public class HuomaiVideoController extends BaseController {
 	/**
 	 * 关注视频列表
 	 */
-	@ApiOperation("关注视频列表|搜索视频列表")
+	@ApiOperation("关注视频列表")
 	@GetMapping("/attendList")
 	public AjaxResult attendList(@Validated HuomaiVideoAttendBo bo) {
 		return AjaxResult.success(iHuomaiVideoService.attendList(bo));
+	}
+
+
+	/**
+	 * 关注视频列表
+	 */
+	@PassToken
+	@ApiOperation("搜索视频列表")
+	@GetMapping("/searchList")
+	public AjaxResult searchList(@Validated HuomaiVideoSearchBo bo) {
+		return AjaxResult.success(iHuomaiVideoService.searchList(bo));
 	}
 
 	/**

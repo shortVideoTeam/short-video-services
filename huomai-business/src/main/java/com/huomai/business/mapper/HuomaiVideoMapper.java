@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.huomai.business.bo.HuomaiVideoAttendBo;
 import com.huomai.business.bo.HuomaiVideoHotBo;
 import com.huomai.business.bo.HuomaiVideoQueryBo;
+import com.huomai.business.bo.HuomaiVideoSearchBo;
 import com.huomai.business.domain.HuomaiVideo;
 import com.huomai.business.vo.HuomaiVideoAttendVo;
 import com.huomai.business.vo.HuomaiVideoHotVo;
@@ -36,4 +37,5 @@ public interface HuomaiVideoMapper extends BaseMapperPlus<HuomaiVideo> {
     */
     List<HuomaiVideoAttendVo> attendList(@Param("page") Page page, @Param("bo") HuomaiVideoAttendBo bo);
 
+	List<HuomaiVideoAttendVo> searchList(@Param("page") Page page, @Param("bo") HuomaiVideoSearchBo bo);
 }

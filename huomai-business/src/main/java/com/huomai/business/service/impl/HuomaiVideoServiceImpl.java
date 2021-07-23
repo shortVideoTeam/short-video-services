@@ -156,11 +156,7 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 	 */
 	@Override
 	public TableDataInfo<HuomaiVideoAttendVo> attendList(HuomaiVideoAttendBo bo) {
-		String searchKey = bo.getSearchKey();
-		//如果搜索条件为空，那么就是查询用户关注的
-		if (StringUtil.isEmpty(searchKey)) {
-			bo.setCurUserId(SecurityUtils.getUserId());
-		}
+		bo.setCurUserId(SecurityUtils.getUserId());
 		List<HuomaiVideoAttendVo> videoVos = videoMapper.attendList(PageUtils.buildPage(), bo);
 		return PageUtils.buildDataInfo(videoVos);
 	}
@@ -169,5 +165,11 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 	public TableDataInfo<HuomaiVideoVo> videoList(HuomaiVideoQueryBo bo) {
 		bo.setUserId(SecurityUtils.getUserId());
 		return queryPageList(bo);
+	}
+
+	@Override
+	public TableDataInfo<HuomaiVideoAttendVo> searchList(HuomaiVideoSearchBo bo) {
+		List<HuomaiVideoAttendVo> videoVos = videoMapper.searchList(PageUtils.buildPage(), bo);
+		return PageUtils.buildDataInfo(videoVos);
 	}
 }

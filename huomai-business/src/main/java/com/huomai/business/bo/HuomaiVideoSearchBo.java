@@ -15,10 +15,13 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("关注视频分页查询对象")
-public class HuomaiVideoAttendBo extends PageBo {
+@ApiModel("搜索视频分页查询对象")
+public class HuomaiVideoSearchBo extends PageBo {
 
-	@ApiModelProperty(value = "当前用户ID", hidden = true)
-	private Long curUserId;
+	/**
+	 * 搜索关键字
+	 */
+	@ApiModelProperty("搜索关键字,搜索关键字不为空则代表是搜索，否则是关注的视频列表")
+	private String searchKey;
 
 }

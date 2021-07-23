@@ -80,4 +80,12 @@ public interface IHuomaiVideoService extends IServicePlus<HuomaiVideo> {
     * @date: 2021/6/26 4:10 下午
     */
 	TableDataInfo<HuomaiVideoVo> videoList(HuomaiVideoQueryBo bo);
+
+
+	/***
+	* @description: 搜索视频列表
+	* @author chenshufeng
+	* @date: 2021/7/23 10:19 上午
+	*/
+	TableDataInfo<HuomaiVideoAttendVo> searchList(HuomaiVideoSearchBo bo);
 }

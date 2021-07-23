@@ -5,6 +5,7 @@ import com.huomai.business.bo.HuomaiUserQueryBo;
 import com.huomai.business.service.IHuomaiUserService;
 import com.huomai.business.vo.HuomaiUserDetailVo;
 import com.huomai.business.vo.HuomaiUserWalleVo;
+import com.huomai.common.annotation.PassToken;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
 import com.huomai.common.utils.SecurityUtils;
@@ -34,7 +35,8 @@ public class HuomaiUserController extends BaseController {
 	/**
 	 * 首页搜索用户信息列表
 	 */
-	@ApiOperation("首页搜索用户信息列表")
+	@PassToken
+	@ApiOperation("首页搜索用户列表")
 	@GetMapping("/list")
 	public AjaxResult list(@Validated HuomaiUserQueryBo bo) {
 		return AjaxResult.success(iHuomaiUserService.queryPageList(bo));

@@ -7,8 +7,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huomai.business.bo.HuomaiUserLoveAddBo;
 import com.huomai.business.domain.HuomaiUserLove;
 import com.huomai.business.domain.HuomaiVideo;
+import com.huomai.business.domain.HuomaiVideoComment;
+import com.huomai.business.domain.HuomaiVideoCommentReply;
 import com.huomai.business.mapper.HuomaiUserLoveMapper;
 import com.huomai.business.service.IHuomaiUserLoveService;
+import com.huomai.business.service.IHuomaiVideoCommentReplyService;
+import com.huomai.business.service.IHuomaiVideoCommentService;
 import com.huomai.business.service.IHuomaiVideoService;
 import com.huomai.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +39,12 @@ public class HuomaiUserLoveServiceImpl extends ServiceImpl<HuomaiUserLoveMapper,
 	@Autowired
 	private IHuomaiVideoService videoService;
 
+	@Autowired
+	private IHuomaiVideoCommentService commentService;
+
+	@Autowired
+	private IHuomaiVideoCommentReplyService replyService;
+
 
 	/***
 	 * @description: 新增点赞记录
@@ -46,6 +57,7 @@ public class HuomaiUserLoveServiceImpl extends ServiceImpl<HuomaiUserLoveMapper,
 
 		//存在则取消，不存在则新增
 		Long userId = SecurityUtils.getUserId();
+		Integer type = bo.getType();
 		LambdaQueryWrapper<HuomaiUserLove> queryWrapper = Wrappers.<HuomaiUserLove>lambdaQuery().eq(HuomaiUserLove::getBusinessId, bo.getBusinessId()).eq(HuomaiUserLove::getUserId, userId);
 		List<HuomaiUserLove> loveList = loveMapper.selectList(queryWrapper);
 		if (loveList == null || loveList.size() == 0) {
@@ -53,8 +65,8 @@ public class HuomaiUserLoveServiceImpl extends ServiceImpl<HuomaiUserLoveMapper,
 			validEntityBeforeSave(add);
 			//点赞人
 			add.setUserId(userId);
-
-			changeStarByVideoId(bo.getBusinessId(), 1);
+			//更新点赞数量
+			changeStar(bo.getBusinessId(), type, 1);
 
 			return save(add);
 		} else {
@@ -62,12 +74,14 @@ public class HuomaiUserLoveServiceImpl extends ServiceImpl<HuomaiUserLoveMapper,
 			if (ids.size() > 0) {
 				loveMapper.deleteBatchIds(ids);
 			}
-			changeStarByVideoId(bo.getBusinessId(), -1);
+			//更新点赞数量
+			changeStar(bo.getBusinessId(), type, -1);
 
 			return Boolean.TRUE;
 		}
 
 	}
+
 
 	/**
 	 * 保存前的数据校验
@@ -87,14 +101,32 @@ public class HuomaiUserLoveServiceImpl extends ServiceImpl<HuomaiUserLoveMapper,
 	}
 
 	/**
-	 * 更新视频点赞数
+	 * 更新点赞数
 	 */
 	@Transactional(rollbackFor = Exception.class)
-	public void changeStarByVideoId(Long videoId, int num) {
-		HuomaiVideo video = videoService.getVoById(videoId, HuomaiVideo.class);
-		HuomaiVideo update = new HuomaiVideo();
-		update.setVideoId(videoId);
-		update.setStarNum((video.getStarNum() + (num)));
-		videoService.updateById(update);
+	public void changeStar(Long businessId, Integer type, int num) {
+		if (1 == type) {
+			HuomaiVideo video = videoService.getVoById(businessId, HuomaiVideo.class);
+			long curNum = Optional.ofNullable(video.getStarNum()).orElse(0L) + (num);
+			HuomaiVideo update = new HuomaiVideo();
+			update.setVideoId(businessId);
+			update.setStarNum(curNum > 0 ? curNum : 0);
+			videoService.updateById(update);
+		} else if (2 == type) {
+			HuomaiVideoComment comment = commentService.getVoById(businessId, HuomaiVideoComment.class);
+			long curNum = Optional.ofNullable(comment.getStarNum()).orElse(0L) + (num);
+			HuomaiVideoComment update = new HuomaiVideoComment();
+			update.setCommentId(businessId);
+			update.setStarNum(curNum > 0 ? curNum : 0);
+			commentService.updateById(update);
+		} else if (3 == type) {
+			HuomaiVideoCommentReply reply = replyService.getVoById(businessId, HuomaiVideoCommentReply.class);
+			long curNum = Optional.ofNullable(reply.getStar()).orElse(0L) + (num);
+			HuomaiVideoCommentReply update = new HuomaiVideoCommentReply();
+			update.setId(businessId);
+			update.setStar(curNum > 0 ? curNum : 0);
+			replyService.updateById(update);
+		}
+
 	}
 }

@@ -37,7 +37,6 @@ public class HuomaiVideoCommentReplyAddBo {
 	 * 回复目标ID
 	 */
 	@ApiModelProperty("回复目标ID")
-	@NotNull(message = "回复目标ID不能为空")
 	private Long replyId;
 
 	/**

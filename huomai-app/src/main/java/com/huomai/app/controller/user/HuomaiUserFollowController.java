@@ -62,12 +62,12 @@ public class HuomaiUserFollowController extends BaseController {
 	/**
 	 * 获取用户关注详细信息
 	 */
-	@ApiOperation("获取用户关注详细信息")
+	/*@ApiOperation("获取用户关注详细信息")
 	@GetMapping("/{userId}")
 	public AjaxResult<HuomaiUserFollowVo> getInfo(@NotNull(message = "主键不能为空")
 												  @PathVariable("userId") Long userId) {
 		return AjaxResult.success(iHuomaiUserFollowService.queryById(userId));
-	}
+	}*/
 
 	/**
 	 * 新增用户关注
@@ -81,7 +81,7 @@ public class HuomaiUserFollowController extends BaseController {
 	/**
 	 * 删除用户关注
 	 */
-	@ApiOperation("取消关注")
+	/*@ApiOperation("取消关注")
 	@PostMapping("/attendCancel")
 	public AjaxResult attendCancel(@Validated @RequestBody HuomaiUserFollowDelBo bo) {
 		Long id = bo.getId();
@@ -89,12 +89,12 @@ public class HuomaiUserFollowController extends BaseController {
 			return AjaxResult.error("id参数是必填");
 		}
 		return toAjax(iHuomaiUserFollowService.deleteWithValidByIds(Arrays.asList(bo.getId()), true) ? 1 : 0);
-	}
+	}*/
 
 	/**
 	 * 删除用户关注
 	 */
-	@ApiOperation("批量取消关注")
+	/*@ApiOperation("批量取消关注")
 	@PostMapping("/batchAttendCancel")
 	public AjaxResult<Void> batchAttendCancel(@Validated @RequestBody HuomaiUserFollowDelBo bo) {
 		List<Long> ids = bo.getIds();
@@ -102,5 +102,5 @@ public class HuomaiUserFollowController extends BaseController {
 			return AjaxResult.error("ids参数是必填");
 		}
 		return toAjax(iHuomaiUserFollowService.deleteWithValidByIds(bo.getIds(), true) ? 1 : 0);
-	}
+	}*/
 }

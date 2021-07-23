@@ -1,7 +1,6 @@
 package com.huomai.business.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,11 +14,12 @@ import com.huomai.business.vo.HuomaiUserInviteVo;
 import com.huomai.common.core.page.PagePlus;
 import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.utils.PageUtils;
+import com.huomai.common.utils.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 邀请记录Service业务层处理
@@ -29,6 +29,9 @@ import java.util.Map;
  */
 @Service
 public class HuomaiUserInviteServiceImpl extends ServiceImpl<HuomaiUserInviteMapper, HuomaiUserInvite> implements IHuomaiUserInviteService {
+
+	@Autowired
+	private HuomaiUserInviteMapper inviteMapper;
 
 	@Override
 	public HuomaiUserInviteVo queryById(Long id) {
@@ -47,12 +50,8 @@ public class HuomaiUserInviteServiceImpl extends ServiceImpl<HuomaiUserInviteMap
 	}
 
 	private LambdaQueryWrapper<HuomaiUserInvite> buildQueryWrapper(HuomaiUserInviteQueryBo bo) {
-		Map<String, Object> params = bo.getParams();
 		LambdaQueryWrapper<HuomaiUserInvite> lqw = Wrappers.lambdaQuery();
-		lqw.eq(bo.getUserId() != null, HuomaiUserInvite::getUserId, bo.getUserId());
-		lqw.eq(bo.getByUserId() != null, HuomaiUserInvite::getByUserId, bo.getByUserId());
-		lqw.eq(bo.getMoney() != null, HuomaiUserInvite::getMoney, bo.getMoney());
-		lqw.eq(StrUtil.isNotBlank(bo.getInviteCode()), HuomaiUserInvite::getInviteCode, bo.getInviteCode());
+		lqw.eq(bo.getUserId() != null, HuomaiUserInvite::getUserId, SecurityUtils.getUserId());
 		return lqw;
 	}
 
@@ -86,4 +85,16 @@ public class HuomaiUserInviteServiceImpl extends ServiceImpl<HuomaiUserInviteMap
 		}
 		return removeByIds(ids);
 	}
+
+	@Override
+	public HuomaiUserInviteVo myUserInvite() {
+		return inviteMapper.myUserInvite(SecurityUtils.getUserId());
+	}
+
+	@Override
+	public TableDataInfo myInviteList(HuomaiUserInviteQueryBo bo) {
+		bo.setUserId(SecurityUtils.getUserId());
+		return PageUtils.buildDataInfo(inviteMapper.myInviteList(PageUtils.buildPage(), bo));
+	}
+
 }

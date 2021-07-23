@@ -4,6 +4,7 @@ import com.huomai.business.bo.HuomaiUserInviteAddBo;
 import com.huomai.business.bo.HuomaiUserInviteEditBo;
 import com.huomai.business.bo.HuomaiUserInviteQueryBo;
 import com.huomai.business.domain.HuomaiUserInvite;
+import com.huomai.business.vo.HuomaiUserFollowVo;
 import com.huomai.business.vo.HuomaiUserInviteVo;
 import com.huomai.common.core.page.IServicePlus;
 import com.huomai.common.core.page.TableDataInfo;
@@ -59,4 +60,8 @@ public interface IHuomaiUserInviteService extends IServicePlus<HuomaiUserInvite>
 	 * @return
 	 */
 	Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+	HuomaiUserInviteVo myUserInvite();
+
+	TableDataInfo myInviteList(HuomaiUserInviteQueryBo bo);
 }

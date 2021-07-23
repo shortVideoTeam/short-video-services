@@ -1,19 +1,23 @@
 package com.huomai.app.controller.user;
 
-import com.huomai.business.bo.HuomaiUserInviteAddBo;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.google.common.collect.Maps;
 import com.huomai.business.bo.HuomaiUserInviteQueryBo;
+import com.huomai.business.domain.HuomaiUserInvite;
 import com.huomai.business.service.IHuomaiUserInviteService;
-import com.huomai.business.vo.HuomaiUserInviteVo;
 import com.huomai.common.core.controller.BaseController;
 import com.huomai.common.core.domain.AjaxResult;
+import com.huomai.common.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
+import java.util.HashMap;
 
 /**
  * 邀请记录Controller
@@ -21,7 +25,7 @@ import javax.validation.constraints.NotNull;
  * @author huomai
  * @date 2021-06-19
  */
-@Api(value = "邀请记录控制器", tags = {"邀请记录管理"})
+@Api(value = "邀请管理", tags = {"邀请管理"})
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
 @RequestMapping("/business/invite")
@@ -32,28 +36,27 @@ public class HuomaiUserInviteController extends BaseController {
 	/**
 	 * 查询邀请记录列表
 	 */
-	@ApiOperation("查询邀请记录列表")
-	@GetMapping("/list")
-	public AjaxResult list(@Validated HuomaiUserInviteQueryBo bo) {
-		return AjaxResult.success(iHuomaiUserInviteService.queryPageList(bo));
+	@ApiOperation("我的邀请人")
+	@GetMapping("/myUserInvite")
+	public AjaxResult myUserInvite() {
+		return AjaxResult.success(iHuomaiUserInviteService.myUserInvite());
+	}
+
+	@ApiOperation("已邀请好友列表")
+	@GetMapping("/myInviteList")
+	public AjaxResult myInviteList(@Validated HuomaiUserInviteQueryBo bo) {
+		return AjaxResult.success(iHuomaiUserInviteService.myInviteList(bo));
 	}
 
 	/**
-	 * 获取邀请记录详细信息
+	 * 查询邀请记录列表
 	 */
-	@ApiOperation("获取邀请记录详细信息")
-	@GetMapping("/{id}")
-	public AjaxResult<HuomaiUserInviteVo> getInfo(@NotNull(message = "主键不能为空")
-												  @PathVariable("id") Long id) {
-		return AjaxResult.success(iHuomaiUserInviteService.queryById(id));
-	}
-
-	/**
-	 * 新增邀请记录
-	 */
-	@ApiOperation("新增邀请记录")
-	@PostMapping("/add")
-	public AjaxResult<Void> add(@Validated @RequestBody HuomaiUserInviteAddBo bo) {
-		return toAjax(iHuomaiUserInviteService.insertByAddBo(bo) ? 1 : 0);
+	@ApiOperation("我邀请的总人数")
+	@GetMapping("/count")
+	public AjaxResult count() {
+		int count = iHuomaiUserInviteService.count(Wrappers.<HuomaiUserInvite>lambdaQuery().eq(HuomaiUserInvite::getUserId, SecurityUtils.getUserId()));
+		HashMap<Object, Object> map = Maps.newHashMap();
+		map.put("inviteNum", count);
+		return AjaxResult.success(map);
 	}
 }

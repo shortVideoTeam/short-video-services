@@ -48,11 +48,20 @@ public class HuomaiVideoCommentVo {
 	@ApiModelProperty("评论用户Id")
 	private Long userId;
 
+	@ApiModelProperty("评论用户昵称")
+	private String nickName;
+
+	@ApiModelProperty("评论用户头像")
+	private String avatar;
+
 	/**
 	 * 评论点赞数
 	 */
 	@ApiModelProperty("评论点赞数")
-	private Long starNum;
+	private long starNum;
+
+	@ApiModelProperty("点赞标识，0-未点赞，1-已点赞")
+	private int starFlag;
 
 	/**
 	 * 创建时间

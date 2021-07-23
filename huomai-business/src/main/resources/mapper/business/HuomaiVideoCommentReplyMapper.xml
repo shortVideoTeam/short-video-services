@@ -12,19 +12,19 @@
         r.reply_id,
         r.content,
         r.reply_user_id,
+        u.nick_name as reply_user_nick_name,
+        u.avatar as reply_user_avatar,
         r.to_user_id,
+        ru.nick_name as to_user_nick_name,
+        ru.avatar as to_user_avatar,
         r.star,
         r.create_time,
-        u.user_id,
-        u.uuid,
-        u.avatar,
-        u.nick_name,
-        u.sex,
         (select IF(count(1) > 0,1,0) from huomai_user_love where business_id = r.id and type = 3 and user_id = #{userId}) as
-        love_flag
+        star_flag
         FROM
         huomai_video_comment_reply r
         LEFT JOIN huomai_user u ON r.reply_user_id = u.user_id
+        LEFT JOIN huomai_user ru ON r.reply_user_id = ru.user_id
     </sql>
 
     <select id="batchQueryReplyListByCommentIds" resultType="com.huomai.business.vo.HuomaiVideoCommentReplyVo">

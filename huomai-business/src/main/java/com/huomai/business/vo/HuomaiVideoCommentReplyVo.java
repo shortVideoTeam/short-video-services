@@ -56,17 +56,32 @@ public class HuomaiVideoCommentReplyVo {
 	@ApiModelProperty("回复用户ID")
 	private Long replyUserId;
 
+	@ApiModelProperty("回复用户昵称")
+	private String replyUserNickName;
+
+	@ApiModelProperty("回复用户头像")
+	private String replyUserAvatar;
+
 	/**
 	 * 目标用户id
 	 */
 	@ApiModelProperty("目标用户id")
 	private Long toUserId;
 
+	@ApiModelProperty("目标用户昵称")
+	private String toUserNickName;
+
+	@ApiModelProperty("目标用户头像")
+	private String toUserAvatar;
+
 	/**
 	 * 点赞数
 	 */
 	@ApiModelProperty("点赞数")
 	private long star;
+
+	@ApiModelProperty("点赞标识，0-未点赞，1-已点赞")
+	private int starFlag;
 
 	/**
 	 * 创建时间

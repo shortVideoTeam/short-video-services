@@ -35,7 +35,7 @@ import java.util.List;
  * @author huomai
  * @date 2021-07-18
  */
-@Api(value = "红包金额配置控制器", tags = {"红包金额配置管理"})
+@Api(value = "红包管理", tags = {"红包管理"})
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
 @RequestMapping("/business/config")

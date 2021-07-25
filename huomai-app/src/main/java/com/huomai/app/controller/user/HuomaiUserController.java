@@ -1,7 +1,10 @@
 package com.huomai.app.controller.user;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.huomai.business.bo.HuomaiUserEditBo;
 import com.huomai.business.bo.HuomaiUserQueryBo;
+import com.huomai.business.domain.HuomaiUserInvite;
+import com.huomai.business.service.IHuomaiUserInviteService;
 import com.huomai.business.service.IHuomaiUserService;
 import com.huomai.business.vo.HuomaiUserDetailVo;
 import com.huomai.business.vo.HuomaiUserWalleVo;
@@ -31,6 +34,7 @@ import javax.validation.constraints.NotNull;
 public class HuomaiUserController extends BaseController {
 
 	private final IHuomaiUserService iHuomaiUserService;
+	private final IHuomaiUserInviteService userInviteService;
 
 	/**
 	 * 首页搜索用户信息列表
@@ -68,6 +72,9 @@ public class HuomaiUserController extends BaseController {
 	@ApiOperation("我的钱包")
 	@GetMapping("/myWalle")
 	public AjaxResult<HuomaiUserWalleVo> myWalle() {
-		return AjaxResult.success(iHuomaiUserService.getVoById(SecurityUtils.getUserId(), HuomaiUserWalleVo.class));
+		HuomaiUserWalleVo vo = iHuomaiUserService.getVoById(SecurityUtils.getUserId(), HuomaiUserWalleVo.class);
+		int count = userInviteService.count(Wrappers.<HuomaiUserInvite>lambdaQuery().eq(HuomaiUserInvite::getUserId, SecurityUtils.getUserId()));
+		vo.setInviteNum(count);
+		return AjaxResult.success(vo);
 	}
 }

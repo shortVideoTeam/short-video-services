@@ -136,8 +136,12 @@ public class HuomaiUser implements Serializable {
 
 	//总金额
 	private BigDecimal totalAmount;
+
 	//可提现金额
 	private BigDecimal cashAmount;
+
+	//收益
+	private BigDecimal income;
 
 	/**
 	 * 邀请码

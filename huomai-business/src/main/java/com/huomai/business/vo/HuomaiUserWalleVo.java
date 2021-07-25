@@ -28,7 +28,21 @@ public class HuomaiUserWalleVo {
 	//总金额
 	@ApiModelProperty("总金额")
 	private BigDecimal totalAmount = BigDecimal.ZERO;
+
+	//累计收益
+	@ApiModelProperty("累计收益")
+	private BigDecimal income = BigDecimal.ZERO;
+
 	//可提现金额
 	@ApiModelProperty("可提现金额")
 	private BigDecimal cashAmount = BigDecimal.ZERO;
+
+	/**
+	 * 邀请码
+	 */
+	@ApiModelProperty("邀请码")
+	private String inviteCode;
+
+	@ApiModelProperty("邀请总人数")
+	private long inviteNum;
 }

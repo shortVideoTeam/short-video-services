@@ -31,14 +31,14 @@ public class HuomaiVideoEditBo {
 	 * 视频标题
 	 */
 	@ApiModelProperty("视频标题")
-	@NotBlank(message = "视频标题不能为空")
+//	@NotBlank(message = "视频标题不能为空")
 	private String title;
 
 	/**
 	 * 视频地址
 	 */
 	@ApiModelProperty("视频地址")
-	@NotBlank(message = "视频地址不能为空")
+//	@NotBlank(message = "视频地址不能为空")
 	private String videoUrl;
 
 	/**
@@ -63,7 +63,7 @@ public class HuomaiVideoEditBo {
 	 * 是否可见 (1 公开 0 私密)
 	 */
 	@ApiModelProperty("是否可见 (1 公开 0 私密)")
-	@NotBlank(message = "是否可见 (1 公开 0 私密)不能为空")
+//	@NotBlank(message = "是否可见 (1 公开 0 私密)不能为空")
 	private String visible;
 
 
@@ -71,6 +71,6 @@ public class HuomaiVideoEditBo {
 	 * 关键词ID (按","逗号拼接)
 	 */
 	@ApiModelProperty("关键词ID (按逗号拼接)")
-	@NotBlank(message = "关键词ID (按逗号拼接)不能为空")
+//	@NotBlank(message = "关键词ID (按逗号拼接)不能为空")
 	private String keywordId;
 }

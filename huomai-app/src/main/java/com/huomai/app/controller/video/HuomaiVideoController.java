@@ -113,6 +113,7 @@ public class HuomaiVideoController extends BaseController {
 	 * @param videoId
 	 * @return
 	 */
+	@PassToken
 	@ApiOperation("分享视频")
 	@GetMapping("/share/{videoId}")
 	public AjaxResult<Void> share(@NotNull(message = "videoId不能为空")

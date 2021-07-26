@@ -88,4 +88,11 @@ public interface IHuomaiVideoService extends IServicePlus<HuomaiVideo> {
 	* @date: 2021/7/23 10:19 上午
 	*/
 	TableDataInfo<HuomaiVideoAttendVo> searchList(HuomaiVideoSearchBo bo);
+
+	/**
+	 * 修改视频分享数量
+	 * @param videoId
+	 * @return
+	 */
+	Boolean updateVideoShare(Long videoId);
 }

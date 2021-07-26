@@ -172,4 +172,13 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 		List<HuomaiVideoAttendVo> videoVos = videoMapper.searchList(PageUtils.buildPage(), bo);
 		return PageUtils.buildDataInfo(videoVos);
 	}
+
+	@Override
+	public Boolean updateVideoShare(Long videoId) {
+		HuomaiVideoEditBo bo = new HuomaiVideoEditBo();
+		bo.setVideoId(videoId);
+		HuomaiVideo update = BeanUtil.toBean(bo, HuomaiVideo.class);
+		update.setShareNum(update.getShareNum()+1);
+		return updateById(update);
+	}
 }

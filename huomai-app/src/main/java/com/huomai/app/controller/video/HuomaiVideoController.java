@@ -107,4 +107,16 @@ public class HuomaiVideoController extends BaseController {
 	public AjaxResult<Void> remove(@Validated @RequestBody HuomaiVideoDelBo bo) {
 		return toAjax(iHuomaiVideoService.deleteWithValidByIds(Arrays.asList(bo.getVideoId()), true) ? 1 : 0);
 	}
+
+	/**
+	 * 分享视频
+	 * @param videoId
+	 * @return
+	 */
+	@ApiOperation("分享视频")
+	@GetMapping("/share/{videoId}")
+	public AjaxResult<Void> share(@NotNull(message = "videoId不能为空")
+												@PathVariable("videoId") Long videoId) {
+		return toAjax(iHuomaiVideoService.updateVideoShare(videoId) ? 1 : 0);
+	}
 }

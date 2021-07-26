@@ -92,7 +92,7 @@ public class HuomaiVideo implements Serializable {
 	/**
 	 * 分享量
 	 */
-	private Long shareNum;
+	private int shareNum;
 
 	/**
 	 * 关键词ID (按","逗号拼接)

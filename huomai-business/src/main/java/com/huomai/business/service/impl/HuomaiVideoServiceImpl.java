@@ -2,7 +2,6 @@ package com.huomai.business.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huomai.business.bo.*;
@@ -15,13 +14,13 @@ import com.huomai.business.vo.HuomaiVideoVo;
 import com.huomai.common.core.page.PagePlus;
 import com.huomai.common.core.page.TableDataInfo;
 import com.huomai.common.utils.PageUtils;
-import com.huomai.common.utils.SecurityUtils;
-import jodd.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+
+import static com.huomai.common.utils.SecurityUtils.getUserId;
 
 /**
  * 视频信息Service业务层处理
@@ -44,6 +43,7 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 	public HuomaiVideoHotVo queryById(Long videoId) {
 		HuomaiVideoHotBo hotBo = new HuomaiVideoHotBo();
 		hotBo.setVideoId(videoId);
+		hotBo.setCurUserId(getUserId());
 		List<HuomaiVideoHotVo> vos = queryList(hotBo);
 		if (vos.size() > 0) {
 			return vos.get(0);
@@ -91,7 +91,7 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 		HuomaiVideo add = BeanUtil.toBean(bo, HuomaiVideo.class);
 		validEntityBeforeSave(add);
 		//发布人
-		add.setUserId(SecurityUtils.getUserId());
+		add.setUserId(getUserId());
 		//发布状态
 		add.setStatus("0");
 		return save(add);
@@ -135,7 +135,7 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 	 */
 	@Override
 	public TableDataInfo<HuomaiVideoHotVo> hotList(HuomaiVideoHotBo bo) {
-		bo.setCurUserId(SecurityUtils.getUserId());
+		bo.setCurUserId(getUserId());
 		List<HuomaiVideoHotVo> videoVos = queryList(bo);
 		return PageUtils.buildDataInfo(videoVos);
 	}
@@ -156,14 +156,14 @@ public class HuomaiVideoServiceImpl extends ServiceImpl<HuomaiVideoMapper, Huoma
 	 */
 	@Override
 	public TableDataInfo<HuomaiVideoAttendVo> attendList(HuomaiVideoAttendBo bo) {
-		bo.setCurUserId(SecurityUtils.getUserId());
+		bo.setCurUserId(getUserId());
 		List<HuomaiVideoAttendVo> videoVos = videoMapper.attendList(PageUtils.buildPage(), bo);
 		return PageUtils.buildDataInfo(videoVos);
 	}
 
 	@Override
 	public TableDataInfo<HuomaiVideoVo> videoList(HuomaiVideoQueryBo bo) {
-		bo.setUserId(SecurityUtils.getUserId());
+		bo.setUserId(getUserId());
 		return queryPageList(bo);
 	}
 

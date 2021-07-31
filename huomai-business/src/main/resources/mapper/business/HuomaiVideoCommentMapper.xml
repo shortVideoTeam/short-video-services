@@ -17,7 +17,7 @@
             u.avatar,
             u.nick_name,
             u.sex,
-            (select IF(count(1) > 0,1,0) from huomai_user_love where business_id = c.comment_id and type = 2  and user_id = #{bo.curUserId}) as love_flag
+            (select IF(count(1) > 0,1,0) from huomai_user_love where business_id = c.comment_id and type = 2  and user_id = #{bo.curUserId}) as star_flag
         FROM
             huomai_video_comment c
             LEFT JOIN huomai_user u ON c.user_id = u.user_id

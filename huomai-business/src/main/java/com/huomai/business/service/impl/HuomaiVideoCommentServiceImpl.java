@@ -44,6 +44,7 @@ public class HuomaiVideoCommentServiceImpl extends ServiceImpl<HuomaiVideoCommen
 
 	@Override
 	public TableDataInfo<HuomaiVideoCommentVo> queryPageList(HuomaiVideoCommentQueryBo bo) {
+		bo.setCurUserId(SecurityUtils.getUserId());
 		List<HuomaiVideoCommentVo> vos = queryCommentWithUserList(bo);
 		return PageUtils.buildDataInfo(vos);
 	}

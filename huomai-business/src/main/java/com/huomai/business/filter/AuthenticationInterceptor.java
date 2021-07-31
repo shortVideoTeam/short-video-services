@@ -11,6 +11,8 @@ import com.huomai.common.exception.CustomException;
 import com.huomai.common.utils.JwtUtil;
 import com.huomai.common.utils.ServletUtils;
 import com.huomai.common.utils.spring.SpringUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,6 +27,7 @@ import java.util.Set;
  * @author huomai
  * @date: 2021/6/21 3:17 下午
  */
+@Slf4j
 public class AuthenticationInterceptor implements HandlerInterceptor {
 	public static final String USER_KEY = "userId";
 	public static final String USER_NAME = "userName";
@@ -49,6 +52,24 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 		if (method.isAnnotationPresent(PassToken.class)) {
 			PassToken passToken = method.getAnnotation(PassToken.class);
 			if (passToken.required()) {
+				try {
+					//
+					if (StringUtils.isNotEmpty(token)) {
+						String username = JwtUtil.getUsername(token);
+						HuomaiUser appUser = SpringUtils.getBean(IHuomaiUserService.class).getById(username);
+						if (appUser == null) {
+							throw new RuntimeException("用户不存在，请重新登录");
+						}
+						// 验证 token
+						if (!JwtUtil.verify(token, String.valueOf(appUser.getUserId()), SecureUtil.md5(appUser.getOpenid()))) {
+							throw new CustomException("token已过期，请重新登录", HttpStatus.HTTP_UNAUTHORIZED);
+						}
+						// 设置userId到request里，后续根据userId，获取用户信息
+						userHolder(request, appUser);
+					}
+				}catch (Exception e){
+					log.error("no login ...");
+				}
 				return true;
 			}
 		}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huomai.business.mapper.HuomaiUserInviteMapper">
+
+
+    <select id="myUserInvite" resultType="com.huomai.business.vo.HuomaiUserInviteVo">
+        SELECT
+            ui.*,
+            u.nick_name user_nick_name,
+            u.avatar user_avatar,
+            bu.nick_name by_user_nice_name,
+            bu.avatar by_user_avatar
+        FROM
+            huomai_user_invite ui
+            LEFT JOIN huomai_user u ON ui.user_id = u.user_id
+            LEFT JOIN huomai_user bu ON ui.by_user_id = bu.user_id
+        <where>
+            and ui.by_user_id = #{userId}
+        </where>
+    </select>
+    <select id="myInviteList" resultType="com.huomai.business.vo.HuomaiUserInviteVo">
+        SELECT
+            ui.*,
+            u.nick_name user_nick_name,
+            u.avatar user_avatar,
+            bu.nick_name by_user_nice_name,
+            bu.avatar by_user_avatar
+        FROM
+        huomai_user_invite ui
+        LEFT JOIN huomai_user u ON ui.user_id = u.user_id
+        LEFT JOIN huomai_user bu ON ui.by_user_id = bu.user_id
+        <where>
+            and ui.user_id = #{bo.userId}
+        </where>
+    </select>
+</mapper>

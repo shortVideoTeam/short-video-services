@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 表格分页数据对象
  *
- * @author Lion Li
+ * @author huomai
  */
 
 @Data
@@ -33,18 +33,6 @@ public class TableDataInfo<T> implements Serializable {
 	 */
 	@ApiModelProperty("列表数据")
 	private List<T> rows;
-
-	/**
-	 * 消息状态码
-	 */
-	@ApiModelProperty("消息状态码")
-	private int code;
-
-	/**
-	 * 消息内容
-	 */
-	@ApiModelProperty("消息内容")
-	private String msg;
 
 	/**
 	 * 分页

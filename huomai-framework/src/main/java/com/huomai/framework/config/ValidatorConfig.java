@@ -11,7 +11,7 @@ import javax.validation.ValidatorFactory;
 /**
  * 校验框架配置类
  *
- * @author Lion Li
+ * @author huomai
  */
 @Configuration
 public class ValidatorConfig {

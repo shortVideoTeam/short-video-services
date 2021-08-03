@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * 自定义 Service 接口, 实现 数据库实体与 vo 对象转换返回
  *
- * @author Lion Li
+ * @author huomai
  * @since 2021-05-13
  */
 public interface IServicePlus<T> extends IService<T> {

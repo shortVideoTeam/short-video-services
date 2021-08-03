@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huomai.business.mapper.HuomaiVideoMapper">
+
+
+    <select id="hotList" resultType="com.huomai.business.vo.HuomaiVideoHotVo">
+        SELECT
+            v.video_id,
+            v.user_id,
+            v.title,
+            v.video_url,
+            v.cover_url,
+            v.miusic_url,
+            v.duration,
+            v.topic,
+            v.buddy,
+            v.star_num,
+            v.comment_num,
+            v.view_num,
+            v.share_num,
+            v.create_time,
+            u.uuid,
+            u.nick_name,
+            u.openid,
+            u.phone,
+            u.avatar,
+            ( select IF(count(1) > 0,1,0) from huomai_user_follow where user_id = #{bo.curUserId} ) as attend_flag,
+            ( select IF(count(1) > 0,1,0) from huomai_user_follow where follow_user_id = #{bo.curUserId} ) as follow_flag,
+			( select IF(count(1) > 0,1,0) from huomai_user_love where business_id = v.video_id and type = 1 and user_id = #{bo.curUserId} ) as love_flag
+        FROM
+            huomai_video v
+            INNER JOIN huomai_user u ON v.user_id = u.user_id
+        <where>
+            AND v.`status` = '1'
+            AND v.visible = '1'
+            <if test="bo.videoId != null">
+                and v.video_id = #{bo.videoId}
+            </if>
+        </where>
+        order by v.create_time desc
+    </select>
+
+    <select id="attendList" resultType="com.huomai.business.vo.HuomaiVideoAttendVo">
+        SELECT
+        v.video_id,
+        v.user_id,
+        v.title,
+        v.video_url,
+        v.cover_url,
+        v.miusic_url,
+        v.duration,
+        v.topic,
+        v.buddy,
+        v.star_num,
+        v.comment_num,
+        v.view_num,
+        v.share_num,
+        v.create_time,
+        u.uuid,
+        u.nick_name,
+        u.openid,
+        u.phone,
+        u.avatar
+        FROM
+        huomai_video v
+        INNER JOIN huomai_user u ON v.user_id = u.user_id
+        <where>
+            AND v.`status` = '1'
+            AND v.visible = '1'
+            <if test="bo.curUserId != null">
+                and v.user_id in (select follow_user_id from huomai_user_follow where user_id = #{bo.curUserId})
+            </if>
+        </where>
+        order by v.create_time desc
+    </select>
+    <select id="searchList" resultType="com.huomai.business.vo.HuomaiVideoAttendVo">
+        SELECT
+        v.video_id,
+        v.user_id,
+        v.title,
+        v.video_url,
+        v.cover_url,
+        v.miusic_url,
+        v.duration,
+        v.topic,
+        v.buddy,
+        v.star_num,
+        v.comment_num,
+        v.view_num,
+        v.share_num,
+        v.create_time,
+        u.uuid,
+        u.nick_name,
+        u.openid,
+        u.phone,
+        u.avatar
+        FROM
+        huomai_video v
+        INNER JOIN huomai_user u ON v.user_id = u.user_id
+        <where>
+            AND v.`status` = '1'
+            AND v.visible = '1'
+            <if test="bo.searchKey != null and bo.searchKey != ''">
+                and (v.title like concat('%',#{bo.searchKey},'%') or v.topic like concat('%',#{bo.searchKey},'%') or
+                v.buddy like concat('%',#{bo.searchKey},'%'))
+            </if>
+        </where>
+        order by v.create_time desc
+    </select>
+</mapper>

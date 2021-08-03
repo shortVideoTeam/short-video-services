@@ -8,9 +8,6 @@ import com.huomai.common.exception.CustomException;
 import com.huomai.common.exception.DemoModeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AccountExpiredException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -51,24 +48,6 @@ public class GlobalExceptionHandler {
 	public AjaxResult handlerNoFoundException(Exception e) {
 		log.error(e.getMessage(), e);
 		return AjaxResult.error(HttpStatus.HTTP_NOT_FOUND, "路径不存在，请检查路径是否正确");
-	}
-
-	@ExceptionHandler(AccessDeniedException.class)
-	public AjaxResult handleAuthorizationException(AccessDeniedException e) {
-		log.error(e.getMessage());
-		return AjaxResult.error(HttpStatus.HTTP_FORBIDDEN, "没有权限，请联系管理员授权");
-	}
-
-	@ExceptionHandler(AccountExpiredException.class)
-	public AjaxResult handleAccountExpiredException(AccountExpiredException e) {
-		log.error(e.getMessage(), e);
-		return AjaxResult.error(e.getMessage());
-	}
-
-	@ExceptionHandler(UsernameNotFoundException.class)
-	public AjaxResult handleUsernameNotFoundException(UsernameNotFoundException e) {
-		log.error(e.getMessage(), e);
-		return AjaxResult.error(e.getMessage());
 	}
 
 	@ExceptionHandler(Exception.class)

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huomai.business.mapper.HuomaiUserPromoteMapper">
+
+    <resultMap type="com.huomai.business.domain.HuomaiUserPromote" id="HuomaiUserPromoteResult">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="videoId" column="video_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="status" column="status"/>
+        <result property="hotNum" column="hot_num"/>
+        <result property="profit" column="profit"/>
+        <result property="sendVal" column="send_val"/>
+        <result property="receivedVal" column="received_val"/>
+    </resultMap>
+
+    <select id="queryList" resultType="com.huomai.business.vo.HuomaiUserPromoteVo">
+        SELECT
+        p.*,
+        u.uuid,
+        u.nick_name,
+        u.phone,
+        u.avatar
+        FROM
+        huomai_user_promote AS p
+        LEFT JOIN huomai_user AS u ON u.user_id = p.user_id
+        <where>
+            p.user_id = #{bo.userId}
+            <if test=" bo.optType != null ">
+                <choose>
+                    <when test="bo.optType == 1">
+                        and send_val > 0
+                    </when>
+                    <when test="bo.optType == 2">
+                        and received_val > 0
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </select>
+
+</mapper>

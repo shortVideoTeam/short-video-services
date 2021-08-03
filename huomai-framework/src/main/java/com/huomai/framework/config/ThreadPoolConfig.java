@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * 线程池配置
  *
- * @author Lion Li
+ * @author huomai
  **/
 @Configuration
 public class ThreadPoolConfig {

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import com.huomai.framework.mybatisplus.CreateAndUpdateMetaObjectHandler;
+import com.huomai.framework.manager.mybatisplus.CreateAndUpdateMetaObjectHandler;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 /**
  * mybatis-plus配置类
  *
- * @author Lion Li
+ * @author huomai
  */
 @EnableTransactionManagement(proxyTargetClass = true)
 @Configuration
@@ -55,6 +55,11 @@ public class MybatisPlusConfig {
 		return new OptimisticLockerInnerInterceptor();
 	}
 
+	@Bean
+	public MetaObjectHandler metaObjectHandler() {
+		return new CreateAndUpdateMetaObjectHandler();
+	}
+
 	/**
 	 * 如果是对全表的删除或更新操作，就会终止该操作
 	 * https://baomidou.com/guide/interceptor-block-attack.html
@@ -80,15 +85,6 @@ public class MybatisPlusConfig {
 //	public IdentifierGenerator idGenerator() {
 //		return new CustomIdGenerator();
 //	}
-
-	/**
-	 * 元对象字段填充控制器
-	 * https://baomidou.com/guide/auto-fill-metainfo.html
-	 */
-	@Bean
-	public MetaObjectHandler metaObjectHandler() {
-		return new CreateAndUpdateMetaObjectHandler();
-	}
 
 	/**
 	 * sql注入器配置

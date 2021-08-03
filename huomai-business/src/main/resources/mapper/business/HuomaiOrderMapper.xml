@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huomai.business.mapper.HuomaiOrderMapper">
+
+
+    <select id="queryList" resultType="com.huomai.business.vo.HuomaiOrderVo">
+        SELECT
+            o.id,
+            o.order_no,
+            o.order_type,
+            o.create_time,
+            o.page,
+            o.time,
+            o.amount,
+            o.pay_way,
+            u.nick_name,
+            u.avatar,
+            u.uuid
+        FROM
+            huomai_order o
+            LEFT JOIN huomai_user u ON o.user_id = u.user_id
+        <where>
+            <if test="bo.curUserId != null">
+                o.user_id = #{bo.curUserId}
+            </if>
+            <if test="bo.orderType != null">
+                o.order_type = #{bo.orderType}
+            </if>
+        </where>
+    </select>
+    <select id="groupOrderByTime" resultType="java.util.Map">
+        SELECT
+            time,
+            count( 1 ) num
+        FROM
+            (
+            SELECT
+                DATE_FORMAT( create_time, '%Y-%m-%d' ) AS time,
+                user_id,
+                count( 1 ) num
+            FROM
+                huomai_order
+            WHERE
+                `status` = 2
+                and pay_time > now()
+            GROUP BY
+                DATE_FORMAT( create_time, '%Y-%m-%d' ),
+                user_id
+            ) A
+        GROUP BY
+            time
+        ORDER BY
+            time
+    </select>
+    <select id="preUser" resultType="java.lang.Long">
+        select user_id from huomai_order where pay_time <![CDATA[<]]>#{payTime} and `status` = 2 and user_id not in (${userId}) order by pay_time desc limit 1
+    </select>
+</mapper>

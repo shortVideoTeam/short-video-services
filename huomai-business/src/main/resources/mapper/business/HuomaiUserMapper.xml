@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huomai.business.mapper.HuomaiUserMapper">
+
+
+    <select id="queryUserList" resultType="com.huomai.business.vo.HuomaiUserVo">
+        SELECT
+        u.user_id,
+        u.uuid,
+        u.avatar,
+        u.nick_name,
+        u.phone,
+        u.openid,
+        u.unionid,
+        u.address,
+        u.province,
+        u.city,
+        u.area,
+        u.birthday,
+        u.constellation,
+        u.sex,
+        u.invite_code,
+        (select IF(count(1) > 0,1,0) from huomai_user_follow where user_id = #{bo.curUserId}) as attend_flag,
+        (select IF(count(1) > 0,1,0) from huomai_user_follow where follow_user_id = #{bo.curUserId}) as follow_flag
+        FROM
+        huomai_user u
+        <where>
+            and u.`status` = '1'
+            <if test="bo.searchKey != null and bo.searchKey != ''">
+                and (u.nick_name like concat('%',#{bo.searchKey},'%') or u.uuid like concat('%',#{bo.searchKey},'%'))
+            </if>
+        </where>
+
+    </select>
+    <select id="detail" resultType="com.huomai.business.vo.HuomaiUserDetailVo">
+        SELECT
+        u.user_id,
+        u.uuid,
+        u.avatar,
+        u.nick_name,
+        u.phone,
+        u.openid,
+        u.unionid,
+        u.address,
+        u.province,
+        u.city,
+        u.area,
+        u.birthday,
+        u.constellation,
+        u.sex,
+        u.invite_code,
+        u.user_desc,
+        (select IF(count(1) > 0,1,0) from huomai_user_follow where user_id = #{curUserId}) as attend_flag,
+        (select IF(count(1) > 0,1,0) from huomai_user_follow where follow_user_id = #{curUserId}) as follow_flag,
+        (select count(1) from huomai_user_follow where user_id = #{userId}) as attend_num,
+        (select count(1) from huomai_user_follow where follow_user_id = #{userId}) as follow_num,
+        (select count(1) from huomai_video where user_id = #{userId}) as video_all_num,
+        (select count(1) from huomai_video where user_id = #{userId} and visible = '0') as video_hidden_num,
+        (select count(1) from huomai_video where user_id = #{userId} and star_num > 0) as video_star_num
+        FROM
+        huomai_user u
+        <where>
+            and u.user_id = #{userId}
+        </where>
+    </select>
+</mapper>

@@ -9,7 +9,7 @@
     <version>${huomai.version}</version>
 
     <name>huomai</name>
-    <description>huomai后台管理系统</description>
+    <description>huomai-api</description>
 
     <properties>
         <huomai.version>1.0.0</huomai.version>
@@ -31,6 +31,7 @@
         <feign-okhttp.version>11.0</feign-okhttp.version>
         <spring-boot-admin.version>2.3.1</spring-boot-admin.version>
         <redisson.version>3.15.2</redisson.version>
+        <weixin-java.version>4.1.0</weixin-java.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -138,20 +139,6 @@
                 <version>${spring-boot-admin.version}</version>
             </dependency>
 
-            <!-- 定时任务-->
-            <dependency>
-                <groupId>com.huomai</groupId>
-                <artifactId>huomai-quartz</artifactId>
-                <version>${huomai.version}</version>
-            </dependency>
-
-            <!-- 代码生成-->
-            <dependency>
-                <groupId>com.huomai</groupId>
-                <artifactId>huomai-generator</artifactId>
-                <version>${huomai.version}</version>
-            </dependency>
-
             <!-- 核心模块-->
             <dependency>
                 <groupId>com.huomai</groupId>
@@ -176,7 +163,7 @@
             <!-- demo模块 -->
             <dependency>
                 <groupId>com.huomai</groupId>
-                <artifactId>huomai-demo</artifactId>
+                <artifactId>huomai-business</artifactId>
                 <version>${huomai.version}</version>
             </dependency>
 
@@ -187,17 +174,28 @@
                 <version>${redisson.version}</version>
             </dependency>
 
+            <!-- wx sdk 小程序登录授权-->
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-miniapp</artifactId>
+                <version>${weixin-java.version}</version>
+            </dependency>
+            <!--wx sdk 支付-->
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-pay</artifactId>
+                <version>${weixin-java.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
     <modules>
-        <module>huomai-admin</module>
+        <module>huomai-app</module>
         <module>huomai-framework</module>
         <module>huomai-system</module>
-        <module>huomai-quartz</module>
-        <module>huomai-generator</module>
         <module>huomai-common</module>
-        <module>huomai-demo</module>
+        <module>huomai-business</module>
     </modules>
     <packaging>pom</packaging>
 

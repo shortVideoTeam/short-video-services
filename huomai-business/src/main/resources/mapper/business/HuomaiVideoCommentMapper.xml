@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huomai.business.mapper.HuomaiVideoCommentMapper">
+
+
+    <select id="queryList" resultType="com.huomai.business.vo.HuomaiVideoCommentVo">
+        SELECT
+            c.comment_id,
+            c.content,
+            c.create_time,
+            c.star_num,
+            c.video_id,
+            u.user_id,
+            u.uuid,
+            u.avatar,
+            u.nick_name,
+            u.sex,
+            (select IF(count(1) > 0,1,0) from huomai_user_love where business_id = c.comment_id and type = 2  and user_id = #{bo.curUserId}) as star_flag
+        FROM
+            huomai_video_comment c
+            LEFT JOIN huomai_user u ON c.user_id = u.user_id
+        WHERE
+            c.video_id = #{bo.videoId}
+        ORDER BY
+	        c.create_time DESC
+    </select>
+</mapper>

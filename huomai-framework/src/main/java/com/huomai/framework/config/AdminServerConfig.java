@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 /**
  * springboot-admin server配置类
  *
- * @author Lion Li
+ * @author huomai
  */
 @Configuration
 @EnableAdminServer
